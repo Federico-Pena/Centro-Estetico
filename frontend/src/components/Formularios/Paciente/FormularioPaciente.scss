@@ -1,0 +1,109 @@
+.formEditarPaciente,
+.formPaciente {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	gap: 1rem;
+	border: 1px solid rgba(0, 0, 0, 0.212);
+	padding: 2rem 1rem;
+	border-radius: 0.3rem;
+	background-color: var(--color-logo);
+	width: 95%;
+	max-width: 900px;
+	animation: form 0.3s linear;
+	position: relative;
+	.btnPrimario {
+		align-self: center;
+	}
+	.volver {
+		transform: scale(1.5);
+		margin-left: 1rem;
+		cursor: pointer;
+		transition: transform 0.3s ease;
+		&:hover {
+			transform: scale(2);
+		}
+	}
+	.btnSecundario {
+		width: fit-content;
+		font-size: 14px;
+		position: absolute;
+		top: 0.5rem;
+		left: 0.5rem;
+	}
+	h1 {
+		text-align: center;
+		font-size: 24px;
+		margin-bottom: 1rem;
+		letter-spacing: 1px;
+	}
+	.input {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 0.5rem;
+		color: #000000;
+		input {
+			padding: 0.5rem 1rem;
+			border-radius: 3rem;
+			width: 50%;
+			border: 1px solid #00000081;
+			outline: none;
+			transition: border 0.3s ease;
+			&:focus {
+				border: 1px solid var(--color-verde);
+			}
+			&:hover {
+				border: 1px solid #868686;
+			}
+		}
+		input[name='foto'] {
+			padding: 0.5rem;
+			background-color: #fff;
+			&::-webkit-file-upload-button {
+				display: none;
+			}
+		}
+		.contactoEmergencia {
+			display: flex;
+			flex-direction: column;
+			gap: 0.5rem;
+			width: 50%;
+			input {
+				width: 100%;
+			}
+		}
+	}
+
+	.inputSelect {
+		display: flex;
+		justify-content: space-between;
+		color: #000000;
+		padding: 0.5rem;
+		select {
+			padding: 0.5rem 1rem;
+			border-radius: 3rem;
+			width: 50%;
+			text-align: center;
+			cursor: pointer;
+			outline: none;
+			&:focus {
+				border: 1px solid var(--color-verde);
+			}
+			&:hover {
+				border: 1px solid #868686;
+			}
+		}
+	}
+}
+
+@keyframes form {
+	from {
+		opacity: 0;
+		transform: translateY(-50px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}

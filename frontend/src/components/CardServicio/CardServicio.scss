@@ -1,0 +1,134 @@
+.divFormularioReserva {
+	background-color: #000000b6;
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 9;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	.btnSecundario {
+		width: fit-content;
+		position: absolute;
+		top: 1rem;
+		left: 1rem;
+		color: #ffffff;
+	}
+}
+.cardFullServicio {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background-color: #ffffff;
+	color: #ffffff;
+	z-index: 3;
+	.botones {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		gap: 1rem;
+		max-width: 500px;
+		width: 100%;
+		padding: 0 1rem;
+		position: absolute;
+		bottom: 1rem;
+		.btnSecundario {
+			color: #ffffff;
+			backdrop-filter: blur(5px);
+			&:hover {
+				border-color: var(--color-violeta);
+			}
+		}
+	}
+	.cardFullServicioContent {
+		overflow: auto;
+		max-width: 500px;
+		height: 100%;
+		margin: auto;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		background-repeat: no-repeat;
+		background-size: 100% 100%;
+		line-height: 1.5rem;
+		animation: fadeIn 0.5s ease;
+		padding: 1rem 1rem 4rem 1rem;
+		gap: 1rem;
+		h1,
+		h4 {
+			text-align: center;
+			letter-spacing: 2px;
+			text-decoration: underline;
+		}
+		h1 {
+			line-height: 2.5rem;
+		}
+
+		.list1 {
+			display: flex;
+			flex-direction: column;
+			gap: 0.5rem;
+			margin: 1rem 0;
+			li {
+				line-height: 1.5rem;
+			}
+		}
+		.list2 {
+			padding: 1rem 3rem;
+			li {
+				list-style: circle;
+				font-weight: 500;
+			}
+		}
+	}
+}
+
+.cardServicio {
+	width: 98%;
+	max-width: 400px;
+	display: flex;
+	flex-direction: column;
+	border: 1px solid black;
+	border-radius: 1rem;
+	margin: auto;
+	overflow: hidden;
+	animation: fadeIn 0.5s ease-in-out;
+	.detalles {
+		padding: 1rem 3rem;
+		li {
+			list-style: circle;
+			font-weight: 500;
+		}
+	}
+	img {
+		width: 100%;
+		height: auto;
+		object-fit: cover;
+		aspect-ratio: 4/3;
+		background-color: rgb(219, 219, 219);
+	}
+	h1,
+	h4 {
+		padding: 1rem;
+		text-align: center;
+		text-decoration: underline;
+	}
+	p {
+		padding: 1rem;
+	}
+	div {
+		display: flex;
+		justify-content: space-evenly;
+		gap: 1rem;
+		padding: 1rem 0.5rem;
+	}
+}

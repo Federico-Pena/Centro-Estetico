@@ -1,0 +1,22 @@
+.ContenedorReservas {
+	padding: 2rem 0;
+	display: flex;
+	justify-content: center;
+	max-width: 900px;
+	min-height: 50vh;
+	width: 100%;
+	overflow: auto;
+	flex-wrap: wrap;
+	gap: 1rem;
+	max-height: 100vh;
+	animation: fadeIn 0.3s ease-in-out forwards;
+}
+.animationReservaOut {
+	animation: outUp 0.5s ease-in-out forwards;
+}
+@keyframes outUp {
+	to {
+		transform: translateX(50vw);
+		opacity: 0;
+	}
+}

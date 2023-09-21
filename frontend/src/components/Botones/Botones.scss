@@ -1,0 +1,36 @@
+.btnSecundario {
+	background-color: transparent;
+	color: var(--color-violeta);
+	max-height: 42px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 8px 16px;
+	border: 1px solid var(--color-violeta);
+	border-radius: 1rem;
+	font-size: 18px;
+	font-weight: bold;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+	&:hover {
+		background-color: var(--color-violeta);
+		color: #ffffff;
+	}
+}
+.btnPrimario {
+	background-color: transparent;
+	border: 1px solid var(--color-violeta);
+	padding: 8px 16px;
+	width: 50%;
+	border-radius: 1rem;
+	font-size: 18px;
+	font-weight: bold;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+	background-color: var(--color-violeta);
+	color: #ffffff;
+	&:hover {
+		background-color: transparent;
+		color: var(--color-violeta);
+	}
+}

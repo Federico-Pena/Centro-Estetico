@@ -1,0 +1,76 @@
+.containerFechasYHoras {
+	width: 100%;
+	max-width: 600px;
+	min-height: 30vh;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin: auto;
+	border: 1px solid rgba(0, 0, 0, 0.267);
+	border-radius: 0.3rem;
+	h2 {
+		margin: 1rem auto 0 auto;
+		letter-spacing: 1px;
+		text-align: center;
+		width: 100%;
+	}
+	p {
+		text-align: center;
+		margin-top: 1rem;
+		border-bottom: #ccc 1px solid;
+	}
+	.select-container-container {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 100%;
+		flex-direction: column;
+		.select-container {
+			display: flex;
+			align-items: center;
+			gap: 10px;
+			padding: 0.5rem;
+			border-bottom: #ccc 1px solid;
+			width: 100%;
+			select {
+				margin: 1rem auto;
+				padding: 0.5rem;
+				font-size: 14px;
+				border: 1px solid #ccc;
+				border-radius: 5px;
+			}
+		}
+		.selectedFecha {
+			margin-top: 1rem;
+			padding: 0.5rem;
+			border-radius: 0.5rem;
+			color: var(--color-violeta);
+			cursor: pointer;
+			text-transform: capitalize;
+			transition: border 0.3s ease;
+			border: 1px solid rgba(0, 0, 0, 0.205);
+
+			&:hover {
+				border: 1px solid rgb(0, 0, 0);
+			}
+		}
+		.horasDisplay {
+			max-width: 350px;
+		}
+		.cerrarForm {
+			background-color: transparent;
+			padding: 8px 16px;
+			border: 1px solid var(--color-violeta);
+			border-radius: 4px;
+			font-size: 14px;
+			font-weight: bold;
+			cursor: pointer;
+			transition: background-color 0.3s ease;
+			color: var(--color-violeta);
+			&:hover {
+				background-color: var(--color-violeta);
+				color: #fff;
+			}
+		}
+	}
+}

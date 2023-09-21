@@ -1,0 +1,62 @@
+.footer {
+	width: 100%;
+	margin: auto;
+	color: rgb(245, 245, 245);
+	background-color: var(--color-violeta);
+	.row.logos {
+		display: flex;
+		justify-content: center;
+		gap: 2rem;
+		a {
+			transition: transform 0.3s ease;
+			transform: scale(0.8);
+			margin-top: 1rem;
+			&:hover {
+				transform: scale(0.9);
+			}
+		}
+	}
+	.row {
+		width: 100%;
+		padding: 0.6% 0%;
+		font-size: 0.8em;
+		text-align: center;
+		p {
+			padding: 0.5rem 1rem;
+			a {
+				transition: color 0.3s ease;
+				text-decoration: underline;
+				&:hover {
+					color: var(--color-verde);
+				}
+			}
+		}
+		a {
+			text-decoration: underline;
+			color: rgb(255, 255, 255);
+			figure {
+				transition: transform 0.3s ease;
+			}
+		}
+		ul {
+			width: 100%;
+			padding: 1rem;
+			li {
+				display: inline-block;
+				margin: 0px 30px;
+				a {
+					transition: color 0.5s ease;
+					&:hover {
+						color: var(--color-verde);
+					}
+				}
+			}
+		}
+		@media (min-width: 720px) {
+			a,
+			p {
+				font-size: 18px;
+			}
+		}
+	}
+}

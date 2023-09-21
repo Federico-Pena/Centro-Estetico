@@ -1,0 +1,112 @@
+@font-face {
+	font-family: betonga;
+	src: url('/assets/fuente/Bentoga-Thin.woff2');
+	font-display: swap;
+}
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: system-ui, sans-serif;
+}
+main {
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-family: betonga, system-ui, sans-serif;
+}
+ul,
+li {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+::-webkit-scrollbar {
+	display: none;
+}
+::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+}
+
+body #root {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	min-height: 100vh;
+	width: 100vw;
+	color: var(--color-violeta);
+	position: relative;
+	overflow-x: hidden;
+}
+
+:root {
+	--color-logo: #f2d9ee;
+	--color-violeta: #5b4166;
+	--color-verde: #9da985;
+	--color-verde-blanco: #e4f2d9;
+	--color-pendiente: rgb(33, 122, 150);
+	--color-cancelada: rgb(190, 49, 49);
+	--color-paga: rgba(25, 148, 0, 1);
+}
+.paraReservaAdmin {
+	outline: solid var(--color-violeta) 1px;
+}
+.paraReservaAdmin.Pago {
+	background-color: var(--color-paga);
+	color: #ffffff;
+}
+.paraReservaAdmin.Pendiente {
+	background-color: var(--color-pendiente);
+	color: #ffffff;
+}
+.paraReservaAdmin.Cancelada {
+	background-color: var(--color-cancelada);
+	color: #ffffff;
+}
+.Pago {
+	background-color: var(--color-paga);
+	color: #ffffff;
+}
+.Cancelada {
+	background-color: var(--color-cancelada);
+	color: #ffffff;
+}
+.Pendiente {
+	background-color: var(--color-pendiente);
+	color: #ffffff;
+}
+
+@media (max-width: 800px) and (orientation: landscape) {
+	#root {
+		&::after {
+			content: '';
+			background-image: url('https://cdn-icons-png.flaticon.com/512/68/68737.png');
+			background-repeat: no-repeat;
+			background-size: contain;
+			background-position: center;
+			position: fixed;
+			top: 0;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			background-color: #5b4166;
+			z-index: 99;
+		}
+	}
+}
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+		transform: scale(0);
+	}
+	to {
+		opacity: 1;
+		transform: scale(1);
+	}
+}

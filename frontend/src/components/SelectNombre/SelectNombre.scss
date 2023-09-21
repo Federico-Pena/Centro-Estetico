@@ -1,0 +1,71 @@
+.selectNombre-container {
+	display: flex;
+	flex-direction: column;
+	padding: 0 1rem;
+	max-width: 500px;
+	width: 100%;
+	.pagination-buttons {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 1rem;
+		gap: 1rem;
+		.pagination-buttons-Anterior,
+		.pagination-buttons-Siguiente {
+			width: 50%;
+		}
+	}
+	.encabezado {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: space-between;
+		border: 1px solid #ccc;
+		padding: 1rem;
+		border-radius: 0.5rem;
+		margin-top: 1rem;
+		p {
+			margin-top: 1rem;
+			width: 100%;
+			text-align: center;
+		}
+	}
+
+	.selectNombre-option {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1rem;
+		padding: 10px;
+		margin-bottom: 0.5rem;
+		border: 1px solid #ccc;
+		border-radius: 5px;
+		cursor: pointer;
+		text-transform: capitalize;
+		transition: background-color 0.3s ease-in-out;
+		&:hover {
+			background-color: #f0f0f0;
+		}
+
+		.nombre {
+			font-size: 16px;
+			flex: auto;
+		}
+
+		.imagen {
+			max-width: 40px;
+			border-radius: 50%;
+		}
+
+		.numero {
+			font-size: 14px;
+			color: #777;
+			flex: auto;
+			text-align: end;
+		}
+
+		&.admin {
+			font-weight: bold;
+		}
+	}
+}

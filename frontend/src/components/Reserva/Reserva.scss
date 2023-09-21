@@ -1,0 +1,85 @@
+.containerReserva {
+	border-radius: 0.5rem;
+	border: 1px solid rgba(0, 0, 0, 0.466);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 300px;
+	position: relative;
+	background-color: #ffffff;
+	.reserva-container-titulo {
+		padding-top: 1rem;
+		width: 100%;
+		text-align: center;
+	}
+	.reserva-container-cuerpo {
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		padding: 2rem 1rem;
+		flex: auto;
+		.tareasAdmin {
+			span {
+				margin-left: 1rem;
+			}
+		}
+		ul {
+			display: flex;
+			flex-direction: column;
+			gap: 1rem;
+			li {
+				display: flex;
+				justify-content: space-between;
+				text-transform: capitalize;
+				strong {
+					text-align: end;
+					text-wrap: balance;
+				}
+			}
+		}
+	}
+	.reserva-container-botones {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		gap: 0.5rem;
+		padding: 0.5rem;
+		width: 100%;
+		.btnEditar,
+		.btnCompletada,
+		.btnCerrar,
+		.btnCerrarReserva {
+			transition: background-color 0.3s ease-in-out;
+			font-size: 14px;
+			&:hover {
+				border: 1px solid var(--color-violeta);
+				background-color: var(--color-violeta);
+				color: #ffffff;
+			}
+		}
+		.btnCerrar.Cancelada {
+			background-color: rgba(255, 0, 0, 0.5);
+			transition: background-color, color 0.3s ease-in-out;
+			&:hover {
+				background-color: rgba(255, 0, 0, 0.705);
+			}
+		}
+	}
+}
+.containerFormularioReserva {
+	background-color: rgb(255, 255, 255);
+	border-radius: 0.5rem;
+	position: fixed;
+	top: 50%;
+	transform: translate(0, -50%);
+	gap: 1rem;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	min-width: 400px;
+	z-index: 5;
+	.cerrarForm {
+		margin-top: 2rem;
+	}
+}
