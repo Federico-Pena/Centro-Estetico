@@ -2,7 +2,12 @@ import { useEffect, useRef } from 'react'
 import './ConfirmationModal.scss'
 export const ConfirmationModal = ({ titulo, mensaje, onConfirm, onCancel }) => {
 	const modalRef = useRef()
-
+	useEffect(() => {
+		modalRef.current.scrollIntoView({
+			behavior: 'smooth',
+			block: 'center',
+		})
+	}, [])
 	return (
 		<div className='modal'>
 			<div className='modal-content' ref={modalRef}>

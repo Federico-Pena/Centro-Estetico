@@ -10,7 +10,7 @@ import { router as reservas } from './routes/reservas.routes.js'
 import { decodificarToken, jwtCheck } from './middlewares/autorization.js'
 
 const optionsCors = {
-	origin: ['https://www.masajistanataliapena.com', 'http://localhost:5173'],
+	origin: ['https://centro-estetico.vercel.app', 'http://localhost:5173'],
 	methods: ['GET', 'PUT', 'POST', 'DELETE'],
 }
 const setCache = function (req, res, next) {
