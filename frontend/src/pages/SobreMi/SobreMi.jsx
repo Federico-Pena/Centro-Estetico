@@ -7,38 +7,49 @@ const SobreMi = () => {
 	}, [])
 	return (
 		<main className='containerSobreMi'>
-			<h1>Algo sobre mi</h1>
+			<h1>Algo sobre nosotros</h1>
 			<div className='cardSobreMi'>
 				<img
-					src='https://res.cloudinary.com/fotoscloudinary/image/upload/v1692718886/Masajes/fotoNati_lc8nsa.webp'
-					alt='Foto Masajista Natalia Pena'
+					src='https://res.cloudinary.com/fotoscloudinary/image/upload/v1695238636/Portfolio/Centro%20Est%C3%A9tico/Centro-Estetico_oqlsuw.webp'
+					alt='Centro Estético'
 				/>
 				<div className='texto'>
 					<p>
-						Mi nombre es Natalia Pena, tengo 29 años, vivo en Playa Pascual y
-						tengo mi consultorio propio en la zona de Cordón, Montevideo.
+						Bienvenidos al Centro Estético, con un consultorio en la zona de
+						Cordón, Montevideo.
 					</p>
-					<p>Me dedico a esta profesión desde el año 2019.</p>
 					<p>
-						Tengo capacitación en masajes como por ejemplo descontracturantes,
+						Nuestra dedicación a la excelencia en el cuidado estético se remonta
+						al año 2019.
+					</p>
+					<p>
+						En nuestro centro, contamos con un equipo altamente capacitado en
+						una amplia gama de masajes, que incluyen descontracturantes,
 						relajantes, prenatales, con piedras calientes, modeladores, post
-						operatorios, etc.
-					</p>
-					<p>En 2023 comencé a ser facilitadora en barras de access.</p>
-					<p>Me gusta estar en constante capacitación</p>
-					<p>
-						Disfruto cada momento y voy creciendo junto con mi emprendimiento
-						tanto en lo personal como en lo laboral.
+						operatorios, entre otros.
 					</p>
 					<p>
-						Espero podamos conocernos pronto y los que ya me conocen, que me
-						continúen acompañando este viaje tan hermoso.
+						Además, en el año 2023, hemos incorporado la técnica de facilitación
+						en barras de access para brindarles aún más opciones de bienestar.
 					</p>
 					<p>
-						Agradezco a mi familia, amigos y pacientes por todo el apoyo y
-						contención recibida.
+						En Centro Estético, estamos comprometidos con la formación continua,
+						siempre en busca de ofrecer lo mejor a nuestros clientes.
 					</p>
-					<p>¿Qué mas es posible? ¿Cómo puede mejorar esto?</p>
+					<p>
+						Disfrutamos cada momento y crecemos constantemente, tanto en lo
+						personal como en lo laboral, para brindarles un servicio de la más
+						alta calidad.
+					</p>
+					<p>
+						Esperamos tener el placer de atenderlos pronto, y agradecemos a
+						nuestros clientes, amigos y familiares por su continuo apoyo y
+						confianza en este hermoso viaje.
+					</p>
+					<p>
+						En Centro Estético, nos esforzamos por ofrecer lo mejor. ¿Qué más
+						podemos lograr juntos? ¿Cómo podemos mejorar aún más su experiencia?
+					</p>
 				</div>
 			</div>
 			<FormularioContacto />
