@@ -1,5 +1,5 @@
 const baseUrl = import.meta.env.PROD
-	? 'https://www.masajistanataliapena.com'
+	? 'https://centro-estetico.vercel.app'
 	: 'http://localhost:5000'
 export const apiEndPoint = {
 	paciente: {
