@@ -92,6 +92,7 @@ export default function Reservas() {
 							reservas={delDia}
 							actualizarReservas={actualizarReservas}
 							actualizarReservaEliminada={actualizarBorrada}
+							className={'ContenedorReservas'}
 						/>
 					</>
 				)}

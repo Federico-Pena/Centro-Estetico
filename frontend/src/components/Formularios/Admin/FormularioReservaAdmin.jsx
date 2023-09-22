@@ -55,7 +55,7 @@ export const FormularioReservaAdmin = ({
 			const { data } = await res.json()
 			setReservas(data)
 		}
-		accessToken && dia && getData()
+		/* accessToken && */ dia && getData()
 	}, [dia, accessToken, reserva])
 
 	useEffect(() => {

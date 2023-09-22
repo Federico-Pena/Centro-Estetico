@@ -5,9 +5,10 @@ export const ContenedorReservas = ({
 	actualizarReservas,
 	actualizarReservaEliminada,
 	cerrarReserva,
+	className,
 }) => {
 	return (
-		<section className='ContenedorReservas'>
+		<section className={`ContenedorReservas ${className}`}>
 			{reservas?.length > 0 &&
 				reservas.map((res) => {
 					return (

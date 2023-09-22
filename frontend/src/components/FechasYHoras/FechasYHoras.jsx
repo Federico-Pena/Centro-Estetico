@@ -7,7 +7,6 @@ import { formatFechaIso } from '../../helpers/Formato/formarFechaIso'
 import { formatFechaParaUser } from '../../helpers/Formato/formatFechaParaUser'
 import { FormularioReservaAdmin } from '../Formularios/Admin/FormularioReservaAdmin'
 import { Horas } from './Horas'
-import { LoaderChico } from '../Loader/LoaderChico'
 import { diasSemanaConHoras } from '../../helpers/FechasHoras/diasSemanaConHoras'
 import { UserContext } from '../../context/userContext'
 import { fechasConReservas } from './fechasConReservas'
@@ -33,6 +32,7 @@ export const FechasYHoras = ({ setDiaPadre, reservas, actualizarReservas }) => {
 	const [horasState, setHorasState] = useState([])
 	const [fechas, setFechas] = useState([])
 	const [cantidadFechas, setCantidadFechas] = useState(0)
+	const [totalReservasMes, setTotalReservasMes] = useState(0)
 	const [openFormulario, setOpenFormulario] = useState(false)
 	const [loading, setLoading] = useState(false)
 	const { accessToken } = useContext(UserContext)
@@ -42,6 +42,7 @@ export const FechasYHoras = ({ setDiaPadre, reservas, actualizarReservas }) => {
 			setLoading(true)
 			const data = await fechasConReservas(accessToken, mes)
 			setCantidadFechas(data.cantidad)
+			setTotalReservasMes(data.totalReservasMes)
 			if (data.cantidad > 0) {
 				setFechas(data.fechas)
 			} else {
@@ -102,6 +103,10 @@ export const FechasYHoras = ({ setDiaPadre, reservas, actualizarReservas }) => {
 
 			<div className='select-container-container'>
 				<div className='select-container'>
+					<h3>
+						Fechas en {`${obtenerNombreMes(mes)}`}{' '}
+						<TransitionNumber from={0} to={cantidadFechas} duration={500} />
+					</h3>
 					<select value={mes} onChange={(e) => setMes(e.target.value)}>
 						{meses.map((mes, i) => (
 							<option key={mes} value={i + 1}>
@@ -109,13 +114,11 @@ export const FechasYHoras = ({ setDiaPadre, reservas, actualizarReservas }) => {
 							</option>
 						))}
 					</select>
+					<h3>
+						Reservas en {`${obtenerNombreMes(mes)}`}{' '}
+						<TransitionNumber from={0} to={totalReservasMes} duration={500} />
+					</h3>
 				</div>
-				<h2>
-					Fechas con reservas del mes de {`${obtenerNombreMes(mes)}`}
-					<div>
-						<TransitionNumber from={0} to={cantidadFechas} duration={500} />
-					</div>
-				</h2>
 				<select
 					className='selectedFecha'
 					name='selectedFecha'

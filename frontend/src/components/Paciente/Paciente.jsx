@@ -1,24 +1,28 @@
-import { usePaciente } from '../../hooks/usePaciente'
 import { BotónSecundario } from '../Botones/BotonSecundario'
 import { ConfirmationModal } from '../ConfirmationModal/ConfirmationModal'
 import FormularioEditarPaciente from '../Formularios/Paciente/FormularioEditarPaciente'
 import { Imprimir } from '../Imprimir/Imprimir'
 import './Paciente.scss'
-import { useContext, useRef, useState } from 'react'
+import { useContext, useEffect, useRef, useState } from 'react'
 import { ReservasPaciente } from './ReservasPaciente'
 import { formatFechaParaUser } from '../../helpers/Formato/formatFechaParaUser'
 import { apiEndPoint } from '../../services/apiConfig'
 import { UserContext } from '../../context/userContext'
 import { fetchData } from '../../hooks/fetchData'
 
-export const Paciente = ({ paciente, setPaciente }) => {
+export const Paciente = ({ paciente, eliminarPaciente, editarPaciente }) => {
 	const [showModal, setShowModal] = useState(false)
 	const [openReservas, setOpenReservas] = useState(false)
 	const [openForm, setOpenForm] = useState(false)
 	const [nuevoPaciente, setNuevoPaciente] = useState(paciente)
-	const { editarPaciente, eliminarPaciente } = usePaciente()
 	const { accessToken } = useContext(UserContext)
 	const imprimirRef = useRef()
+	useEffect(() => {
+		imprimirRef.current.scrollIntoView({
+			behavior: 'smooth',
+			block: 'center',
+		})
+	}, [])
 	const abrirReservas = () => {
 		setOpenReservas(true)
 	}
@@ -34,14 +38,12 @@ export const Paciente = ({ paciente, setPaciente }) => {
 			method: 'DELETE',
 		}
 		const url = `${apiEndPoint.paciente.eliminarPaciente}${paciente._id}`
-		const res = await fetchData(url, options, eliminarPaciente)
+		await fetchData(url, options, eliminarPaciente)
 		setShowModal(false)
-		setPaciente(res.userExistente)
 	}
 	const handleCancel = () => {
 		setShowModal(false)
 	}
-
 	const actualizarPacientes = (nuevoUser) => {
 		editarPaciente(nuevoUser)
 		setNuevoPaciente(nuevoUser)

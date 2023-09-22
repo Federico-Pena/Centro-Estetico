@@ -11,8 +11,8 @@ export const fechasConReservas = async (accessToken, mes) => {
 	try {
 		const res = await fetch(url, options)
 		if (res.ok) {
-			const { fechas, cantidad } = await res.json()
-			return { fechas, cantidad }
+			const { fechas, cantidad, totalReservasMes } = await res.json()
+			return { fechas, cantidad, totalReservasMes }
 		}
 	} catch (error) {
 		return error

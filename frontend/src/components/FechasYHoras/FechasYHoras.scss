@@ -29,11 +29,14 @@
 			display: flex;
 			align-items: center;
 			gap: 10px;
-			padding: 0.5rem;
+			padding: 1rem;
 			border-bottom: #ccc 1px solid;
 			width: 100%;
+			h3 {
+				text-align: center;
+				flex: auto;
+			}
 			select {
-				margin: 1rem auto;
 				padding: 0.5rem;
 				font-size: 14px;
 				border: 1px solid #ccc;

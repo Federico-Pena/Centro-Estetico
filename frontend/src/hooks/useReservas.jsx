@@ -31,7 +31,6 @@ const useReservas = (calendario, dia) => {
 	const { setMensaje, setError } = useContext(MensajeToast)
 	const { accessToken } = useContext(UserContext)
 	const diasSemana = diasSemanaConHoras(currentDate, reservasSemanales)
-
 	useEffect(() => {
 		const getReservas = async () => {
 			setLoadingSemana(true)

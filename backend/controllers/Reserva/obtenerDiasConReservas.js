@@ -15,6 +15,8 @@ export const obtenerDiasConReservas = async (req, res) => {
 		})
 			.sort({ fecha: -1 })
 			.select('fecha')
+			.select('pacienteNombre')
+			.select('estado')
 		const fechasÚnicas = reservasDuplicadas
 			.map((reserva) => reserva.fecha.toISOString())
 			.filter((fecha, index, self) => self.indexOf(fecha) === index)
@@ -23,7 +25,14 @@ export const obtenerDiasConReservas = async (req, res) => {
 				fecha: fecha,
 			}
 		})
-		res.json({ fechas, cantidad: fechas.length })
+		const sinAdminNiCancelada = reservasDuplicadas.filter(
+			(res) => res.pacienteNombre !== 'admin' && res.estado !== 'Cancelada'
+		)
+		res.json({
+			fechas,
+			cantidad: fechas.length,
+			totalReservasMes: sinAdminNiCancelada.length,
+		})
 	} catch (error) {
 		res.status(500).json({ mensaje: 'Error al obtener las fechas' })
 	}

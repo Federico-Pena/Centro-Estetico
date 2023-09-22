@@ -11,7 +11,7 @@ export const usePaciente = (id) => {
 	const [loading, setLoading] = useState(false)
 	const [nombres, setNombres] = useState([])
 	const [pagina, setPagina] = useState(1)
-	const [totalPacientes, setTotalPacientes] = useState(null)
+	const [totalPacientes, setTotalPacientes] = useState(0)
 	const [totalPaginas, setTotalPaginas] = useState(1)
 	const { setMensaje } = useContext(MensajeToast)
 	const { accessToken } = useContext(UserContext)
@@ -104,15 +104,33 @@ export const usePaciente = (id) => {
 		setMensaje(mensaje)
 		setReservasPaciente(reservasGuardadas.concat(reserva).sort(ordenarPorFecha))
 	}
-	const editarPaciente = (res) => {
+
+	const editarPaciente = (nuevoUser) => {
+		const nuevoNombre = {
+			_id: nuevoUser._id,
+			nombre: nuevoUser.nombre,
+			foto: { secure_url: nuevoUser.foto.secure_url },
+			totalReservas: 0,
+		}
+		const filtrados = nombres.filter((n) => n._id !== nuevoUser._id)
+		console.log(nuevoUser)
+		console.log(filtrados)
+		setNombres([...filtrados, nuevoNombre])
+		const mensaje = `Paciente nuevo ${nuevoUser.nombre}.`
+		setMensaje(mensaje)
 		setPaciente(null)
-		const mensaje = `Paciente nuevo ${res.nombre}.`
-		setMensaje(mensaje)
-		setPaciente(res)
 	}
+
 	const eliminarPaciente = (res) => {
-		const { mensaje } = res
+		const { mensaje, userExistente } = res
 		setMensaje(mensaje)
+		console.log(res)
+		const nuevos = nombres
+			.filter((nombre) => nombre._id !== userExistente._id)
+			.sort((a, b) =>
+				a.nombre.toLowerCase() < b.nombre.toLowerCase() ? -1 : 1
+			)
+		setNombres(nuevos)
 	}
 	const eliminarReservaPaciente = (res) => {
 		const { reserva } = res
@@ -139,6 +157,7 @@ export const usePaciente = (id) => {
 				a.nombre.toLowerCase() < b.nombre.toLowerCase() ? -1 : 1
 			)
 		)
+		setTotalPacientes((prev) => prev + 1)
 		const mensaje = `Paciente nuevo ${nuevo.nombre}.`
 		setMensaje(mensaje)
 	}
