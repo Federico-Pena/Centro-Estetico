@@ -106,16 +106,21 @@ export const usePaciente = (id) => {
 	}
 
 	const editarPaciente = (nuevoUser) => {
+		const filtrado = nombres.find((n) => n._id === nuevoUser._id)
 		const nuevoNombre = {
 			_id: nuevoUser._id,
 			nombre: nuevoUser.nombre,
 			foto: { secure_url: nuevoUser.foto.secure_url },
-			totalReservas: 0,
+			totalReservas: filtrado.totalReservas,
 		}
 		const filtrados = nombres.filter((n) => n._id !== nuevoUser._id)
 		console.log(nuevoUser)
 		console.log(filtrados)
-		setNombres([...filtrados, nuevoNombre])
+		setNombres(
+			[...filtrados, nuevoNombre].sort((a, b) =>
+				a.nombre.toLowerCase() < b.nombre.toLowerCase() ? -1 : 1
+			)
+		)
 		const mensaje = `Paciente nuevo ${nuevoUser.nombre}.`
 		setMensaje(mensaje)
 		setPaciente(null)

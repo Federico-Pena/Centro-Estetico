@@ -72,7 +72,7 @@ export default function Pacientes() {
 				)}
 
 				{formulario && <FormularioPaciente nuevoPaciente={nuevoPaciente} />}
-				{nombres.length && (
+				{nombres.length > 0 && !paciente && (
 					<SelectNombre
 						setPagina={setPagina}
 						onChangeNombre={getPaciente}
