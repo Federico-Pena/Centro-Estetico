@@ -1,10 +1,11 @@
 export const calcularPromedioDeEdades = (arrayPacientes) => {
 	const edadNumber = arrayPacientes.filter(
-		(objeto) =>
-			typeof parseInt(objeto.edad) === 'number' && !isNaN(parseInt(objeto.edad))
+		(pacientes) =>
+			typeof parseInt(pacientes.edad) === 'number' &&
+			!isNaN(parseInt(pacientes.edad))
 	)
 	const sumaDeEdades = edadNumber.reduce(
-		(suma, objeto) => suma + objeto.edad,
+		(suma, pacientes) => suma + parseInt(pacientes.edad),
 		0
 	)
 	const promedioDeEdades = sumaDeEdades / edadNumber.length

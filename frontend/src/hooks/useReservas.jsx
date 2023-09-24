@@ -58,7 +58,7 @@ const useReservas = (calendario, dia) => {
 			setLoadingSemana(false)
 		}
 		calendario && getReservas()
-	}, [currentDate, accessToken, calendario, setError])
+	}, [currentDate, accessToken, calendario, setError, dia])
 
 	useEffect(() => {
 		const getReservas = async () => {

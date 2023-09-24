@@ -140,6 +140,7 @@ function Calendario() {
 						actualizarReservaEliminada={actualizarBorrada}
 						actualizarReservas={(res) => {
 							actualizarReservaNueva(res)
+							setReservadas([])
 						}}
 					/>
 				</div>

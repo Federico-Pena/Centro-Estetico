@@ -18,9 +18,9 @@ export const ContenedorReservas = ({
 	const [reserva, setReserva] = useState(false)
 	const [modal, setModal] = useState(false)
 	const { accessToken } = useContext(UserContext)
-	const handleEditar = (reserva) => {
+	const handleEditar = (res) => {
 		setForm(true)
-		setReserva(reserva)
+		setReserva(res)
 	}
 	const handleConfirmModal = async () => {
 		const url = `${apiEndPoint.reservas.eliminar}${reserva._id}`
@@ -52,7 +52,7 @@ export const ContenedorReservas = ({
 				nombre: reserva.pacienteNombre,
 			}}
 			actualizarReserva={(res) => {
-				setReserva(res.reserva)
+				setReserva(false)
 				actualizarReservas(res)
 			}}
 			setForm={() => {

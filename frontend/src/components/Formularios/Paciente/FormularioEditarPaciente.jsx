@@ -55,7 +55,7 @@ const FormularioEditarPaciente = ({
 			<BotónSecundario
 				tipo={'button'}
 				onClickFunction={cerrarForm}
-				texto={'Volver'}
+				texto={`🡸`}
 			/>
 			<h1>Editar Paciente</h1>
 			<div className='input'>

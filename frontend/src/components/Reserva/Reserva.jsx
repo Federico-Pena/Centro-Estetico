@@ -1,6 +1,5 @@
 import { useContext, useRef, useState } from 'react'
 import './Reserva.scss'
-import { ConfirmationModal } from '../ConfirmationModal/ConfirmationModal'
 import { BotónSecundario } from '../Botones/BotonSecundario'
 import { formatFechaParaUser } from '../../helpers/Formato/formatFechaParaUser'
 import { apiEndPoint } from '../../services/apiConfig'
@@ -33,7 +32,6 @@ export const Reserva = ({
 		}
 		await fetchData(url, options, (datos) => {
 			actualizarReserva(datos)
-			setReserva(datos.reserva)
 			setMensaje(datos.mensaje)
 		})
 	}
