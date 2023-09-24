@@ -4,15 +4,20 @@
 	padding: 0 1rem;
 	max-width: 500px;
 	width: 100%;
+	gap: 1rem;
 	.pagination-buttons {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
 		padding: 1rem;
+		border-radius: 0.5rem;
 		gap: 1rem;
+		height: 100%;
+		border: 1px solid #ccc;
 		.pagination-buttons-Anterior,
 		.pagination-buttons-Siguiente {
 			width: 50%;
+			font-size: 14px;
 		}
 	}
 	.encabezado {

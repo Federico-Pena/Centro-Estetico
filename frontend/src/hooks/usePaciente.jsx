@@ -11,7 +11,6 @@ export const usePaciente = (id) => {
 	const [loading, setLoading] = useState(false)
 	const [nombres, setNombres] = useState([])
 	const [pagina, setPagina] = useState(1)
-	const [totalPacientes, setTotalPacientes] = useState(0)
 	const [totalPaginas, setTotalPaginas] = useState(1)
 	const { setMensaje } = useContext(MensajeToast)
 	const { accessToken } = useContext(UserContext)
@@ -27,8 +26,7 @@ export const usePaciente = (id) => {
 			}
 			const url = `${apiEndPoint.paciente.nombres}/${pagina}`
 			const res = await fetch(url, options)
-			const { pacientes, page, totalPages, totalPacientes } = await res.json()
-			setTotalPacientes(totalPacientes)
+			const { pacientes, page, totalPages } = await res.json()
 			setTotalPaginas(totalPages)
 			setPagina(page)
 			if (pacientes.length) {
@@ -162,7 +160,6 @@ export const usePaciente = (id) => {
 				a.nombre.toLowerCase() < b.nombre.toLowerCase() ? -1 : 1
 			)
 		)
-		setTotalPacientes((prev) => prev + 1)
 		const mensaje = `Paciente nuevo ${nuevo.nombre}.`
 		setMensaje(mensaje)
 	}
@@ -183,6 +180,5 @@ export const usePaciente = (id) => {
 		pagina,
 		setPagina,
 		totalPaginas,
-		totalPacientes,
 	}
 }

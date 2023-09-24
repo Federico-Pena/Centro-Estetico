@@ -7,9 +7,11 @@
 	width: 100%;
 	overflow: auto;
 	background-color: #fff;
-	z-index: 2;
 	padding: 2rem 0;
 	position: relative;
+	.btnPrimario {
+		width: fit-content;
+	}
 	.btnVolverPacientesPage {
 		position: absolute;
 		top: 1rem;

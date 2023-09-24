@@ -82,7 +82,7 @@ const pacienteSchema = new Schema(
 				'Masaje Descontracturante',
 				'Masaje Relajante',
 				'Masaje Prenatal',
-				'Barras De access',
+				'Barras De Access',
 				'',
 			],
 			default: 'Masaje Estético',

@@ -58,6 +58,42 @@ const Navbar = () => {
 								Servicios
 							</Link>
 						</li>
+
+						<li>
+							<Link onClick={setMenuState} to='/SobreMi'>
+								Sobre mi
+							</Link>
+						</li>
+						<li>
+							<Link onClick={setMenuState} to='/Contacto'>
+								Contacto
+							</Link>
+						</li>
+						<li>
+							<Link onClick={setMenuState} to='/calendario'>
+								Calendario
+							</Link>
+						</li>
+						{/* 	{isAllowedAccess && (
+							<li>
+								<Link onClick={setMenuState} to='/calendario'>
+									Calendario
+								</Link>
+							</li>
+						)} */}
+
+						<li>
+							<Link onClick={setMenuState} to='/estadisticas'>
+								Estadísticas
+							</Link>
+						</li>
+						{/* {isAllowedAccess && (
+							<li>
+								<Link onClick={setMenuState} to='/estadisticas'>
+									Estadísticas
+								</Link>
+							</li>
+						)} */}
 						<li>
 							<Link onClick={setMenuState} to='/pacientes'>
 								Pacientes
@@ -82,28 +118,7 @@ const Navbar = () => {
 								</Link>
 							</li>
 						)} */}
-						<li>
-							<Link onClick={setMenuState} to='/calendario'>
-								Calendario
-							</Link>
-						</li>
-						{/* 	{isAllowedAccess && (
-							<li>
-								<Link onClick={setMenuState} to='/calendario'>
-									Calendario
-								</Link>
-							</li>
-						)} */}
-						<li>
-							<Link onClick={setMenuState} to='/SobreMi'>
-								Sobre mi
-							</Link>
-						</li>
-						<li>
-							<Link onClick={setMenuState} to='/Contacto'>
-								Contacto
-							</Link>
-						</li>
+
 						{isAuthenticated ? (
 							<li className='sesión'>
 								<figure>

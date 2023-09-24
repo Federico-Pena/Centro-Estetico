@@ -24,4 +24,7 @@ export const apiEndPoint = {
 		fechasHorasReservadasDeUndia: `${baseUrl}/api/reservas/dia/horas/`,
 		fechasHorasReservadasDeLaSemana: `${baseUrl}/api/publica/reservas/semana/`,
 	},
+	estadisticas: {
+		estadisticas: `${baseUrl}/api/estadisticas/`,
+	},
 }

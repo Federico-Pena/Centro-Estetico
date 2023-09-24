@@ -250,7 +250,7 @@ const FormularioEditarPaciente = ({
 					</option>
 					<option value='Masaje Relajante'>Masaje Relajante</option>
 					<option value='Masaje Prenatal'>Masaje Prenatal</option>
-					<option value='Barras De access'>Barras De Access</option>
+					<option value='Barras De Access'>Barras De Access</option>
 				</select>
 			</div>
 

@@ -20,7 +20,6 @@ export default function Pacientes() {
 		editarPaciente,
 		setPagina,
 		totalPaginas,
-		totalPacientes,
 		eliminarPaciente,
 	} = usePaciente()
 
@@ -79,7 +78,6 @@ export default function Pacientes() {
 						totalPaginas={totalPaginas}
 						nombres={nombres}
 						pagina={pagina}
-						totalPacientes={totalPacientes}
 					/>
 				)}
 			</main>

@@ -41,9 +41,11 @@
 		ul {
 			width: 100%;
 			padding: 1rem;
+			display: flex;
+			align-items: center;
+			justify-content: space-evenly;
 			li {
 				display: inline-block;
-				margin: 0px 30px;
 				a {
 					transition: color 0.5s ease;
 					&:hover {

@@ -2,20 +2,21 @@ import { Email, Instagram, Whatsapp } from '../Icons/Icons'
 import './Footer.scss'
 import { Link } from 'react-router-dom'
 export const Footer = () => {
-	const email = import.meta.env.VITE_IS_ALLOWED_ACCESS_2
+	const email = import.meta.env.VITE_IS_ALLOWED_ACCESS_1
+
 	return (
 		<footer>
 			<div className='footer'>
 				<div className='row logos'>
 					<Link
 						title='Ir a WhatsApp'
-						to='https://wa.link/i3g77o'
+						to={`https://wa.link/7nzofi`}
 						target='_blank'>
 						<Whatsapp />
 					</Link>
 					<Link
 						title='Ir a Instagram'
-						to='https://www.instagram.com/masajista.natalia.pena/'
+						to='https://www.instagram.com/'
 						target='_blank'>
 						<Instagram />
 					</Link>
@@ -46,8 +47,8 @@ export const Footer = () => {
 
 				<div className='row'>
 					<p>
-						Masajista Natalia Pena Copyright © 2023 Masajista Natalia Pena - All
-						rights reserved || Designed By:{' '}
+						Centro Estético Copyright © 2023 Centro Estético - All rights
+						reserved || Designed By:{' '}
 						<Link
 							title='Federico Pena'
 							to={'https://portfolio-federico-pena.vercel.app/'}

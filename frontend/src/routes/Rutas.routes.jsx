@@ -11,7 +11,7 @@ const Calendario = lazy(() => import('../pages/Calendario/Calendario'))
 const Servicios = lazy(() => import('../pages/Servicios/Servicios'))
 const Pacientes = lazy(() => import('../pages/Pacientes/PacientesPage'))
 const Reservas = lazy(() => import('../pages/Reservas/Reservas'))
-
+const Estadisticas = lazy(() => import('../pages/Estadisticas/Estadisticas'))
 const Rutas = () => {
 	//const { isAllowedAccess } = useContext(UserContext)
 	const { isLoading } = useAuth0()
@@ -77,6 +77,15 @@ const Rutas = () => {
 					<Suspense fallback={<Loader />}>
 						{/* {isAllowedAccess ? <Calendario /> : <Home />} */}
 						<Calendario />
+					</Suspense>
+				}
+			/>
+			<Route
+				path='/estadisticas'
+				element={
+					<Suspense fallback={<Loader />}>
+						{/* 						{isAllowedAccess ? <Reservas /> : <Home />} */}
+						<Estadisticas />
 					</Suspense>
 				}
 			/>

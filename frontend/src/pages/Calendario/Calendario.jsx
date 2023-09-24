@@ -57,12 +57,14 @@ function Calendario() {
 		const [fecha, hora] = id.split(' ')
 		const desdeCompararFechas = compararFechas(new Date(id), reservasSemanales)
 		const comprobar = comprobarHoras(e, id.split(' ')[0], reservasSemanales)
-
+		console.log(comprobar)
 		if (horaSeleccionada.className.includes(ESTADOS_RESERVAS.cancelada)) {
 			setReservadas(desdeCompararFechas.reservadas)
 			setOpenFormulario(true)
 			return
 		}
+		console.log(desdeCompararFechas)
+
 		if (comprobar === false) {
 			setReservadas(desdeCompararFechas.reservadas)
 			if (desdeCompararFechas.reservadas.length === 0) {
@@ -130,7 +132,7 @@ function Calendario() {
 		<>
 			<Notificacion />
 			{loading && <Loader />}
-			{reservadas.length > 0 ? (
+			{reservadas?.length > 0 ? (
 				<div className={reservadas.length ? `divReservaCalendario` : ''}>
 					<ContenedorReservas
 						cerrarReserva={cerrarReserva}

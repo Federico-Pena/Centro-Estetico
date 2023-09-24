@@ -1,6 +1,6 @@
 import './FechasYHoras.scss'
 import { useContext, useEffect, useState } from 'react'
-import { HOY, HOY_STRING_BIEN } from '../../constantes'
+import { HOY, HOY_STRING_BIEN, MESES } from '../../constantes'
 import { MensajeToast } from '../../context/mensajeContext'
 import { comprobarHoras } from '../../helpers/FechasHoras/comprobarHoras'
 import { formatFechaIso } from '../../helpers/Formato/formarFechaIso'
@@ -11,20 +11,7 @@ import { diasSemanaConHoras } from '../../helpers/FechasHoras/diasSemanaConHoras
 import { UserContext } from '../../context/userContext'
 import { fechasConReservas } from './fechasConReservas'
 import { TransitionNumber } from '../TransitionNumber/TransitionNumber'
-const meses = [
-	'Enero',
-	'Febrero',
-	'Marzo',
-	'Abril',
-	'Mayo',
-	'Junio',
-	'Julio',
-	'Agosto',
-	'Septiembre',
-	'Octubre',
-	'Noviembre',
-	'Diciembre',
-]
+
 export const FechasYHoras = ({ setDiaPadre, reservas, actualizarReservas }) => {
 	const [dia, setDia] = useState(HOY_STRING_BIEN.split('T')[0])
 	const [mes, setMes] = useState(HOY_STRING_BIEN.split('-')[1])
@@ -42,6 +29,8 @@ export const FechasYHoras = ({ setDiaPadre, reservas, actualizarReservas }) => {
 			setLoading(true)
 			const data = await fechasConReservas(accessToken, mes)
 			setCantidadFechas(data.cantidad)
+			console.log(data)
+
 			setTotalReservasMes(data.totalReservasMes)
 			if (data.cantidad > 0) {
 				setFechas(data.fechas)
@@ -76,7 +65,7 @@ export const FechasYHoras = ({ setDiaPadre, reservas, actualizarReservas }) => {
 
 	function obtenerNombreMes(numeroMes) {
 		if (numeroMes >= 1 && numeroMes <= 12) {
-			return meses[numeroMes - 1]
+			return MESES[numeroMes - 1]
 		} else {
 			return 'Mes no válido'
 		}
@@ -108,11 +97,17 @@ export const FechasYHoras = ({ setDiaPadre, reservas, actualizarReservas }) => {
 						<TransitionNumber from={0} to={cantidadFechas} duration={500} />
 					</h3>
 					<select value={mes} onChange={(e) => setMes(e.target.value)}>
-						{meses.map((mes, i) => (
-							<option key={mes} value={i + 1}>
-								{mes}
-							</option>
-						))}
+						<option key={mes} value={mes}>
+							{`${obtenerNombreMes(mes)}`}
+						</option>
+						{MESES.map(
+							(m, i) =>
+								m !== `${obtenerNombreMes(mes)}` && (
+									<option key={m} value={i + 1}>
+										{m}
+									</option>
+								)
+						)}
 					</select>
 					<h3>
 						Reservas en {`${obtenerNombreMes(mes)}`}{' '}
@@ -126,6 +121,7 @@ export const FechasYHoras = ({ setDiaPadre, reservas, actualizarReservas }) => {
 						const fecha = e.target.value.split('T')[0]
 						setDiaPadre(fecha)
 						setDia(fecha)
+						console.log(fecha)
 					}}>
 					<option value={formatFechaIso(HOY)}>
 						Hoy {formatFechaParaUser({ fecha: formatFechaIso(HOY) })}
