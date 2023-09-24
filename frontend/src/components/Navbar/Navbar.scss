@@ -1,12 +1,9 @@
-header {
+.header {
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	width: 100%;
 	background-color: var(--color-violeta);
-	transition: all 0.3s ease;
-	position: sticky;
-	top: 0;
 	z-index: 3;
 	.headerdiv {
 		display: flex;

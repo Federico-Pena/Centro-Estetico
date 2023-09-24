@@ -10,8 +10,7 @@
 	box-sizing: border-box;
 	font-family: system-ui, sans-serif;
 }
-main {
-}
+
 h1,
 h2,
 h3,
@@ -33,7 +32,6 @@ li {
 ::-webkit-inner-spin-button {
 	-webkit-appearance: none;
 }
-
 body #root {
 	display: flex;
 	flex-direction: column;

@@ -29,7 +29,7 @@ const Navbar = () => {
 		window.scrollTo(0, 0)
 	}
 	return (
-		<header>
+		<header className='header'>
 			<div className='headerdiv'>
 				<div
 					onClick={() => (openMenu ? setMenuState() : setOpenMenu(false))}
