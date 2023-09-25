@@ -32,11 +32,9 @@ export const PacienteEstadisticas = ({
 						</strong>
 					</li>
 				</ul>
-				{tratamientosPacientes && (
-					<section className='pacientesPorcentaje'>
-						<PorcentajesComponent datos={tratamientosPacientes} />
-					</section>
-				)}
+				<section className='pacientesPorcentaje'>
+					<PorcentajesComponent datos={tratamientosPacientes} />
+				</section>
 			</section>
 		)
 	)
