@@ -8,6 +8,7 @@ import { apiEndPoint } from '../../services/apiConfig'
 import { UserContext } from '../../context/userContext'
 import { PacienteEstadisticas } from './PacienteEstadisticas'
 import { PorcentajesComponent } from '../../components/PorcentajesComponent/PorcentajesComponent'
+import { Loader } from '../../components/Loader/Loader'
 const estadoInicialestadisticasReservas = {
 	estadosMes: {
 		reservasCanceladas: 0,
@@ -41,6 +42,7 @@ const Estadisticas = () => {
 	)
 	const [tratamientosPacientes, setTratamientosPacientes] = useState({})
 	const [motivoReservas, setMotivoReservas] = useState({})
+	const [loading, setLoading] = useState(false)
 	const { accessToken } = useContext(UserContext)
 
 	useEffect(() => {
@@ -52,7 +54,9 @@ const Estadisticas = () => {
 			},
 		}
 		const getStatics = async () => {
+			setLoading(true)
 			await fetchData(url, options, datos)
+			setLoading(false)
 		}
 		getStatics()
 	}, [accessToken, mes])
@@ -64,11 +68,11 @@ const Estadisticas = () => {
 		setEstadisticasPacientes(estadisticasPaciente)
 		setTratamientosPacientes(estadisticasPaciente.tratamientosPacientes)
 		setMotivoReservas(reservaMotivo)
-		console.log(res)
 	}
 
 	return (
 		<main className='mainEstadisticas'>
+			{loading && <Loader />}
 			<PacienteEstadisticas
 				estadisticasPacientes={estadisticasPacientes}
 				tratamientosPacientes={tratamientosPacientes}
