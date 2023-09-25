@@ -72,7 +72,6 @@ const Estadisticas = () => {
 
 	return (
 		<main className='mainEstadisticas'>
-			{loading && <Loader />}
 			<PacienteEstadisticas
 				estadisticasPacientes={estadisticasPacientes}
 				tratamientosPacientes={tratamientosPacientes}
