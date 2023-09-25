@@ -4,18 +4,20 @@ import { Paciente } from '../../models/PacienteSchema.js'
 
 export const estadisticasPacientes = async (req, res, next) => {
 	try {
-		const totalPacientes = await Paciente.countDocuments()
-		const pacientes = await Paciente.find({})
-		const tratamientosPacientes = contadorTratamientos(pacientes)
-		const promedioDeEdades = calcularPromedioDeEdades(pacientes)
-
+		const [totalPacientes, pacientes] = await Promise.all([
+			Paciente.countDocuments({ nombre: { $ne: 'admin' } }),
+			Paciente.find({ nombre: { $ne: 'admin' } }),
+		])
+		const [tratamientosPacientes, promedioDeEdades] = await Promise.all([
+			contadorTratamientos(pacientes),
+			calcularPromedioDeEdades(pacientes),
+		])
 		const estadisticas = {
 			totalPacientes,
 			tratamientosPacientes,
 			promedioDeEdades,
 		}
 		req.estadisticas = estadisticas
-
 		next()
 	} catch (error) {
 		console.log(error)

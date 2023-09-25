@@ -6,6 +6,22 @@ import './Estadisticas.scss'
 import { fetchData } from '../../hooks/fetchData'
 import { apiEndPoint } from '../../services/apiConfig'
 import { UserContext } from '../../context/userContext'
+import { PacienteEstadisticas } from './PacienteEstadisticas'
+import { PorcentajesComponent } from '../../components/PorcentajesComponent/PorcentajesComponent'
+const estadoInicialestadisticasReservas = {
+	estadosMes: {
+		reservasCanceladas: 0,
+		reservasPendientes: 0,
+		reservasTerminadas: 0,
+		reservasTodas: 0,
+	},
+	estadosTodas: {
+		reservasCanceladas: 0,
+		reservasPendientes: 0,
+		reservasTerminadas: 0,
+		reservasTodas: 0,
+	},
+}
 function obtenerNombreMes(numeroMes) {
 	if (numeroMes >= 1 && numeroMes <= 12) {
 		return MESES[numeroMes - 1]
@@ -13,15 +29,22 @@ function obtenerNombreMes(numeroMes) {
 		return 'Mes no válido'
 	}
 }
+
 const Estadisticas = () => {
 	const [mes, setMes] = useState(HOY_STRING_BIEN.split('-')[1])
-	const [cantidadFechas, setCantidadFechas] = useState(0)
-	const [totalReservasMes, setTotalReservasMes] = useState(0)
-	const [totalPacientes, setTotalPacientes] = useState(0)
+	const [estadisticasPacientes, setEstadisticasPacientes] = useState({
+		totalPacientes: 0,
+		promedioDeEdades: 0,
+	})
+	const [estadisticasReservas, setEstadisticasReservas] = useState(
+		estadoInicialestadisticasReservas
+	)
+	const [tratamientosPacientes, setTratamientosPacientes] = useState({})
+	const [motivoReservas, setMotivoReservas] = useState({})
 	const { accessToken } = useContext(UserContext)
 
 	useEffect(() => {
-		const url = `${apiEndPoint.estadisticas.estadisticas}${'09'}`
+		const url = `${apiEndPoint.estadisticas.estadisticas}${mes}`
 		const options = {
 			headers: {
 				'Content-Type': 'application/json',
@@ -29,41 +52,119 @@ const Estadisticas = () => {
 			},
 		}
 		const getStatics = async () => {
-			const res = await fetchData(url, options, datos)
+			await fetchData(url, options, datos)
 		}
 		getStatics()
-	}, [accessToken])
+	}, [accessToken, mes])
 
 	const datos = (res) => {
+		const { estadisticasPaciente, estadosMes, estadosTodas, reservaMotivo } =
+			res
+		setEstadisticasReservas({ estadosMes, estadosTodas })
+		setEstadisticasPacientes(estadisticasPaciente)
+		setTratamientosPacientes(estadisticasPaciente.tratamientosPacientes)
+		setMotivoReservas(reservaMotivo)
 		console.log(res)
 	}
+
 	return (
 		<main className='mainEstadisticas'>
-			<div className='select-container'>
-				<h3>
-					Fechas en {`${obtenerNombreMes(mes)}`}{' '}
-					<TransitionNumber from={0} to={cantidadFechas} duration={500} />
-				</h3>
-				<select value={mes} onChange={(e) => setMes(e.target.value)}>
-					<option></option>
-					{MESES.map((mes, i) => (
-						<option key={mes} value={i + 1}>
-							{mes}
+			<PacienteEstadisticas
+				estadisticasPacientes={estadisticasPacientes}
+				tratamientosPacientes={tratamientosPacientes}
+			/>
+			<section className='reservasEstadisticas'>
+				<h2>Datos de Reservas</h2>
+				<article className='reservasEstadisticasArticle'>
+					<h3>Reservas del mes</h3>
+					<select
+						className='selectMeses'
+						value={mes}
+						onChange={(e) => setMes(e.target.value)}>
+						<option key={mes} value={mes}>
+							{`${obtenerNombreMes(mes)}`}
 						</option>
-					))}
-				</select>
-				<h3>
-					Reservas en {`${obtenerNombreMes(mes)}`}{' '}
-					<TransitionNumber from={0} to={totalReservasMes} duration={500} />
-				</h3>
-			</div>
-			<div className='encabezado'>
-				<strong>
-					Pacientes:{' '}
-					<TransitionNumber from={0} to={totalPacientes} duration={2000} />
-				</strong>
-			</div>
+						{MESES.map(
+							(m, i) =>
+								m !== `${obtenerNombreMes(mes)}` && (
+									<option key={m} value={i + 1}>
+										{m}
+									</option>
+								)
+						)}
+					</select>
+					<ul className='ulReservasDatos'>
+						<li>
+							Reservas de {`${obtenerNombreMes(mes)}`}
+							<strong>
+								<TransitionNumber
+									from={0}
+									to={estadisticasReservas.estadosMes.reservasTodas}
+									duration={500}
+								/>
+							</strong>
+						</li>
+						<ListaDatos datos={estadisticasReservas.estadosMes} />
+					</ul>
+				</article>
+
+				<article className='reservasEstadisticasArticle'>
+					<h3>Reservas Totales</h3>
+					<ul className='ulReservasDatos'>
+						<li>
+							Reservas Totales
+							<strong>
+								<TransitionNumber
+									from={0}
+									to={estadisticasReservas.estadosTodas.reservasTodas}
+									duration={500}
+								/>
+							</strong>
+						</li>
+						<ListaDatos datos={estadisticasReservas.estadosTodas} />
+					</ul>
+				</article>
+
+				<PorcentajesComponent datos={motivoReservas} />
+			</section>
 		</main>
 	)
 }
 export default Estadisticas
+
+const ListaDatos = ({ datos }) => {
+	return (
+		<>
+			<li className='Pago'>
+				Reservas Terminadas
+				<strong>
+					<TransitionNumber
+						from={0}
+						to={datos.reservasTerminadas}
+						duration={500}
+					/>
+				</strong>
+			</li>
+			<li className='Pendiente'>
+				Reservas Pendientes
+				<strong>
+					<TransitionNumber
+						from={0}
+						to={datos.reservasPendientes}
+						duration={500}
+					/>
+				</strong>
+			</li>
+			<li className='Cancelada'>
+				Reservas Canceladas
+				<strong>
+					<TransitionNumber
+						from={0}
+						to={datos.reservasCanceladas}
+						duration={500}
+					/>
+				</strong>
+			</li>
+		</>
+	)
+}

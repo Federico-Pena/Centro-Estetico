@@ -38,15 +38,42 @@ export function contadorMotivos(arrayReservas) {
 			}
 		)
 		return {
-			barrasDeAccess: counts.barrasDeAccess,
-			cérvicoCraneal: counts.cérvicoCraneal,
-			drenajeLinfático: counts.drenajeLinfático,
-			exfoliaciónCorporal: counts.exfoliaciónCorporal,
-			masajeDescontracturante: counts.masajeDescontracturante,
-			masajeEstético: counts.masajeEstético,
-			masajePrenatal: counts.masajePrenatal,
-			masajeRelajante: counts.masajeRelajante,
-			piedrasCalientes: counts.piedrasCalientes,
+			barrasDeAccess: {
+				tratamiento: TRATAMIENTOS.barrasDeAccess,
+				cantidad: counts.barrasDeAccess,
+			},
+			cérvicoCraneal: {
+				tratamiento: TRATAMIENTOS.cérvicoCraneal,
+				cantidad: counts.cérvicoCraneal,
+			},
+			drenajeLinfático: {
+				tratamiento: TRATAMIENTOS.drenajeLinfático,
+				cantidad: counts.drenajeLinfático,
+			},
+			exfoliaciónCorporal: {
+				tratamiento: TRATAMIENTOS.exfoliaciónCorporal,
+				cantidad: counts.exfoliaciónCorporal,
+			},
+			masajeDescontracturante: {
+				tratamiento: TRATAMIENTOS.masajeDescontracturante,
+				cantidad: counts.masajeDescontracturante,
+			},
+			masajeEstético: {
+				tratamiento: TRATAMIENTOS.masajeEstético,
+				cantidad: counts.masajeEstético,
+			},
+			masajePrenatal: {
+				tratamiento: TRATAMIENTOS.masajePrenatal,
+				cantidad: counts.masajePrenatal,
+			},
+			masajeRelajante: {
+				tratamiento: TRATAMIENTOS.masajeRelajante,
+				cantidad: counts.masajeRelajante,
+			},
+			piedrasCalientes: {
+				tratamiento: TRATAMIENTOS.piedrasCalientes,
+				cantidad: counts.piedrasCalientes,
+			},
 		}
 	} else {
 		return {

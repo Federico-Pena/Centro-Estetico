@@ -1,1 +1,0 @@
-import{j as o}from"./index-a1ab9b3b.js";const e=({onClickFunction:i,texto:r,tipo:n,className:t})=>o.jsx("button",{type:n||null,title:typeof r=="string"?r:"",className:`btnPrimario ${t||""}`,onClick:i,children:r});export{e as B};

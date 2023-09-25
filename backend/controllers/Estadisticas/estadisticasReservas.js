@@ -24,15 +24,15 @@ export const estadisticasReservas = async (req, res) => {
 		const mesFin = mes === '12' ? '01' : (parseInt(mes) + 1).toString()
 		const añoFin = mes === '12' ? (año + 1).toString() : año.toString()
 		const [reservas, reservasMes] = await Promise.all([
-			Reserva.find({}),
+			Reserva.find({ pacienteNombre: { $ne: 'admin' } }),
 			Reserva.find({
 				fecha: {
 					$gte: new Date(`${año}-${mesInicio}-01`),
 					$lt: new Date(`${añoFin}-${mesFin}-01`),
 				},
+				pacienteNombre: { $ne: 'admin' },
 			}).select('estado'),
 		])
-
 		const estadisticasPaciente = req.estadisticas
 		const estadosTodas = contadorEstados(reservas)
 		const estadosMes = contadorEstados(reservasMes)
@@ -43,7 +43,6 @@ export const estadisticasReservas = async (req, res) => {
 			estadosMes,
 			reservaMotivo,
 			estadisticasPaciente,
-			reservas,
 		})
 	} catch (error) {
 		res
