@@ -29,6 +29,10 @@ export const agregarPaciente = async (req, res) => {
 	try {
 		let resultCloudinary = null
 		let fotoNueva = null
+		const guardado = await Paciente.find({ nombre })
+		if (guardado) {
+			return res.status(500).json({ mensaje: 'El nombre ya existe' })
+		}
 		if (req.file && req.file.buffer) {
 			try {
 				resultCloudinary = await guardarEnCloudinary(req.file.buffer)

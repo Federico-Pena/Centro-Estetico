@@ -83,7 +83,9 @@ export const Reserva = ({
 								</li>
 								<li>
 									Valor:
-									<strong className='strongEstado'>$ {reserva.precio}</strong>
+									<strong className='strongEstado'>
+										$ {reserva.precio.toFixed(2)}
+									</strong>
 								</li>
 							</>
 						)}

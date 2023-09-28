@@ -8,6 +8,7 @@ import { apiEndPoint } from '../../../services/apiConfig'
 import { fetchData } from '../../../hooks/fetchData'
 import { UserContext } from '../../../context/userContext'
 import { SelectTratamiento } from '../../SelectTratamiento/SelectTratamiento'
+import { useTratamiento } from '../../../hooks/useTratamiento'
 
 const FormularioEditarPaciente = ({
 	paciente,
@@ -18,6 +19,7 @@ const FormularioEditarPaciente = ({
 	const [loading, setLoading] = useState(false)
 	const { accessToken } = useContext(UserContext)
 	const formRef = useRef(null)
+	const { tratamientos } = useTratamiento()
 
 	useEffect(() => {
 		let options = {
@@ -235,8 +237,12 @@ const FormularioEditarPaciente = ({
 				<input type='text' name='implantes' defaultValue={paciente.implantes} />
 			</div>
 
-			<SelectTratamiento className={'inputSelect'} name={'tratamiento'} />
-
+			<SelectTratamiento
+				reserva={paciente}
+				className={'inputSelect'}
+				tratamientos={tratamientos}
+				name={'tratamiento'}
+			/>
 			<BotónPrimario
 				tipo={'submit'}
 				className={loading ? 'submitEditarAdmin' : ''}

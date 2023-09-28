@@ -16,12 +16,15 @@ export default function Pacientes() {
 		setFormulario(!formulario)
 	}
 	const nuevoPaciente = (nuevo) => {
-		if (nuevo) {
+		if (!nuevo.mensaje) {
 			setFormulario(false)
 			const mensaje = `Nuevo paciente ${nuevo.nombre}
 			`
 			setMensaje(mensaje)
 			setPacientes((prev) => [...prev, nuevo])
+		} else {
+			const mensaje = nuevo.mensaje
+			setMensaje(mensaje)
 		}
 	}
 

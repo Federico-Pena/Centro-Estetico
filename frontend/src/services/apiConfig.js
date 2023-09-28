@@ -28,4 +28,5 @@ export const apiEndPoint = {
 	estadisticas: {
 		estadisticas: `${baseUrl}/api/estadisticas/`,
 	},
+	tratamientos: { todos: `${baseUrl}/api/tratamiento/obtener` },
 }

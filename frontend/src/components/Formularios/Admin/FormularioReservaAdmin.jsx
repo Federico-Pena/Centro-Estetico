@@ -20,6 +20,7 @@ import { compararFechas } from '../../../helpers/FechasHoras/compararFechas'
 import { useDiasYHoras } from '../../../hooks/useDiasYHoras'
 import { ListaHoras } from '../../ListaHoras/ListaHoras'
 import { SelectTratamiento } from '../../SelectTratamiento/SelectTratamiento'
+import { useTratamiento } from '../../../hooks/useTratamiento'
 export const FormularioReservaAdmin = ({
 	reserva,
 	setForm,
@@ -44,7 +45,7 @@ export const FormularioReservaAdmin = ({
 	const { nombres, pagina, setPagina, totalPacientes, totalPaginas } =
 		usePaciente()
 	const { diaConHoras, horas } = useDiasYHoras(dia, horaForm)
-
+	const { tratamientos } = useTratamiento()
 	useEffect(() => {
 		formRef.current.scrollIntoView({
 			behavior: 'smooth',
@@ -237,6 +238,7 @@ export const FormularioReservaAdmin = ({
 				<SelectTratamiento
 					className={'input'}
 					reserva={reserva}
+					tratamientos={tratamientos}
 					setMotivo={setMotivo}
 					name={'tratamiento'}
 				/>
@@ -244,31 +246,21 @@ export const FormularioReservaAdmin = ({
 					<div className='input'>
 						<label htmlFor='sesiones'>Sesiones</label>
 						<select name='sesiones' required>
-							{motivo === 'Admin' && (
-								<option value='Admin'>Admin (sin costo)</option>
-							)}
-							<option value='1 sesion'>1 sesion</option>
-							{motivo === TRATAMIENTOS.masajeDescontracturante && (
-								<option value='4 sesiones (cuerpo completo)'>
-									4 sesiones (cuerpo completo)
+							{reserva && reserva.tratamiento && (
+								<option defaultValue={reserva.tratamiento.descripcionSesion}>
+									{reserva.tratamiento.descripcionSesion}
 								</option>
 							)}
-							{motivo === TRATAMIENTOS.masajeEstético && (
-								<>
-									<option value='4 sesiones (una zona a elección)'>
-										4 sesiones (una zona a elección)
-									</option>
-									<option value='8 sesiones (una zona a elección)'>
-										8 sesiones (una zona a elección)
-									</option>
-									<option value='8 sesiones (dos zonas a elección)'>
-										8 sesiones (dos zonas a elección)
-									</option>
-									<option value='8 sesiones (cuerpo completo)'>
-										8 sesiones (cuerpo completo)
-									</option>
-								</>
-							)}
+							{tratamientos.length > 0 &&
+								tratamientos
+									.filter((trata) => trata.nombre === motivo)[0]
+									.sesiones.map((t) => {
+										return (
+											<option key={t._id} defaultValue={t.descripcion}>
+												{t.descripcion}
+											</option>
+										)
+									})}
 						</select>
 					</div>
 				)}

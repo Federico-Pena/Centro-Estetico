@@ -5,7 +5,6 @@ import { MensajeToast } from '../context/mensajeContext'
 import { ordenarPorFecha } from '../helpers/FechasHoras/ordenarPorFecha'
 import { formatFechaParaUser } from '../helpers/Formato/formatFechaParaUser'
 import { formatHoraUser } from '../helpers/Formato/formatHoraUser'
-import { fetchData } from './fetchData'
 
 export const usePaciente = (id) => {
 	const [reservasPaciente, setReservasPaciente] = useState([])

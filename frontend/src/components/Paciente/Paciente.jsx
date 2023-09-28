@@ -52,10 +52,16 @@ export const Paciente = ({ paciente, setPacientes }) => {
 		setShowModal(false)
 	}
 	const actualizarPacientes = (nuevoUser) => {
-		const mensaje = `Paciente nuevo ${nuevoUser.nombre}.`
-		setMensaje(mensaje)
-		setNuevoPaciente(nuevoUser)
-		setOpenForm(false)
+		console.log(nuevoUser)
+		if (!nuevoUser.mensaje) {
+			const mensaje = `Paciente nuevo ${nuevoUser.nombre}.`
+			setMensaje(mensaje)
+			setNuevoPaciente(nuevoUser)
+			setOpenForm(false)
+		} else {
+			const mensaje = nuevoUser.mensaje
+			setMensaje(mensaje)
+		}
 	}
 	const abrirForm = () => {
 		setOpenForm(true)

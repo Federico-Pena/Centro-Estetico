@@ -97,6 +97,9 @@ export const editarPaciente = async (req, res) => {
 		let nuevoPaciente = await Paciente.findOne(paciente._id)
 		res.status(200).json(nuevoPaciente)
 	} catch (error) {
+		if (error.code === 11000) {
+			return res.status(500).json({ mensaje: 'El nombre ya existe', error })
+		}
 		return res
 			.status(500)
 			.json({ mensaje: 'Error al editar el paciente', error: error.message })

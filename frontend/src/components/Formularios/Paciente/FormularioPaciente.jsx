@@ -9,12 +9,14 @@ import { apiEndPoint } from '../../../services/apiConfig'
 import { fetchData } from '../../../hooks/fetchData'
 import { UserContext } from '../../../context/userContext'
 import { SelectTratamiento } from '../../SelectTratamiento/SelectTratamiento'
+import { useTratamiento } from '../../../hooks/useTratamiento'
 
 const FormularioPaciente = ({ nuevoPaciente }) => {
 	const [foto, setFoto] = useState(null)
 	const { loading } = usePaciente()
 	const { setMensaje } = useContext(MensajeToast)
 	const { accessToken } = useContext(UserContext)
+	const { tratamientos } = useTratamiento()
 
 	const submitAgregar = async (e) => {
 		e.preventDefault()
@@ -199,7 +201,11 @@ const FormularioPaciente = ({ nuevoPaciente }) => {
 					<label htmlFor='implantes'>Implantes</label>
 					<input type='text' id='implantes' name='implantes' />
 				</div>
-				<SelectTratamiento className={'inputSelect'} name={'tratamiento'} />
+				<SelectTratamiento
+					className={'inputSelect'}
+					tratamientos={tratamientos}
+					name={'tratamiento'}
+				/>
 				<BotónPrimario texto={loading ? <LoaderChico /> : 'Guardar'} />
 			</form>
 		</>
