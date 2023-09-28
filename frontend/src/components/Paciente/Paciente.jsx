@@ -9,13 +9,16 @@ import { formatFechaParaUser } from '../../helpers/Formato/formatFechaParaUser'
 import { apiEndPoint } from '../../services/apiConfig'
 import { UserContext } from '../../context/userContext'
 import { fetchData } from '../../hooks/fetchData'
+import { MensajeToast } from '../../context/mensajeContext'
 
-export const Paciente = ({ paciente, eliminarPaciente, editarPaciente }) => {
+export const Paciente = ({ paciente, setPacientes }) => {
 	const [showModal, setShowModal] = useState(false)
 	const [openReservas, setOpenReservas] = useState(false)
 	const [openForm, setOpenForm] = useState(false)
 	const [nuevoPaciente, setNuevoPaciente] = useState(paciente)
 	const { accessToken } = useContext(UserContext)
+	const { setMensaje } = useContext(MensajeToast)
+
 	const imprimirRef = useRef()
 	useEffect(() => {
 		imprimirRef.current.scrollIntoView({
@@ -38,21 +41,28 @@ export const Paciente = ({ paciente, eliminarPaciente, editarPaciente }) => {
 			method: 'DELETE',
 		}
 		const url = `${apiEndPoint.paciente.eliminarPaciente}${paciente._id}`
-		await fetchData(url, options, eliminarPaciente)
+		await fetchData(url, options, (res) => {
+			const { mensaje, userExistente } = res
+			setMensaje(mensaje)
+			setPacientes()
+		})
 		setShowModal(false)
 	}
 	const handleCancel = () => {
 		setShowModal(false)
 	}
 	const actualizarPacientes = (nuevoUser) => {
-		editarPaciente(nuevoUser)
+		const mensaje = `Paciente nuevo ${nuevoUser.nombre}.`
+		setMensaje(mensaje)
 		setNuevoPaciente(nuevoUser)
 		setOpenForm(false)
 	}
 	const abrirForm = () => {
 		setOpenForm(true)
 	}
-	const fecha = formatFechaParaUser({ fecha: nuevoPaciente.fechaDeNac })
+	const [anio, mes, dia] = nuevoPaciente.fechaDeNac.split('-')
+	const cumple = new Date(anio, mes, dia)
+	const fecha = formatFechaParaUser({ fecha: cumple })
 	return openForm ? (
 		<FormularioEditarPaciente
 			paciente={nuevoPaciente}

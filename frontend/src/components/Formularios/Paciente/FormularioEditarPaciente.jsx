@@ -7,6 +7,7 @@ import { LoaderChico } from '../../Loader/LoaderChico'
 import { apiEndPoint } from '../../../services/apiConfig'
 import { fetchData } from '../../../hooks/fetchData'
 import { UserContext } from '../../../context/userContext'
+import { SelectTratamiento } from '../../SelectTratamiento/SelectTratamiento'
 
 const FormularioEditarPaciente = ({
 	paciente,
@@ -234,25 +235,7 @@ const FormularioEditarPaciente = ({
 				<input type='text' name='implantes' defaultValue={paciente.implantes} />
 			</div>
 
-			<div className='inputSelect'>
-				<label>Tratamiento:</label>
-				<select name='tratamiento'>
-					<option value={paciente.tratamiento}>{paciente.tratamiento}</option>
-					<option value='Drenaje Linfático'>Drenaje Linfático</option>
-					<option value='Masaje Estético'>Masaje Estético</option>
-					<option value='Exfoliación Corporal'>Exfoliación Corporal</option>
-					<option value='Masaje Cérvico-Craneal'>Masaje Cérvico-Craneal</option>
-					<option value='Masaje Con Piedras Calientes'>
-						Masaje Con Piedras Calientes
-					</option>
-					<option value='Masaje Descontracturante'>
-						Masaje Descontracturante
-					</option>
-					<option value='Masaje Relajante'>Masaje Relajante</option>
-					<option value='Masaje Prenatal'>Masaje Prenatal</option>
-					<option value='Barras De Access'>Barras De Access</option>
-				</select>
-			</div>
+			<SelectTratamiento className={'inputSelect'} name={'tratamiento'} />
 
 			<BotónPrimario
 				tipo={'submit'}

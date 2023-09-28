@@ -6,7 +6,7 @@ import { useAuth0 } from '@auth0/auth0-react'
 
 const Home = lazy(() => import('../pages/Home/Home'))
 const Contacto = lazy(() => import('../pages/Contacto/Contacto'))
-const SobreMi = lazy(() => import('../pages/SobreMi/SobreMi'))
+const Nosotros = lazy(() => import('../pages/Nosotros/Nosotros'))
 const Calendario = lazy(() => import('../pages/Calendario/Calendario'))
 const Servicios = lazy(() => import('../pages/Servicios/Servicios'))
 const Pacientes = lazy(() => import('../pages/Pacientes/PacientesPage'))
@@ -46,10 +46,10 @@ const Rutas = () => {
 				}
 			/>
 			<Route
-				path='/sobreMi'
+				path='/Nosotros'
 				element={
 					<Suspense fallback={<Loader />}>
-						<SobreMi />
+						<Nosotros />
 					</Suspense>
 				}
 			/>

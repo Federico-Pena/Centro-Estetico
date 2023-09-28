@@ -2,20 +2,17 @@ import { ESTADOS_RESERVAS } from '../../constantes'
 import { formatHoraUser } from '../Formato/formatHoraUser'
 
 const conReserva = (fechasOcupadas) => {
+	const estadoMap = {
+		[ESTADOS_RESERVAS.pago]: 'paga',
+		[ESTADOS_RESERVAS.pendiente]: 'pendiente',
+		[ESTADOS_RESERVAS.cancelada]: 'cancelada',
+	}
+
 	return fechasOcupadas.reduce(
 		(acumulador, reserva) => {
-			switch (reserva.estado) {
-				case ESTADOS_RESERVAS.pago:
-					acumulador.paga = reserva
-					break
-				case ESTADOS_RESERVAS.pendiente:
-					acumulador.pendiente = reserva
-					break
-				case ESTADOS_RESERVAS.cancelada:
-					acumulador.cancelada = reserva
-					break
-				default:
-					break
+			const estadoProp = estadoMap[reserva.estado]
+			if (estadoProp) {
+				acumulador[estadoProp] = reserva
 			}
 			return acumulador
 		},
@@ -26,65 +23,53 @@ const conReserva = (fechasOcupadas) => {
 		}
 	)
 }
+
 export const compararFechas = (fecha, reservas) => {
 	if (!(fecha instanceof Date) || !Array.isArray(reservas)) {
 		return {}
 	}
-	const fechaActual = new Date(fecha)
-	fechaActual.setMinutes(fechaActual.getMinutes() + 30)
-	const proximaMediaHoraFormateada = formatHoraUser(fechaActual)
+	const fechaISOString = fecha.toISOString()
+	const proximaMediaHora = new Date(`${fecha}`)
+	proximaMediaHora.setMinutes(proximaMediaHora.getMinutes() + 30)
 	const diaDesdeCalendario = fecha.toISOString().split('T')[0]
-	const horaDesdeCalendario = new Intl.DateTimeFormat('es-UY', {
-		hour12: false,
-		timeZone: 'America/Montevideo',
-		hour: 'numeric',
-		minute: 'numeric',
-		second: 'numeric',
-	})
-		.format(fecha)
-		.split(':', 2)
-		.join(':')
+	const horaDesdeCalendario = formatHoraUser(new Date(fecha))
+
 	const id = `${diaDesdeCalendario} ${horaDesdeCalendario}`
-
-	const fechasOcupadas = reservas.filter((reserva) => {
-		const fechaSplit = reserva.fecha?.split('T')[0]
-		const reservaFechaHora = `${fechaSplit} ${reserva.hora}`
-		const reservaFechaHoraFin = `${fechaSplit} ${reserva.horaFin}`
-		return id === reservaFechaHora || id === reservaFechaHoraFin
+	const proximaHoraNoDisponible = reservas.find((reserva) => {
+		return (
+			new Date(reserva.horario.horaInicio).toISOString() ===
+			new Date(proximaMediaHora).toISOString()
+		)
 	})
-
+	const fechasOcupadas = reservas.filter((reserva) => {
+		const inicioReservaISO = new Date(reserva.horario.horaInicio).toISOString()
+		const finReservaISO = new Date(reserva.horario.horaDeFin).toISOString()
+		return (
+			inicioReservaISO === fechaISOString || finReservaISO === fechaISOString
+		)
+	})
 	const reservaAdmin = fechasOcupadas.some(
 		(reserva) => reserva.pacienteNombre === 'admin'
 	)
-
-	const reservadas = fechasOcupadas.filter(
-		(reserva) =>
-			(reserva.hora === horaDesdeCalendario ||
-				reserva.horaFin === horaDesdeCalendario) &&
-			(reserva.estado === ESTADOS_RESERVAS.pendiente ||
-				reserva.estado === ESTADOS_RESERVAS.cancelada ||
-				reserva.estado === ESTADOS_RESERVAS.pago)
+	const reservasFiltradas = fechasOcupadas.filter((reserva) =>
+		[
+			ESTADOS_RESERVAS.pago,
+			ESTADOS_RESERVAS.pendiente,
+			ESTADOS_RESERVAS.cancelada,
+		].includes(reserva.estado)
 	)
-	const siguienteHoraNoDisponible = fechasOcupadas.find(
-		(reserva) =>
-			(reserva.hora === proximaMediaHoraFormateada ||
-				reserva.horaFin === proximaMediaHoraFormateada) &&
-			(reserva.estado === ESTADOS_RESERVAS.pago ||
-				reserva.estado === ESTADOS_RESERVAS.pendiente)
-	)
-	const { paga, pendiente, cancelada } = conReserva(fechasOcupadas)
-	const estado = paga || pendiente || cancelada || ''
-	if (!estado && siguienteHoraNoDisponible) {
-		return { id }
-	}
+	const { paga, pendiente } = conReserva(fechasOcupadas)
+	const estado = paga?.estado || pendiente?.estado || ''
+	const proximaHora =
+		proximaHoraNoDisponible?.estado === ESTADOS_RESERVAS.cancelada
+			? ''
+			: proximaHoraNoDisponible?.estado || ''
 	return {
 		id,
-		estado: estado.estado,
-		paga,
-		pendiente,
-		cancelada,
-		reservaAdmin,
-		reservadas,
-		siguienteHoraNoDisponible,
+		estado: estado,
+		reservaAdmin:
+			reservaAdmin || proximaHoraNoDisponible?.pacienteNombre === 'admin',
+		reservadas: reservasFiltradas,
+		proximaHoraNoDisponible: proximaHora,
 	}
 }

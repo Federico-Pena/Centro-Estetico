@@ -1,8 +1,8 @@
 import { ESTADOS_RESERVAS } from '../../constantes'
 const estados = [
 	ESTADOS_RESERVAS.pendiente,
-	ESTADOS_RESERVAS.cancelada,
 	ESTADOS_RESERVAS.pago,
+	ESTADOS_RESERVAS.cancelada,
 ]
 export function obtenerSiguienteEstado(estadoActual) {
 	const indiceEstadoActual = estados.indexOf(estadoActual)

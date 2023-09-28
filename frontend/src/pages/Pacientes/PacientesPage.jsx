@@ -1,27 +1,16 @@
 import './PacientesPage.scss'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import { BotónSecundario } from '../../components/Botones/BotonSecundario'
 import SelectNombre from '../../components/SelectNombre/SelectNombre'
 import { usePaciente } from '../../hooks/usePaciente'
 import { Paciente } from '../../components/Paciente/Paciente'
 import FormularioPaciente from '../../components/Formularios/Paciente/FormularioPaciente'
-import { Notificacion } from '../../components/Notificacion/Notificacion'
 import { LoaderChico } from '../../components/Loader/LoaderChico'
+import { MensajeToast } from '../../context/mensajeContext'
 export default function Pacientes() {
 	const [formulario, setFormulario] = useState(false)
-	const {
-		setPaciente,
-		getPaciente,
-		paciente,
-		loading,
-		agregarPaciente,
-		nombres,
-		pagina,
-		editarPaciente,
-		setPagina,
-		totalPaginas,
-		eliminarPaciente,
-	} = usePaciente()
+	const { setPacientes, getPaciente, pacientes, loading } = usePaciente()
+	const { setMensaje } = useContext(MensajeToast)
 
 	const visibleForm = () => {
 		setFormulario(!formulario)
@@ -29,13 +18,15 @@ export default function Pacientes() {
 	const nuevoPaciente = (nuevo) => {
 		if (nuevo) {
 			setFormulario(false)
-			agregarPaciente(nuevo)
+			const mensaje = `Nuevo paciente ${nuevo.nombre}
+			`
+			setMensaje(mensaje)
+			setPacientes((prev) => [...prev, nuevo])
 		}
 	}
 
 	return (
 		<>
-			<Notificacion />
 			<main className='containerPacientesPage'>
 				<BotónSecundario
 					className={'btn-cerrarFormulario'}
@@ -51,34 +42,29 @@ export default function Pacientes() {
 					}
 				/>
 
-				{paciente && (
+				{pacientes.length > 0 && !formulario && (
 					<div className='containersCardsPacientes'>
 						<BotónSecundario
-							onClickFunction={() => setPaciente(null)}
+							onClickFunction={() => setPacientes([])}
 							texto={'Ocultar Paciente'}
 						/>
-						{paciente && (
-							<Paciente
-								paciente={paciente}
-								eliminarPaciente={(res) => {
-									eliminarPaciente(res)
-									setPaciente(null)
-								}}
-								editarPaciente={editarPaciente}
-							/>
-						)}
+						{pacientes.map((pac) => {
+							return (
+								<Paciente
+									key={pac._id}
+									paciente={pac}
+									setPacientes={() => {
+										setPacientes([])
+									}}
+								/>
+							)
+						})}
 					</div>
 				)}
 
 				{formulario && <FormularioPaciente nuevoPaciente={nuevoPaciente} />}
-				{nombres.length > 0 && !paciente && (
-					<SelectNombre
-						setPagina={setPagina}
-						onChangeNombre={getPaciente}
-						totalPaginas={totalPaginas}
-						nombres={nombres}
-						pagina={pagina}
-					/>
+				{!pacientes.length && !formulario && (
+					<SelectNombre onChangeNombre={getPaciente} />
 				)}
 			</main>
 		</>

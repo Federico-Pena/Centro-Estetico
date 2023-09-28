@@ -8,13 +8,11 @@ export const obtenerReservasDeUnDia = async (req, res) => {
 	endOfDay.setUTCHours(23, 59, 59, 999)
 	try {
 		const data = await Reserva.find({
-			fecha: {
-				$gte: startOfDay.toISOString(),
-				$lte: endOfDay.toISOString(),
+			'horario.horaInicio': {
+				$gte: startOfDay,
+				$lt: endOfDay,
 			},
 		})
-			.sort({ fecha: -1 })
-			.sort({ hora: -1 })
 		res.json({
 			data,
 		})

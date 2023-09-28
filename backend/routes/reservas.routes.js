@@ -8,13 +8,8 @@ import { eliminarReserva } from '../controllers/Reserva/eliminarReserva.js'
 import { obtenerReservasDeLaSemana } from '../controllers/Reserva/obtenerReservasDeLaSemana.js'
 import { obtenerDiasConReservas } from '../controllers/Reserva/obtenerDiasConReservas.js'
 import { editarReserva } from '../controllers/Reserva/editarReserva.js'
-import { obtenerReservasDeLaSemanaNotificaion } from '../controllers/Reserva/obtenerReservasDeLaSemanaNotificaion.js'
 //////////////////////////////  Reservas  //////////////////////////////////
-// Ruta GET para obtener reservas de la semana api notificacion
-router.get(
-	'/api/publica/reservas/semana/:fecha',
-	obtenerReservasDeLaSemanaNotificaion
-)
+
 // Ruta GET para obtener reservas De Un Dia
 router.get('/api/reservas/DeUnDia/:fecha', obtenerReservasDeUnDia)
 // Ruta GET para obtener reservas de la semana

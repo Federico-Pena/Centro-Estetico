@@ -13,13 +13,11 @@ const comienzoYFinSemana = (fecha) => {
 
 export const obtenerReservasDeLaSemana = async (req, res) => {
 	const { lunes, domingo } = comienzoYFinSemana(req.params.fecha)
+
 	try {
 		const reservas = await Reserva.find({
-			fecha: {
-				$gte: lunes.toISOString(),
-				$lte: domingo.toISOString(),
-			},
-		}).sort('fecha')
+			'horario.horaInicio': { $gte: lunes, $lt: domingo },
+		})
 		res.json({
 			reservas,
 		})

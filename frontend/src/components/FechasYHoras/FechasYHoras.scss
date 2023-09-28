@@ -28,6 +28,8 @@
 		.select-container {
 			display: flex;
 			align-items: center;
+			justify-content: center;
+			flex-wrap: wrap;
 			gap: 10px;
 			padding: 1rem;
 			border-bottom: #ccc 1px solid;
@@ -35,6 +37,8 @@
 			h3 {
 				text-align: center;
 				flex: auto;
+				display: flex;
+				flex-direction: column;
 			}
 			select {
 				padding: 0.5rem;
@@ -59,6 +63,26 @@
 		}
 		.horasDisplay {
 			max-width: 350px;
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: center;
+			gap: 0.5rem;
+			padding: 2rem 0;
+			.liHora {
+				border: 1px solid var(--color-violeta);
+				border-radius: 1rem;
+				padding: 0.5rem;
+				cursor: pointer;
+				transition: background-color 0.3s ease;
+				&:hover {
+					background-color: var(--color-violeta);
+					color: #fff;
+				}
+			}
+			.horaSeleccionada {
+				background-color: var(--color-violeta);
+				color: #fff;
+			}
 		}
 		.cerrarForm {
 			background-color: transparent;

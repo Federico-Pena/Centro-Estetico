@@ -6,9 +6,10 @@ export const apiEndPoint = {
 		agregarPaciente: `${baseUrl}/api/pacientes/agregar`,
 		editarPaciente: `${baseUrl}/api/pacientes/editar/`,
 		eliminarPaciente: `${baseUrl}/api/pacientes/eliminar/`,
-		nombres: `${baseUrl}/api/pacientes/nombres`,
+		nombres: `${baseUrl}/api/pacientes/nombres/`,
 		porId: `${baseUrl}/api/pacientes/id/`,
 		todos: `${baseUrl}/api/pacientes/todos`,
+		porNombre: `${baseUrl}/api/pacientes/nombre/`,
 	},
 	reservas: {
 		deUnDia: `${baseUrl}/api/reservas/DeUnDia/`,

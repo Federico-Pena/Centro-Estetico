@@ -1,4 +1,5 @@
 import { formatFechaIso } from './helpers/Formato/formarFechaIso'
+import { formatHoraUser } from './helpers/Formato/formatHoraUser'
 
 export const DIAS_DE_LA_SEMANA = 7
 export const HORA_DE_COMIENZO = 8
@@ -9,7 +10,7 @@ export const MINUTOS_EN_UNA_HORA = 60
 export const HOY = new Date()
 export const HOY_STRING_BIEN = `${
 	formatFechaIso(HOY).split('T')[0]
-}T${HOY.toLocaleTimeString().split('', 5).join('')}`
+}T${formatHoraUser(HOY)}`
 export const ESTADOS_RESERVAS = {
 	pago: 'Pago',
 	pendiente: 'Pendiente',
@@ -30,3 +31,14 @@ export const MESES = [
 	'Noviembre',
 	'Diciembre',
 ]
+export const TRATAMIENTOS = {
+	drenajeLinfático: 'Drenaje Linfático',
+	masajeEstético: 'Masaje Estético',
+	exfoliaciónCorporal: 'Exfoliación Corporal',
+	cérvicoCraneal: 'Masaje Cérvico-Craneal',
+	piedrasCalientes: 'Masaje Con Piedras Calientes',
+	masajeDescontracturante: 'Masaje Descontracturante',
+	masajeRelajante: 'Masaje Relajante',
+	masajePrenatal: 'Masaje Prenatal',
+	barrasDeAccess: 'Barras De Access',
+}

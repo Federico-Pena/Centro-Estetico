@@ -7,6 +7,7 @@ import { fetchData } from '../../hooks/fetchData'
 import { UserContext } from '../../context/userContext'
 import { apiEndPoint } from '../../services/apiConfig'
 import { formatFechaParaUser } from '../../helpers/Formato/formatFechaParaUser'
+import { formatHoraUser } from '../../helpers/Formato/formatHoraUser'
 export const ContenedorReservas = ({
 	reservas,
 	actualizarReservas,
@@ -19,8 +20,8 @@ export const ContenedorReservas = ({
 	const [modal, setModal] = useState(false)
 	const { accessToken } = useContext(UserContext)
 	const handleEditar = (res) => {
-		setForm(true)
 		setReserva(res)
+		setForm(true)
 	}
 	const handleConfirmModal = async () => {
 		const url = `${apiEndPoint.reservas.eliminar}${reserva._id}`
@@ -39,7 +40,6 @@ export const ContenedorReservas = ({
 		setModal(false)
 	}
 	const handleModal = (res) => {
-		console.log(res)
 		setReserva(res)
 		setModal(true)
 	}
@@ -48,13 +48,10 @@ export const ContenedorReservas = ({
 			editar={true}
 			reserva={{
 				...reserva,
-				fecha: reserva.fecha.split('T')[0],
+				fecha: reserva.horario.horaInicio,
 				nombre: reserva.pacienteNombre,
 			}}
-			actualizarReserva={(res) => {
-				setReserva(false)
-				actualizarReservas(res)
-			}}
+			actualizarReserva={actualizarReservas}
 			setForm={() => {
 				setForm(false)
 			}}
@@ -64,7 +61,9 @@ export const ContenedorReservas = ({
 			titulo={'Borrar Reserva'}
 			mensaje={`¿Estás seguro de que deseas borrar la reserva de ${
 				reserva.pacienteNombre
-			} el dia ${formatFechaParaUser(reserva)} a las ${reserva.hora}?`}
+			} el dia ${formatFechaParaUser({
+				fecha: reserva.horario.horaInicio,
+			})} a las ${formatHoraUser(new Date(reserva.horario.horaInicio))}?`}
 			onConfirm={handleConfirmModal}
 			onCancel={handleCancelModal}
 		/>

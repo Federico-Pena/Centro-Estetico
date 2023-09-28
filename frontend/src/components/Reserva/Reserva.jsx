@@ -7,6 +7,7 @@ import { UserContext } from '../../context/userContext'
 import { obtenerSiguienteEstado } from '../../helpers/Estado/obtenerSiguienteEstado'
 import { fetchData } from '../../hooks/fetchData'
 import { MensajeToast } from '../../context/mensajeContext'
+import { formatHoraUser } from '../../helpers/Formato/formatHoraUser'
 export const Reserva = ({
 	actualizarReserva,
 	reserva: res,
@@ -18,7 +19,6 @@ export const Reserva = ({
 	const reservaRef = useRef()
 	const { accessToken } = useContext(UserContext)
 	const { setMensaje } = useContext(MensajeToast)
-
 	const cambiarEstadoActual = async () => {
 		const estado = obtenerSiguienteEstado(reserva.estado)
 		const url = `${apiEndPoint.reservas.editarEstado}${reserva._id}`
@@ -32,6 +32,7 @@ export const Reserva = ({
 		}
 		await fetchData(url, options, (datos) => {
 			actualizarReserva(datos)
+			setReserva(datos.reserva)
 			setMensaje(datos.mensaje)
 		})
 	}
@@ -54,15 +55,24 @@ export const Reserva = ({
 						</li>
 						<li>
 							Fecha:
-							<strong>{formatFechaParaUser(reserva)}</strong>
+							<strong>
+								{formatFechaParaUser({ fecha: reserva.horario.horaInicio })}
+							</strong>
 						</li>
 						<li>
-							Hora: <strong>{reserva.hora}</strong>
+							Hora:{' '}
+							<strong>
+								{formatHoraUser(new Date(reserva.horario.horaInicio))}
+							</strong>
 						</li>
 						{reserva.pacienteNombre !== 'admin' && (
 							<>
 								<li>
-									Motivo: <strong>{reserva.motivo}</strong>
+									Tratamiento: <strong>{reserva.tratamiento.nombre}</strong>
+								</li>
+								<li>
+									Sesiones:
+									<strong>{reserva.tratamiento.descripcionSesion}</strong>
 								</li>
 								<li>
 									Observaciones: <strong>{reserva.observaciones}</strong>
@@ -70,6 +80,10 @@ export const Reserva = ({
 								<li>
 									Estado:
 									<strong className='strongEstado'>{reserva.estado}</strong>
+								</li>
+								<li>
+									Valor:
+									<strong className='strongEstado'>$ {reserva.precio}</strong>
 								</li>
 							</>
 						)}
@@ -97,7 +111,7 @@ export const Reserva = ({
 						onClickFunction={handleEditarReserva}
 					/>
 					<BotónSecundario
-						texto={'Cambiar Estado'}
+						texto={'⭮ Estado'}
 						className={`btnCompletada ${reserva.estado}`}
 						onClickFunction={cambiarEstadoActual}
 					/>

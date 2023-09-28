@@ -1,6 +1,5 @@
 export const formatFechaParaUser = (reserva) => {
 	const fechaReserva = new Date(reserva.fecha)
-	fechaReserva.setUTCHours(fechaReserva.getUTCHours() + 3)
 	const options = {
 		year: 'numeric',
 		month: 'short',
@@ -11,6 +10,6 @@ export const formatFechaParaUser = (reserva) => {
 	if (fechaReserva instanceof Date && fechaFormateada !== 'Invalid Date') {
 		return fechaFormateada
 	} else {
-		return reserva.fecha
+		return ''
 	}
 }

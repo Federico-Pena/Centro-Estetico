@@ -8,6 +8,7 @@ import { BotónPrimario } from '../../Botones/BotonPrimario'
 import { apiEndPoint } from '../../../services/apiConfig'
 import { fetchData } from '../../../hooks/fetchData'
 import { UserContext } from '../../../context/userContext'
+import { SelectTratamiento } from '../../SelectTratamiento/SelectTratamiento'
 
 const FormularioPaciente = ({ nuevoPaciente }) => {
 	const [foto, setFoto] = useState(null)
@@ -198,29 +199,7 @@ const FormularioPaciente = ({ nuevoPaciente }) => {
 					<label htmlFor='implantes'>Implantes</label>
 					<input type='text' id='implantes' name='implantes' />
 				</div>
-
-				<div className='inputSelect'>
-					<label>Tratamiento:</label>
-					<select name='tratamiento'>
-						<option value=''>Seleccione una opción</option>
-						<option value='Drenaje Linfático'>Drenaje Linfático</option>
-						<option value='Masaje Estético'>Masaje Estético</option>
-						<option value='Exfoliación Corporal'>Exfoliación Corporal</option>
-						<option value='Masaje Cérvico-Craneal'>
-							Masaje Cérvico-Craneal
-						</option>
-						<option value='Masaje Con Piedras Calientes'>
-							Masaje Con Piedras Calientes
-						</option>
-						<option value='Masaje Descontracturante'>
-							Masaje Descontracturante
-						</option>
-						<option value='Masaje Relajante'>Masaje Relajante</option>
-						<option value='Masaje Prenatal'>Masaje Prenatal</option>
-						<option value='Barras De Access'>Barras De Access</option>
-					</select>
-				</div>
-
+				<SelectTratamiento className={'inputSelect'} name={'tratamiento'} />
 				<BotónPrimario texto={loading ? <LoaderChico /> : 'Guardar'} />
 			</form>
 		</>

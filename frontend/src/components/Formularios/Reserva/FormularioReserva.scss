@@ -60,10 +60,20 @@
 				text-transform: capitalize;
 			}
 			.horasDisplay {
+				display: flex;
+				flex-wrap: wrap;
+				justify-content: center;
+				gap: 0.5rem;
 				.liHora {
 					background-color: #ffffff;
+					border-radius: 1rem;
+					padding: 0.5rem;
+					text-align: center;
+					transition: background-color 0.3s ease;
+					cursor: pointer;
 					&:hover {
 						background-color: var(--color-violeta);
+						color: #fff;
 					}
 				}
 				.liHora.horaSeleccionada {
@@ -72,14 +82,17 @@
 				.liHora.Pago {
 					background-color: var(--color-paga);
 					color: #ffffff;
+					cursor: not-allowed;
 				}
 				.liHora.Pendiente {
 					background-color: var(--color-pendiente);
 					color: #ffffff;
+					cursor: not-allowed;
 				}
 				.liHora.Cancelada {
 					background-color: var(--color-cancelada);
 					color: #ffffff;
+					cursor: not-allowed;
 				}
 			}
 			input,

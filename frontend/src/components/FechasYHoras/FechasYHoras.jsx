@@ -1,66 +1,73 @@
 import './FechasYHoras.scss'
 import { useContext, useEffect, useState } from 'react'
-import { HOY, HOY_STRING_BIEN, MESES } from '../../constantes'
+import { ESTADOS_RESERVAS, HOY, HOY_STRING_BIEN, MESES } from '../../constantes'
 import { MensajeToast } from '../../context/mensajeContext'
 import { comprobarHoras } from '../../helpers/FechasHoras/comprobarHoras'
 import { formatFechaIso } from '../../helpers/Formato/formarFechaIso'
 import { formatFechaParaUser } from '../../helpers/Formato/formatFechaParaUser'
 import { FormularioReservaAdmin } from '../Formularios/Admin/FormularioReservaAdmin'
-import { Horas } from './Horas'
 import { diasSemanaConHoras } from '../../helpers/FechasHoras/diasSemanaConHoras'
 import { UserContext } from '../../context/userContext'
-import { fechasConReservas } from './fechasConReservas'
 import { TransitionNumber } from '../TransitionNumber/TransitionNumber'
+import { fetchData } from '../../hooks/fetchData'
+import { apiEndPoint } from '../../services/apiConfig'
+import { encontrarHorasReservadas } from '../../helpers/FechasHoras/encontrarHorasDisponibles'
+import { formatHoraUser } from '../../helpers/Formato/formatHoraUser'
+import { compararFechas } from '../../helpers/FechasHoras/compararFechas'
+import { useDiasYHoras } from '../../hooks/useDiasYHoras'
+import { ListaHoras } from '../ListaHoras/ListaHoras'
 
 export const FechasYHoras = ({ setDiaPadre, reservas, actualizarReservas }) => {
 	const [dia, setDia] = useState(HOY_STRING_BIEN.split('T')[0])
 	const [mes, setMes] = useState(HOY_STRING_BIEN.split('-')[1])
-	const [hora, setHora] = useState('')
-	const [horasState, setHorasState] = useState([])
+	const [hora, setHora] = useState(HOY_STRING_BIEN.split('T')[1])
 	const [fechas, setFechas] = useState([])
 	const [cantidadFechas, setCantidadFechas] = useState(0)
 	const [totalReservasMes, setTotalReservasMes] = useState(0)
 	const [openFormulario, setOpenFormulario] = useState(false)
-	const [loading, setLoading] = useState(false)
 	const { accessToken } = useContext(UserContext)
 	const { setMensaje } = useContext(MensajeToast)
+	const { diaConHoras, horas } = useDiasYHoras(dia, hora)
 	useEffect(() => {
-		const getReservas = async () => {
-			setLoading(true)
-			const data = await fechasConReservas(accessToken, mes)
-			setCantidadFechas(data.cantidad)
-			console.log(data)
-
-			setTotalReservasMes(data.totalReservasMes)
-			if (data.cantidad > 0) {
-				setFechas(data.fechas)
-			} else {
-				setLoading(false)
-				return
+		const getFechas = async () => {
+			const options = {
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${accessToken || ''}`,
+				},
 			}
-			setLoading(false)
+			const url = `${apiEndPoint.reservas.dias}${mes}`
+			await fetchData(url, options, fechasConReservas)
 		}
-		mes && getReservas()
+		mes && getFechas()
 	}, [accessToken, mes])
 
-	useEffect(() => {
-		setLoading(true)
-		const dias = diasSemanaConHoras(dia, reservas)
-		const numero = dias.find(
-			(d) => d.dia.getDay() === new Date(`${dia} ${hora}`).getDay()
-		)
-		setHorasState(numero.horaID)
-		setLoading(false)
-	}, [dia, reservas, hora])
+	const fechasConReservas = (res) => {
+		const { cantidad, totalReservasMes, fechas } = res
+		setCantidadFechas(cantidad)
+		setTotalReservasMes(totalReservasMes)
+		if (cantidad > 0) {
+			setFechas(fechas)
+		}
+	}
 
 	const onClickReservar = (e) => {
-		setHora(e.target.textContent)
-		const comprobación = comprobarHoras(e, dia, reservas)
-		if (comprobación) {
+		const hora = e.target.textContent
+		setHora(hora)
+		const comprobación = compararFechas(new Date(`${dia} ${hora}`), reservas)
+		if (
+			comprobación.proximaHoraNoDisponible === ESTADOS_RESERVAS.cancelada ||
+			comprobación.estado === ESTADOS_RESERVAS.cancelada
+		) {
 			setOpenFormulario(true)
-		} else {
-			setMensaje('Hora no disponible para hacer una reserva')
+			return
 		}
+		if (comprobación.estado || comprobación.proximaHoraNoDisponible) {
+			setMensaje('Hora no disponible para hacer una reserva')
+			setHora('')
+			return
+		}
+		setOpenFormulario(true)
 	}
 
 	function obtenerNombreMes(numeroMes) {
@@ -77,13 +84,10 @@ export const FechasYHoras = ({ setDiaPadre, reservas, actualizarReservas }) => {
 				<>
 					<FormularioReservaAdmin
 						reserva={{
-							fecha: dia,
-							hora: hora,
+							fecha: new Date(`${dia} ${hora}`),
 							pacienteNombre:
 								hora === '08:00' || hora === '08:30' ? 'admin' : null,
 						}}
-						fecha={dia}
-						hora={hora}
 						setForm={() => setOpenFormulario(false)}
 						actualizarReserva={actualizarReservas}
 					/>
@@ -92,10 +96,6 @@ export const FechasYHoras = ({ setDiaPadre, reservas, actualizarReservas }) => {
 
 			<div className='select-container-container'>
 				<div className='select-container'>
-					<h3>
-						Fechas en {`${obtenerNombreMes(mes)}`}{' '}
-						<TransitionNumber from={0} to={cantidadFechas} duration={500} />
-					</h3>
 					<select value={mes} onChange={(e) => setMes(e.target.value)}>
 						<option key={mes} value={mes}>
 							{`${obtenerNombreMes(mes)}`}
@@ -110,6 +110,10 @@ export const FechasYHoras = ({ setDiaPadre, reservas, actualizarReservas }) => {
 						)}
 					</select>
 					<h3>
+						Fechas en {`${obtenerNombreMes(mes)}`}{' '}
+						<TransitionNumber from={0} to={cantidadFechas} duration={500} />
+					</h3>
+					<h3>
 						Reservas en {`${obtenerNombreMes(mes)}`}{' '}
 						<TransitionNumber from={0} to={totalReservasMes} duration={500} />
 					</h3>
@@ -121,25 +125,34 @@ export const FechasYHoras = ({ setDiaPadre, reservas, actualizarReservas }) => {
 						const fecha = e.target.value.split('T')[0]
 						setDiaPadre(fecha)
 						setDia(fecha)
-						console.log(fecha)
 					}}>
-					<option value={formatFechaIso(HOY)}>
-						Hoy {formatFechaParaUser({ fecha: formatFechaIso(HOY) })}
+					<option value={HOY_STRING_BIEN.split('T')[0]}>
+						Hoy{' '}
+						{formatFechaParaUser({
+							fecha: new Date(HOY_STRING_BIEN),
+						})}
 					</option>
 					{fechas?.length > 0 &&
 						fechas?.map((dia) => {
 							return (
 								<option
 									className='selectedComponent-option'
-									key={dia.fecha}
-									value={dia.fecha}>
-									{formatFechaParaUser(dia)}
+									key={dia}
+									value={dia}>
+									{formatFechaParaUser({ fecha: new Date(`${dia} ${hora}`) })}
 								</option>
 							)
 						})}
 				</select>
-				{horasState.length > 0 && (
-					<Horas horas={horasState} onClickReservar={onClickReservar} />
+				{diaConHoras && (
+					<ul className='horasDisplay'>
+						<ListaHoras
+							diaConHoras={diaConHoras}
+							horas={horas}
+							onClickReservar={onClickReservar}
+							reservas={reservas}
+						/>
+					</ul>
 				)}
 			</div>
 		</section>

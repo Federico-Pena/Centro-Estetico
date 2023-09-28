@@ -8,7 +8,6 @@ import { apiEndPoint } from '../../services/apiConfig'
 import { UserContext } from '../../context/userContext'
 import { PacienteEstadisticas } from './PacienteEstadisticas'
 import { PorcentajesComponent } from '../../components/PorcentajesComponent/PorcentajesComponent'
-import { Loader } from '../../components/Loader/Loader'
 const estadoInicialestadisticasReservas = {
 	estadosMes: {
 		reservasCanceladas: 0,
@@ -42,7 +41,10 @@ const Estadisticas = () => {
 	)
 	const [tratamientosPacientes, setTratamientosPacientes] = useState({})
 	const [motivoReservas, setMotivoReservas] = useState({})
-	const [loading, setLoading] = useState(false)
+	const [ganancias, setGanancias] = useState({
+		totales: 0,
+		mes: 0,
+	})
 	const { accessToken } = useContext(UserContext)
 
 	useEffect(() => {
@@ -54,16 +56,20 @@ const Estadisticas = () => {
 			},
 		}
 		const getStatics = async () => {
-			setLoading(true)
 			await fetchData(url, options, datos)
-			setLoading(false)
 		}
 		getStatics()
 	}, [accessToken, mes])
 
 	const datos = (res) => {
-		const { estadisticasPaciente, estadosMes, estadosTodas, reservaMotivo } =
-			res
+		const {
+			estadisticasPaciente,
+			estadosMes,
+			estadosTodas,
+			reservaMotivo,
+			gananciasReservas,
+		} = res
+		setGanancias(gananciasReservas)
 		setEstadisticasReservas({ estadosMes, estadosTodas })
 		setEstadisticasPacientes(estadisticasPaciente)
 		setTratamientosPacientes(estadisticasPaciente.tratamientosPacientes)
@@ -98,11 +104,18 @@ const Estadisticas = () => {
 					</select>
 					<ul className='ulReservasDatos'>
 						<li>
-							Reservas de {`${obtenerNombreMes(mes)}`}
+							Ganancias
+							<strong>
+								${' '}
+								<TransitionNumber from={0} to={ganancias.mes} duration={500} />
+							</strong>
+						</li>
+						<li>
+							Todas
 							<strong>
 								<TransitionNumber
 									from={0}
-									to={estadisticasReservas.estadosMes.reservasTodas}
+									to={estadisticasReservas.estadosMes?.reservasTodas}
 									duration={500}
 								/>
 							</strong>
@@ -112,10 +125,21 @@ const Estadisticas = () => {
 				</article>
 
 				<article className='reservasEstadisticasArticle'>
-					<h3>Reservas Totales</h3>
+					<h3>Total de las Reservas</h3>
 					<ul className='ulReservasDatos'>
 						<li>
-							Reservas Totales
+							Ganancias
+							<strong>
+								${' '}
+								<TransitionNumber
+									from={0}
+									to={ganancias.totales}
+									duration={500}
+								/>
+							</strong>
+						</li>
+						<li>
+							Todas
 							<strong>
 								<TransitionNumber
 									from={0}
@@ -124,7 +148,7 @@ const Estadisticas = () => {
 								/>
 							</strong>
 						</li>
-						<ListaDatos datos={estadisticasReservas.estadosTodas} />
+						<ListaDatos datos={estadisticasReservas?.estadosTodas} />
 					</ul>
 				</article>
 
@@ -139,7 +163,7 @@ const ListaDatos = ({ datos }) => {
 	return (
 		<>
 			<li className='Pago'>
-				Reservas Terminadas
+				Terminadas
 				<strong>
 					<TransitionNumber
 						from={0}
@@ -149,7 +173,7 @@ const ListaDatos = ({ datos }) => {
 				</strong>
 			</li>
 			<li className='Pendiente'>
-				Reservas Pendientes
+				Pendientes
 				<strong>
 					<TransitionNumber
 						from={0}
@@ -159,7 +183,7 @@ const ListaDatos = ({ datos }) => {
 				</strong>
 			</li>
 			<li className='Cancelada'>
-				Reservas Canceladas
+				Canceladas
 				<strong>
 					<TransitionNumber
 						from={0}

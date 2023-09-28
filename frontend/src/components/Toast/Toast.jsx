@@ -44,8 +44,7 @@ export const Toast = () => {
 				<div className='toastContent'>
 					{error &&
 						error.split('.').map((oración) => <p key={oración}>{oración}</p>)}
-					{mensaje &&
-						mensaje.split('.').map((oración) => <p key={oración}>{oración}</p>)}
+					{mensaje && <p>{mensaje}</p>}
 				</div>
 			</div>
 		</div>

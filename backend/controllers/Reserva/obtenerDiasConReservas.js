@@ -8,23 +8,20 @@ export const obtenerDiasConReservas = async (req, res) => {
 	const añoFin = mes === '12' ? (año + 1).toString() : año.toString()
 	try {
 		const reservasDuplicadas = await Reserva.find({
-			fecha: {
+			'horario.horaInicio': {
 				$gte: new Date(`${año}-${mesInicio}-01`),
 				$lt: new Date(`${añoFin}-${mesFin}-01`),
 			},
 		})
-			.sort({ fecha: -1 })
-			.select('fecha')
-			.select('pacienteNombre')
-			.select('estado')
-		const fechasÚnicas = reservasDuplicadas
-			.map((reserva) => reserva.fecha.toISOString())
-			.filter((fecha, index, self) => self.indexOf(fecha) === index)
-		const fechas = fechasÚnicas.map((fecha) => {
-			return {
-				fecha: fecha,
-			}
+
+		const fechasÚnicas = new Set()
+		reservasDuplicadas.forEach((objeto) => {
+			const horaInicio = new Date(objeto.horario.horaInicio)
+			const fecha = horaInicio.toISOString().split('T')[0]
+			fechasÚnicas.add(fecha)
 		})
+
+		const fechas = [...fechasÚnicas]
 		const sinAdminNiCancelada = reservasDuplicadas.filter(
 			(res) => res.pacienteNombre !== 'admin' && res.estado !== 'Cancelada'
 		)

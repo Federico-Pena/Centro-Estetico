@@ -10,41 +10,39 @@ import useReservas from '../../hooks/useReservas'
 import { ordenarPorFecha } from '../../helpers/FechasHoras/ordenarPorFecha'
 import { MensajeToast } from '../../context/mensajeContext'
 import { formatFechaParaUser } from '../../helpers/Formato/formatFechaParaUser'
-import { Notificacion } from '../../components/Notificacion/Notificacion'
 import { LoaderChico } from '../../components/Loader/LoaderChico'
+import { formatHoraUser } from '../../helpers/Formato/formatHoraUser'
 
 export default function Reservas() {
 	const [dia, setDia] = useState(HOY_STRING_BIEN.split('T')[0])
 	const [reservadas, setReservadas] = useState([])
 	const { loading } = useContext(UserContext)
-
+	const { setMensaje } = useContext(MensajeToast)
 	const {
 		loading: cargando,
 		delDia,
 		setDelDia,
 		loadingSemana,
-	} = useReservas(false, dia, '23:59')
-	const { setMensaje } = useContext(MensajeToast)
+	} = useReservas(dia)
 
 	const actualizarReservas = (datos) => {
 		const { reserva } = datos
 		const mensaje = `Reserva nueva de ${
 			reserva.pacienteNombre
-		} el dia ${formatFechaParaUser({ fecha: reserva.fecha })} a las ${
-			reserva.hora
-		}`
+		} el dia ${formatFechaParaUser({
+			fecha: reserva.horario.horaInicio,
+		})} a las  ${formatHoraUser(new Date(reserva.horario.horaInicio))}`
 		setMensaje(mensaje)
 		const reservasGuardadas = delDia.filter((res) => res._id !== reserva._id)
 		setDelDia(reservasGuardadas.concat(reserva).sort(ordenarPorFecha))
 	}
-
 	const actualizarBorrada = (datos) => {
 		const { reserva } = datos
 		const mensaje = `Reserva borrada de ${
 			reserva.pacienteNombre
-		} el dia ${formatFechaParaUser({ fecha: reserva.fecha })} a las ${
-			reserva.hora
-		}`
+		} el dia ${formatFechaParaUser({
+			fecha: reserva.horario.horaInicio,
+		})} a las  ${formatHoraUser(new Date(reserva.horario.horaInicio))}`
 		setMensaje(mensaje)
 		const reservasGuardadas = delDia.filter((res) => res._id !== reserva._id)
 		setDelDia(reservasGuardadas.sort(ordenarPorFecha))
@@ -66,7 +64,6 @@ export default function Reservas() {
 	}
 	return (
 		<>
-			<Notificacion />
 			{(loading || cargando) && <Loader />}
 			<main className='divPageReservas'>
 				{reservadas.length > 0 ? (
@@ -92,7 +89,6 @@ export default function Reservas() {
 							reservas={delDia}
 							actualizarReservas={actualizarReservas}
 							actualizarReservaEliminada={actualizarBorrada}
-							className={'ContenedorReservas'}
 						/>
 					</>
 				)}

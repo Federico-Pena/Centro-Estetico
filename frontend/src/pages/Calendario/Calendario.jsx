@@ -1,81 +1,89 @@
-import { useContext, useRef, useState } from 'react'
+import { useContext, useState } from 'react'
 import './Calendario.scss'
 import { MensajeToast } from '../../context/mensajeContext'
-import { compararFechas } from '../../helpers/FechasHoras/compararFechas'
-import { comprobarHoras } from '../../helpers/FechasHoras/comprobarHoras'
 import { Loader } from '../../components/Loader/Loader'
 import { BotónSecundario } from '../../components/Botones/BotonSecundario'
 import { FormularioReservaAdmin } from '../../components/Formularios/Admin/FormularioReservaAdmin'
 import { formatFechaParaUser } from '../../helpers/Formato/formatFechaParaUser'
 import { ESTADOS_RESERVAS, HOY, HOY_STRING_BIEN } from '../../constantes'
 import { LoaderChico } from '../../components/Loader/LoaderChico'
-import useReservas from '../../hooks/useReservas'
 import { ordenarPorFecha } from '../../helpers/FechasHoras/ordenarPorFecha'
 import { ContenedorReservas } from '../../components/ContenedorReservas/ContenedorReservas'
 import ContadorReservas from '../../components/ContadorReservas/ContadorReservas'
-import { Notificacion } from '../../components/Notificacion/Notificacion'
+import { encontrarHorasReservadas } from '../../helpers/FechasHoras/encontrarHorasDisponibles'
+import { compararFechas } from '../../helpers/FechasHoras/compararFechas'
+import { formatHoraUser } from '../../helpers/Formato/formatHoraUser'
+import { useCalendario } from '../../hooks/useCalendario'
+import { UserContext } from '../../context/userContext'
 
 function Calendario() {
-	const [fechaReserva, setFechaReserva] = useState('')
-	const [horaReserva, setHoraReserva] = useState('')
+	const [fechaReserva, setFechaReserva] = useState(
+		HOY_STRING_BIEN.split('T')[0]
+	)
+	const [horaReserva, setHoraReserva] = useState(HOY_STRING_BIEN.split('T')[1])
 	const [openFormulario, setOpenFormulario] = useState(false)
 	const [nombreAdmin, setNombreAdmin] = useState('')
 	const [reservadas, setReservadas] = useState([])
 	const { setMensaje } = useContext(MensajeToast)
+	const { loading: cargando } = useContext(UserContext)
+
 	const {
-		loadingSemana,
-		diasSemana,
-		reservasSemanales,
-		loading,
 		semanaAnterior,
 		semanaSiguiente,
+		reservasSemanales,
 		setReservasSemanales,
-	} = useReservas(true, fechaReserva)
-
+		loading,
+		diasSemana,
+	} = useCalendario(fechaReserva)
 	const actualizarReservaNueva = (res) => {
 		const { reserva } = res
 		const mensaje = `Reserva nueva de ${
 			reserva.pacienteNombre
-		} el dia ${formatFechaParaUser({ fecha: reserva.fecha })} a las ${
-			reserva.hora
-		}`
+		} el dia ${formatFechaParaUser({
+			fecha: reserva.horario.horaInicio,
+		})} a las ${formatHoraUser(new Date(reserva.horario.horaInicio))}`
 		setMensaje(mensaje)
 		const reservasGuardadas = reservasSemanales.filter(
 			(res) => res._id !== reserva._id
 		)
+		const reservasdasGuardadas = reservadas.filter(
+			(res) => res._id !== reserva._id
+		)
+		setReservadas([...reservasdasGuardadas, reserva])
 		setReservasSemanales([...reservasGuardadas, reserva])
 	}
 	const reservarHora = (e) => {
 		setReservadas([])
 		setNombreAdmin('')
-		const horaSeleccionada = e.target
-		if (horaSeleccionada.className.includes('paraReservaAdmin')) {
+		const horaSeleccionada = e.target.getAttribute('data-fecha')
+		const fechaISOString = new Date(horaSeleccionada).toISOString()
+		const [fecha] = fechaISOString.split('T')
+		setFechaReserva(fecha)
+		setHoraReserva(fechaISOString)
+		const comprobación = compararFechas(
+			new Date(horaSeleccionada),
+			reservasSemanales
+		)
+		if (e.target.className.includes('paraReservaAdmin')) {
 			setNombreAdmin('admin')
 		}
-
-		const id = horaSeleccionada.id
-		const [fecha, hora] = id.split(' ')
-		const desdeCompararFechas = compararFechas(new Date(id), reservasSemanales)
-		const comprobar = comprobarHoras(e, id.split(' ')[0], reservasSemanales)
-		console.log(comprobar)
-		if (horaSeleccionada.className.includes(ESTADOS_RESERVAS.cancelada)) {
-			setReservadas(desdeCompararFechas.reservadas)
-			setOpenFormulario(true)
-			return
-		}
-		console.log(desdeCompararFechas)
-
-		if (comprobar === false) {
-			setReservadas(desdeCompararFechas.reservadas)
-			if (desdeCompararFechas.reservadas.length === 0) {
-				let mensaje = 'Hora no disponible para hacer reserva'
-				setMensaje(mensaje)
+		if (comprobación.estado) {
+			setReservadas(comprobación.reservadas)
+			if (comprobación.estado === ESTADOS_RESERVAS.cancelada) {
+				setOpenFormulario(true)
 			}
 			return
-		} else {
+		}
+		if (!comprobación.proximaHoraNoDisponible) {
 			setOpenFormulario(true)
-			setFechaReserva(fecha)
-			setHoraReserva(hora)
+			return
+		} else {
+			if (comprobación.proximaHoraNoDisponible === ESTADOS_RESERVAS.cancelada) {
+				setOpenFormulario(true)
+			} else {
+				const mensaje = 'Hora no disponible para reservar'
+				setMensaje(mensaje)
+			}
 		}
 	}
 	const cerrarReserva = (e) => {
@@ -86,39 +94,22 @@ function Calendario() {
 			setReservadas([])
 		}, 500)
 	}
-
-	const clase = (index, hora) => {
-		return index === 0 || index === 1
-			? `paraReservaAdmin ${hora.estado || ''}`
-			: hora.estado
-			? hora.reservaAdmin
-				? `paraReservaAdmin ${
-						hora.paga
-							? ESTADOS_RESERVAS.pago
-							: hora.pendiente
-							? ESTADOS_RESERVAS.pendiente
-							: hora.cancelada
-							? ESTADOS_RESERVAS.cancelada
-							: ''
-				  }`
-				: hora.estado
-			: ''
-	}
 	const actualizarBorrada = (datos) => {
 		const { reserva } = datos
-		const mensaje = `Reserva borrada de ${
-			reserva.pacienteNombre
-		} el dia ${formatFechaParaUser({ fecha: reserva.fecha })} a las ${
-			reserva.hora
-		}`
-		setMensaje(mensaje)
-		const reservasGuardadas = reservasSemanales.filter(
-			(res) => res._id !== reserva._id
-		)
-		setReservasSemanales(reservasGuardadas.sort(ordenarPorFecha))
-		setReservadas([])
+		if (reserva) {
+			const mensaje = `Reserva borrada de ${
+				reserva.pacienteNombre
+			} el dia ${formatFechaParaUser({
+				fecha: reserva.horario.horaInicio,
+			})} a las  ${formatHoraUser(new Date(reserva.horario.horaInicio))}`
+			setMensaje(mensaje)
+			const reservasGuardadas = reservasSemanales.filter(
+				(res) => res._id !== reserva._id
+			)
+			setReservasSemanales(reservasGuardadas.sort(ordenarPorFecha))
+			setReservadas([])
+		}
 	}
-
 	const mostrarReservadas = (estado) => {
 		if (estado === 'Toda') {
 			setReservadas(reservasSemanales.sort(ordenarPorFecha))
@@ -130,8 +121,7 @@ function Calendario() {
 
 	return (
 		<>
-			<Notificacion />
-			{loading && <Loader />}
+			{cargando && <Loader />}
 			{reservadas?.length > 0 ? (
 				<div className={reservadas.length ? `divReservaCalendario` : ''}>
 					<ContenedorReservas
@@ -140,18 +130,16 @@ function Calendario() {
 						actualizarReservaEliminada={actualizarBorrada}
 						actualizarReservas={(res) => {
 							actualizarReservaNueva(res)
-							setReservadas([])
 						}}
 					/>
 				</div>
 			) : null}
 
-			{openFormulario && !reservadas.length && (
+			{openFormulario && reservadas?.length === 0 && (
 				<FormularioReservaAdmin
 					reserva={{
 						pacienteNombre: nombreAdmin,
-						fecha: fechaReserva,
-						hora: horaReserva,
+						fecha: horaReserva,
 					}}
 					actualizarReserva={(e) => {
 						actualizarReservaNueva(e)
@@ -167,15 +155,13 @@ function Calendario() {
 						reservas={reservasSemanales}
 						mostrarReservadas={mostrarReservadas}
 					/>
-					<h1>
-						Hoy {formatFechaParaUser({ fecha: HOY_STRING_BIEN.split('T')[0] })}
-					</h1>
+					<h1>Hoy {formatFechaParaUser({ fecha: HOY_STRING_BIEN })}</h1>
 					<div className='containerBotones'>
 						<BotónSecundario
 							onClickFunction={semanaAnterior}
 							texto={'Anterior'}
 						/>
-						{loadingSemana && <LoaderChico />}
+						{loading && <LoaderChico />}
 						<BotónSecundario
 							onClickFunction={semanaSiguiente}
 							texto={'Siguiente'}
@@ -194,18 +180,38 @@ function Calendario() {
 													: ''
 											}`}>
 											{formatFechaParaUser({
-												fecha: dia.dia.setUTCHours(dia.dia.getUTCHours() - 3),
+												fecha: dia.dia,
 											})}
 										</h3>
 										<ul className='HorasCalendario'>
-											{dia.horaID.map((hora, i) => {
+											{dia.horas.map((hora, i) => {
+												const horaReservada = encontrarHorasReservadas(
+													reservasSemanales,
+													diasSemana
+												).find(
+													(reservadaHora) =>
+														reservadaHora.hora.toISOString() ===
+														hora.toISOString()
+												)
+												const claseHora =
+													i == 0 || i == 1
+														? `paraReservaAdmin ${horaReservada?.estado || ''}`
+														: horaReservada &&
+														  horaReservada.nombreReserva === 'admin' &&
+														  (horaReservada.estado === ESTADOS_RESERVAS.pago ||
+																horaReservada.estado ===
+																	ESTADOS_RESERVAS.pendiente)
+														? `paraReservaAdmin ${horaReservada.estado}`
+														: horaReservada
+														? `${horaReservada.estado}`
+														: ''
 												return (
 													<li
+														key={hora.toISOString()}
+														data-fecha={hora}
 														onClick={reservarHora}
-														className={clase(i, hora)}
-														key={hora.id}
-														id={hora.id}>
-														{hora.id.split(' ')[1]}
+														className={claseHora}>
+														{formatHoraUser(hora)}
 													</li>
 												)
 											})}
@@ -220,7 +226,7 @@ function Calendario() {
 							onClickFunction={semanaAnterior}
 							texto={'Anterior'}
 						/>
-						{loadingSemana && <LoaderChico />}
+						{loading && <LoaderChico />}
 						<BotónSecundario
 							onClickFunction={semanaSiguiente}
 							texto={'Siguiente'}

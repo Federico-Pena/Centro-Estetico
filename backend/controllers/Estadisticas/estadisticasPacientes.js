@@ -1,4 +1,4 @@
-import { contadorTratamientos } from '../../helpers/contadorTratamientos.js'
+import { contadorMotivosYTratamientos } from '../../helpers/contadorMotivosYTratamientos.js'
 import { calcularPromedioDeEdades } from '../../helpers/calcularPromedioDeEdades.js'
 import { Paciente } from '../../models/PacienteSchema.js'
 
@@ -9,7 +9,7 @@ export const estadisticasPacientes = async (req, res, next) => {
 			Paciente.find({ nombre: { $ne: 'admin' } }),
 		])
 		const [tratamientosPacientes, promedioDeEdades] = await Promise.all([
-			contadorTratamientos(pacientes),
+			contadorMotivosYTratamientos(pacientes),
 			calcularPromedioDeEdades(pacientes),
 		])
 		const estadisticas = {

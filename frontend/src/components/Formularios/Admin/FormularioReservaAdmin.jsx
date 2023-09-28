@@ -5,35 +5,52 @@ import { BotónPrimario } from '../../Botones/BotonPrimario'
 import { LoaderChico } from '../../Loader/LoaderChico'
 import { apiEndPoint } from '../../../services/apiConfig'
 import { UserContext } from '../../../context/userContext'
-import { Horas } from '../../FechasYHoras/Horas'
-import { comprobarHoras } from '../../../helpers/FechasHoras/comprobarHoras'
 import { usePaciente } from '../../../hooks/usePaciente'
-import { HOY_STRING_BIEN } from '../../../constantes'
+import {
+	ESTADOS_RESERVAS,
+	HOY_STRING_BIEN,
+	TRATAMIENTOS,
+} from '../../../constantes'
 import { BotónSecundario } from '../../Botones/BotonSecundario'
 import { fetchData } from '../../../hooks/fetchData'
 import { formatFechaParaUser } from '../../../helpers/Formato/formatFechaParaUser'
-import { diasSemanaConHoras } from '../../../helpers/FechasHoras/diasSemanaConHoras'
 import '../Reserva/FormularioReserva.scss'
 import SelectNombre from '../../SelectNombre/SelectNombre'
+import { compararFechas } from '../../../helpers/FechasHoras/compararFechas'
+import { useDiasYHoras } from '../../../hooks/useDiasYHoras'
+import { ListaHoras } from '../../ListaHoras/ListaHoras'
+import { SelectTratamiento } from '../../SelectTratamiento/SelectTratamiento'
 export const FormularioReservaAdmin = ({
 	reserva,
 	setForm,
 	editar,
 	actualizarReserva,
 }) => {
-	const [dia, setDia] = useState(reserva.fecha || HOY_STRING_BIEN.split('T')[0])
+	const [dia, setDia] = useState(
+		new Date(`${reserva.fecha}`).toISOString().split('T')[0] ||
+			HOY_STRING_BIEN.split('T')[0]
+	)
+	const [horaForm, setHoraForm] = useState(
+		formatHoraUser(new Date(`${reserva.fecha}`)) || ''
+	)
 	const [reservas, setReservas] = useState([])
-	const [motivo, setMotivo] = useState(reserva.motivo)
+	const [motivo, setMotivo] = useState(reserva.tratamiento?.nombre || '')
 	const [observaciones, setObservaciones] = useState(reserva.observaciones)
-	const [horaForm, setHoraForm] = useState(reserva.hora || '')
 	const [inputNombre, setInputNombre] = useState(reserva.pacienteNombre)
 	const [loading, setLoading] = useState(false)
-	const [horasFiltradas, setHorasFiltradas] = useState([])
 	const formRef = useRef()
 	const { setMensaje } = useContext(MensajeToast)
 	const { accessToken } = useContext(UserContext)
 	const { nombres, pagina, setPagina, totalPacientes, totalPaginas } =
 		usePaciente()
+	const { diaConHoras, horas } = useDiasYHoras(dia, horaForm)
+
+	useEffect(() => {
+		formRef.current.scrollIntoView({
+			behavior: 'smooth',
+			block: 'start',
+		})
+	}, [])
 	const cerrarReserva = () => {
 		formRef.current.parentElement.classList.add('animationOut')
 		setTimeout(() => {
@@ -41,10 +58,6 @@ export const FormularioReservaAdmin = ({
 		}, 300)
 	}
 	useEffect(() => {
-		formRef.current.scrollIntoView({
-			behavior: 'smooth',
-			block: 'start',
-		})
 		const getData = async () => {
 			const res = await fetch(`${apiEndPoint.reservas.deUnDia}${dia}`, {
 				headers: {
@@ -58,18 +71,11 @@ export const FormularioReservaAdmin = ({
 		/* accessToken && */ dia && getData()
 	}, [dia, accessToken, reserva])
 
-	useEffect(() => {
-		const dias = diasSemanaConHoras(dia, reservas)
-		const numero = dias.find(
-			(d) => d.dia.getDay() === new Date(`${dia} ${horaForm}`).getDay()
-		)
-		setHorasFiltradas(numero?.horaID)
-	}, [dia, reservas, horaForm])
-
 	const onClickReservar = (e) => {
-		setHoraForm(e.target.textContent)
-		const comprobación = comprobarHoras(e, dia, reservas)
-		if (!comprobación) {
+		const hora = e.target.textContent
+		setHoraForm(hora)
+		const comprobación2 = compararFechas(new Date(`${dia} ${hora}`), reservas)
+		if (comprobación2.estado || comprobación2.proximaHoraNoDisponible) {
 			setMensaje('Hora no disponible para hacer una reserva')
 			setHoraForm('')
 		}
@@ -79,17 +85,19 @@ export const FormularioReservaAdmin = ({
 		e.preventDefault()
 		setLoading(true)
 		const form = formRef.current
-		const horaFin = new Date(`${form.fecha.value.split('T')[0]} ${horaForm}`)
-		horaFin.setMinutes(horaFin.getMinutes() + 30)
 		const res = {
 			pacienteNombre: form.pacienteNombre.value,
-			fecha: form.fecha.value,
-			hora: horaForm,
-			horaFin: formatHoraUser(horaFin),
-			motivo: form.motivo ? form.motivo.value : undefined,
+			fecha: new Date(`${form.fecha.value} ${horaForm}`),
+			tratamiento: form.tratamiento.value,
 			observaciones: form.observaciones.value,
+			sesionSeleccionada: form.sesiones.value,
 		}
-		if (res.pacienteNombre.trim() && res.hora && res.fecha) {
+		if (
+			res.pacienteNombre.trim() &&
+			res.fecha instanceof Date &&
+			res.sesionSeleccionada.trim() &&
+			res.tratamiento.trim()
+		) {
 			const options = {
 				method: 'POST',
 				body: JSON.stringify(res),
@@ -114,18 +122,21 @@ export const FormularioReservaAdmin = ({
 		e.preventDefault()
 		setLoading(true)
 		const form = formRef.current
-		const horaFin = new Date(`${form.fecha.value.split('T')[0]} ${horaForm}`)
-		horaFin.setMinutes(horaFin.getMinutes() + 30)
 		const res = {
 			_id: reserva._id,
 			pacienteNombre: form.pacienteNombre.value,
-			fecha: form.fecha.value,
-			hora: horaForm,
-			horaFin: formatHoraUser(horaFin),
-			motivo: form.motivo ? form.motivo.value : undefined,
+			fecha: new Date(`${form.fecha.value} ${horaForm}`),
+			tratamiento: form.tratamiento.value,
 			observaciones: form.observaciones.value,
+			sesionSeleccionada: form.sesiones.value,
+			estado: reserva.estado || ESTADOS_RESERVAS.pendiente,
 		}
-		if (res.pacienteNombre.trim() && res.hora && res.fecha) {
+		if (
+			res.pacienteNombre.trim() &&
+			res.fecha instanceof Date &&
+			res.sesionSeleccionada.trim() &&
+			res.tratamiento.trim()
+		) {
 			const url = `${apiEndPoint.reservas.editar}${res._id}`
 			const options = {
 				method: 'PUT',
@@ -142,9 +153,7 @@ export const FormularioReservaAdmin = ({
 		}
 		setLoading(false)
 	}
-	const setNombreGuardado = (e) => {
-		setInputNombre(e)
-	}
+
 	return (
 		<section className='formReservaContainer'>
 			<BotónSecundario
@@ -166,7 +175,7 @@ export const FormularioReservaAdmin = ({
 							nombres={nombres}
 							pagina={pagina}
 							setPagina={setPagina}
-							onChangeNombre={setNombreGuardado}
+							onChangeNombre={setInputNombre}
 						/>
 					))}
 				<div className='input'>
@@ -190,16 +199,24 @@ export const FormularioReservaAdmin = ({
 						disabled={
 							inputNombre === 'admin' || reserva.pacienteNombre ? false : true
 						}
-						defaultValue={reserva.fecha || HOY_STRING_BIEN.split('T')[0]}
+						defaultValue={dia || HOY_STRING_BIEN.split('T')[0]}
 						onChange={(e) => {
 							const fechaInput = e.target.value.split('T')[0]
 							setDia(fechaInput)
+							setHoraForm('')
 						}}
 					/>
 				</div>
-				{horasFiltradas?.length > 0 && (
+				{diaConHoras && (
 					<div className='input'>
-						<Horas horas={horasFiltradas} onClickReservar={onClickReservar} />
+						<ul className='horasDisplay'>
+							<ListaHoras
+								diaConHoras={diaConHoras}
+								horas={horas}
+								onClickReservar={onClickReservar}
+								reservas={reservas}
+							/>
+						</ul>
 					</div>
 				)}
 
@@ -217,29 +234,41 @@ export const FormularioReservaAdmin = ({
 						onChange={(e) => setObservaciones(e.target.value)}
 					/>
 				</div>
-
-				{inputNombre === 'admin' ? null : (
+				<SelectTratamiento
+					className={'input'}
+					reserva={reserva}
+					setMotivo={setMotivo}
+					name={'tratamiento'}
+				/>
+				{motivo && (
 					<div className='input'>
-						<label htmlFor='motivo'>Motivo</label>
-						<select name='motivo' onChange={(e) => setMotivo(e.target.value)}>
-							<option defaultValue={reserva.motivo}>
-								{reserva.motivo ? reserva.motivo : ''}
-							</option>
-							<option value='Drenaje Linfático'>Drenaje Linfático</option>
-							<option value='Masaje Estético'>Masaje Estético</option>
-							<option value='Exfoliación Corporal'>Exfoliación Corporal</option>
-							<option value='Masaje Cérvico-Craneal'>
-								Masaje Cérvico-Craneal
-							</option>
-							<option value='Masaje Con Piedras Calientes'>
-								Masaje Con Piedras Calientes
-							</option>
-							<option value='Masaje Descontracturante'>
-								Masaje Descontracturante
-							</option>
-							<option value='Masaje Relajante'>Masaje Relajante</option>
-							<option value='Masaje Prenatal'>Masaje Prenatal</option>
-							<option value='Barras De access'>Barras De Access</option>
+						<label htmlFor='sesiones'>Sesiones</label>
+						<select name='sesiones' required>
+							{motivo === 'Admin' && (
+								<option value='Admin'>Admin (sin costo)</option>
+							)}
+							<option value='1 sesion'>1 sesion</option>
+							{motivo === TRATAMIENTOS.masajeDescontracturante && (
+								<option value='4 sesiones (cuerpo completo)'>
+									4 sesiones (cuerpo completo)
+								</option>
+							)}
+							{motivo === TRATAMIENTOS.masajeEstético && (
+								<>
+									<option value='4 sesiones (una zona a elección)'>
+										4 sesiones (una zona a elección)
+									</option>
+									<option value='8 sesiones (una zona a elección)'>
+										8 sesiones (una zona a elección)
+									</option>
+									<option value='8 sesiones (dos zonas a elección)'>
+										8 sesiones (dos zonas a elección)
+									</option>
+									<option value='8 sesiones (cuerpo completo)'>
+										8 sesiones (cuerpo completo)
+									</option>
+								</>
+							)}
 						</select>
 					</div>
 				)}
@@ -251,7 +280,10 @@ export const FormularioReservaAdmin = ({
 					)}
 					{dia && (
 						<span className='spanHora'>
-							Dia <strong>{formatFechaParaUser({ fecha: dia })}</strong>
+							Dia{' '}
+							<strong>
+								{formatFechaParaUser({ fecha: new Date(`${dia} ${horaForm}`) })}
+							</strong>
 						</span>
 					)}
 					{horaForm && (
@@ -267,7 +299,7 @@ export const FormularioReservaAdmin = ({
 					)}
 					{motivo && (
 						<span className='spanHora'>
-							Motivo <strong>{motivo}</strong>
+							Tratamiento <strong>{motivo}</strong>
 						</span>
 					)}
 				</div>

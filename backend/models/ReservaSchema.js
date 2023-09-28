@@ -10,7 +10,7 @@ const reservaSchema = Schema(
 			type: String,
 			required: true,
 		},
-		fecha: {
+		/* 		fecha: {
 			type: Date,
 			required: true,
 		},
@@ -21,13 +21,42 @@ const reservaSchema = Schema(
 		horaFin: {
 			type: String,
 			required: true,
+		}, */
+		horario: {
+			horaInicio: { type: Date, required: true },
+			horaDeFin: { type: Date, required: true },
 		},
-		motivo: {
+		/* 	motivo: {
 			type: String,
 			default: '',
+		}, */
+		tratamiento: {
+			type: {
+				tratamientoId: {
+					type: Schema.Types.ObjectId,
+					ref: 'Tratamiento',
+					required: true,
+				},
+				nombre: {
+					type: String,
+					required: true,
+				},
+				sesiones: {
+					type: Number,
+					default: 1,
+				},
+				descripcionSesion: {
+					type: String,
+				},
+			},
+			required: true,
 		},
 		observaciones: {
 			type: String,
+		},
+		precio: {
+			type: Number,
+			default: 0,
 		},
 		estado: {
 			type: String,

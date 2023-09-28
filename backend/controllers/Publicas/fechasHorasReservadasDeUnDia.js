@@ -8,14 +8,12 @@ export const fechasHorasReservadasDeUnDia = async (req, res) => {
 	endOfDay.setUTCHours(23, 59, 59, 999)
 	try {
 		const fechasHoras = await Reserva.find({
-			fecha: {
+			'horario.horaInicio': {
 				$gte: startOfDay.toISOString(),
 				$lte: endOfDay.toISOString(),
 			},
 		})
-			.select('fecha')
-			.select('hora')
-			.select('horaFin')
+			.select('horario')
 			.select('estado')
 		res.json({
 			fechasHoras,

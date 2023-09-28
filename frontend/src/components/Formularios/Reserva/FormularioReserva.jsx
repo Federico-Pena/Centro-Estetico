@@ -6,9 +6,9 @@ import { fechasHorasReservadasDelDia } from '../../../services/publica/fechasHor
 import { LoaderChico } from '../../Loader/LoaderChico'
 import { UserContext } from '../../../context/userContext'
 import { MensajeToast } from '../../../context/mensajeContext'
-import { Horas } from '../../FechasYHoras/Horas'
 import { BotónSecundario } from '../../Botones/BotonSecundario'
 import { formatFechaParaUser } from '../../../helpers/Formato/formatFechaParaUser'
+import { ESTADOS_RESERVAS } from '../../../constantes'
 export const FormularioReserva = ({ observaciones, cerrarFormulario }) => {
 	const [nombre, setNombre] = useState('')
 	const [dia, setDia] = useState('')
@@ -29,6 +29,9 @@ export const FormularioReserva = ({ observaciones, cerrarFormulario }) => {
 			try {
 				const { horas } = await fechasHorasReservadasDelDia(dia, accessToken)
 				setHorasDisponibles(horas)
+				if (horas.length === 0) {
+					setHora('')
+				}
 				setLoading(false)
 			} catch (error) {
 				setLoading(false)
@@ -84,11 +87,24 @@ export const FormularioReserva = ({ observaciones, cerrarFormulario }) => {
 				</div>
 				{horasDisponibles.length > 0 && (
 					<div className={`input`}>
-						<Horas
-							publico={true}
-							horas={horasDisponibles}
-							onClickReservar={onClickReservar}
-						/>
+						<ul className='horasDisplay'>
+							{horasDisponibles.map((hora, i) => {
+								return (
+									i !== 0 &&
+									i !== 1 &&
+									hora.estado !== ESTADOS_RESERVAS.pendiente &&
+									hora.estado !== ESTADOS_RESERVAS.pago &&
+									!hora.proximaHoraNoDisponible && (
+										<li
+											className='liHora'
+											key={hora.id}
+											onClick={onClickReservar}>
+											{hora.id.split(' ')[1]}
+										</li>
+									)
+								)
+							})}
+						</ul>
 					</div>
 				)}
 				<div className='input'>
@@ -109,7 +125,10 @@ export const FormularioReserva = ({ observaciones, cerrarFormulario }) => {
 					)}
 					{dia && (
 						<span className='spanHora'>
-							Dia <strong>{formatFechaParaUser({ fecha: dia })}</strong>
+							Dia{' '}
+							<strong>
+								{formatFechaParaUser({ fecha: `${dia} ${hora}` })}
+							</strong>
 						</span>
 					)}
 					{hora && (

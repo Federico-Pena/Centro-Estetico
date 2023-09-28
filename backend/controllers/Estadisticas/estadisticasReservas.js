@@ -1,20 +1,7 @@
+import { calcularGanancias } from '../../helpers/calcularGanancias.js'
 import { contadorEstados } from '../../helpers/contadorEstados.js'
-import { contadorMotivos } from '../../helpers/contadorMotivos.js'
+import { contadorMotivosYTratamientos } from '../../helpers/contadorMotivosYTratamientos.js'
 import { Reserva } from '../../models/ReservaSchema.js'
-
-export function cambiarFecha(reservas) {
-	const reservasNuevas = reservas.map((reserva) => {
-		const fechaOriginal = new Date(
-			`${reserva.fecha.toISOString().split('T')[0]}T${reserva.hora}:00.000Z`
-		)
-		const mediaHoraDespues = new Date(fechaOriginal)
-		mediaHoraDespues.setMinutes(mediaHoraDespues.getMinutes() + 30)
-		reserva.inicio = fechaOriginal
-		reserva.fin = mediaHoraDespues
-		return reserva
-	})
-	return reservasNuevas
-}
 
 export const estadisticasReservas = async (req, res) => {
 	try {
@@ -26,23 +13,30 @@ export const estadisticasReservas = async (req, res) => {
 		const [reservas, reservasMes] = await Promise.all([
 			Reserva.find({ pacienteNombre: { $ne: 'admin' } }),
 			Reserva.find({
-				fecha: {
+				'horario.horaInicio': {
 					$gte: new Date(`${año}-${mesInicio}-01`),
 					$lt: new Date(`${añoFin}-${mesFin}-01`),
 				},
 				pacienteNombre: { $ne: 'admin' },
-			}).select('estado'),
+			})
+				.select('estado')
+				.select('precio'),
 		])
 		const estadisticasPaciente = req.estadisticas
 		const estadosTodas = contadorEstados(reservas)
 		const estadosMes = contadorEstados(reservasMes)
-		const reservaMotivo = contadorMotivos(reservas)
-
+		const reservaMotivo = contadorMotivosYTratamientos(reservas)
+		const gananciaTotal = calcularGanancias(reservas)
+		const gananciaMes = calcularGanancias(reservasMes)
 		res.status(200).json({
 			estadosTodas,
 			estadosMes,
 			reservaMotivo,
 			estadisticasPaciente,
+			gananciasReservas: {
+				totales: gananciaTotal.total,
+				mes: gananciaMes.total,
+			},
 		})
 	} catch (error) {
 		res

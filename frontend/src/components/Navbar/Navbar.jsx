@@ -60,8 +60,8 @@ const Navbar = () => {
 						</li>
 
 						<li>
-							<Link onClick={setMenuState} to='/SobreMi'>
-								Sobre mi
+							<Link onClick={setMenuState} to='/Nosotros'>
+								Nosotros
 							</Link>
 						</li>
 						<li>

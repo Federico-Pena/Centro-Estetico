@@ -6,9 +6,8 @@ import {
 	INTERVALO_MINUTOS,
 	MINUTOS_EN_UNA_HORA,
 } from '../../constantes'
-import { compararFechas } from './compararFechas'
 
-export const diasSemanaConHoras = (currentDate, reservasSemanales) => {
+export const diasSemanaConHoras = (currentDate) => {
 	const diaActual = new Date(currentDate)
 	if (Number.isNaN(diaActual.getTime())) {
 		return []
@@ -43,8 +42,7 @@ export const diasSemanaConHoras = (currentDate, reservasSemanales) => {
 				})
 			)
 			.filter(Boolean)
-		const horaID = horas.map((time) => compararFechas(time, reservasSemanales))
-		return { dia, horas, horaID }
+		return { dia, horas }
 	})
 
 	return dias
