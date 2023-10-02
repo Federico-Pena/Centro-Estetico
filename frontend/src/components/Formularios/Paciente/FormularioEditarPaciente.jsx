@@ -7,9 +7,8 @@ import { LoaderChico } from '../../Loader/LoaderChico'
 import { apiEndPoint } from '../../../services/apiConfig'
 import { fetchData } from '../../../hooks/fetchData'
 import { UserContext } from '../../../context/userContext'
-import { SelectTratamiento } from '../../SelectTratamiento/SelectTratamiento'
-import { useTratamiento } from '../../../hooks/useTratamiento'
-
+import { TRATAMIENTOS } from '../../../constantes'
+import { MensajeToast } from '../../../context/mensajeContext'
 const FormularioEditarPaciente = ({
 	paciente,
 	cerrarForm,
@@ -19,7 +18,7 @@ const FormularioEditarPaciente = ({
 	const [loading, setLoading] = useState(false)
 	const { accessToken } = useContext(UserContext)
 	const formRef = useRef(null)
-	const { tratamientos } = useTratamiento()
+	const { setMensaje } = useContext(MensajeToast)
 
 	useEffect(() => {
 		let options = {
@@ -43,8 +42,17 @@ const FormularioEditarPaciente = ({
 				authorization: `Bearer ${accessToken}`,
 			},
 		}
-		await fetchData(url, options, actualizarPacientes)
-		cerrarForm()
+		await fetchData(url, options, (res) => {
+			const { error, nuevoPaciente,mensaje } = res
+			if (error) {
+				setMensaje(error)
+				console.log(error)
+			} else {
+				setMensaje(mensaje)
+				actualizarPacientes(nuevoPaciente)
+				cerrarForm()
+			}
+		})
 		setLoading(false)
 	}
 
@@ -55,12 +63,15 @@ const FormularioEditarPaciente = ({
 
 	return (
 		<form className='formEditarPaciente' onSubmit={submitEditar} ref={formRef}>
-			<BotónSecundario
-				tipo={'button'}
-				onClickFunction={cerrarForm}
-				texto={`🡸`}
-			/>
-			<h1>Editar Paciente</h1>
+			<div className='input'>
+				<h1>Editar Paciente</h1>
+				<BotónSecundario
+					tipo={'button'}
+					onClickFunction={cerrarForm}
+					texto={`Cerrar`}
+				/>
+			</div>
+
 			<div className='input'>
 				<label>Nombre</label>
 				<input type='text' name='nombre' defaultValue={paciente.nombre} />
@@ -86,7 +97,7 @@ const FormularioEditarPaciente = ({
 			</div>
 
 			<div className='input'>
-				<label>Emergencia/Sociedad </label>
+				<label>Emergencia / Sociedad </label>
 				<input type='text' name='sociedad' defaultValue={paciente.sociedad} />
 			</div>
 
@@ -236,13 +247,22 @@ const FormularioEditarPaciente = ({
 				<label>Implantes</label>
 				<input type='text' name='implantes' defaultValue={paciente.implantes} />
 			</div>
+			<div className='inputSelect'>
+				<label>Tratamientos</label>
+				<select name='tratamiento'>
+					<option value={paciente.tratamiento}>{paciente.tratamiento}</option>
+					{Object.values(TRATAMIENTOS).map((trat) => {
+						return (
+							trat !== paciente.tratamiento && (
+								<option key={trat} value={trat}>
+									{trat}
+								</option>
+							)
+						)
+					})}
+				</select>
+			</div>
 
-			<SelectTratamiento
-				reserva={paciente}
-				className={'inputSelect'}
-				tratamientos={tratamientos}
-				name={'tratamiento'}
-			/>
 			<BotónPrimario
 				tipo={'submit'}
 				className={loading ? 'submitEditarAdmin' : ''}

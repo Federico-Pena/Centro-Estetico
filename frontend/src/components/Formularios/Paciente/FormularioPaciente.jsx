@@ -8,15 +8,13 @@ import { BotónPrimario } from '../../Botones/BotonPrimario'
 import { apiEndPoint } from '../../../services/apiConfig'
 import { fetchData } from '../../../hooks/fetchData'
 import { UserContext } from '../../../context/userContext'
-import { SelectTratamiento } from '../../SelectTratamiento/SelectTratamiento'
-import { useTratamiento } from '../../../hooks/useTratamiento'
-
-const FormularioPaciente = ({ nuevoPaciente }) => {
+import { BotónSecundario } from '../../Botones/BotonSecundario'
+import { TRATAMIENTOS } from '../../../constantes'
+const FormularioPaciente = ({ nuevoPaciente, setFormulario }) => {
 	const [foto, setFoto] = useState(null)
 	const { loading } = usePaciente()
 	const { setMensaje } = useContext(MensajeToast)
 	const { accessToken } = useContext(UserContext)
-	const { tratamientos } = useTratamiento()
 
 	const submitAgregar = async (e) => {
 		e.preventDefault()
@@ -31,7 +29,16 @@ const FormularioPaciente = ({ nuevoPaciente }) => {
 					authorization: `Bearer ${accessToken}`,
 				},
 			}
-			await fetchData(url, opciones, nuevoPaciente)
+			await fetchData(url, opciones, (res) => {
+				const { error, paciente,mensaje } = res
+				if (error) {
+					setMensaje(error)
+					console.log(error)
+				} else {
+					setMensaje(mensaje)
+					nuevoPaciente(paciente)
+				}
+			})
 
 			form.reset()
 		} else {
@@ -47,7 +54,14 @@ const FormularioPaciente = ({ nuevoPaciente }) => {
 	return (
 		<>
 			<form className='formPaciente' onSubmit={submitAgregar}>
-				<h1>Agregar Paciente</h1>
+				<div className='input'>
+					<h1>Agregar Paciente</h1>
+					<BotónSecundario
+						onClickFunction={setFormulario}
+						texto={'cerrar'}
+						tipo={'button'}
+					/>
+				</div>
 				<div className='input'>
 					<label htmlFor='nombre'>Nombre</label>
 					<input type='text' id='nombre' name='nombre' />
@@ -201,11 +215,18 @@ const FormularioPaciente = ({ nuevoPaciente }) => {
 					<label htmlFor='implantes'>Implantes</label>
 					<input type='text' id='implantes' name='implantes' />
 				</div>
-				<SelectTratamiento
-					className={'inputSelect'}
-					tratamientos={tratamientos}
-					name={'tratamiento'}
-				/>
+				<div className='inputSelect'>
+					<label htmlFor='implantes'>Tratamientos</label>
+					<select name='tratamiento'>
+						{Object.values(TRATAMIENTOS).map((trat) => {
+							return (
+								<option key={trat} value={trat}>
+									{trat}
+								</option>
+							)
+						})}
+					</select>
+				</div>
 				<BotónPrimario texto={loading ? <LoaderChico /> : 'Guardar'} />
 			</form>
 		</>

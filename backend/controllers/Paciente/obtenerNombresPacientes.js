@@ -1,13 +1,13 @@
 import { Paciente } from '../../models/PacienteSchema.js'
 
 export const obtenerNombresPacientes = async (req, res) => {
-	const page = parseInt(req.params.pagina) > 1 ? parseInt(req.params.pagina) : 1
-	const porPagina = 10
-	const nombreBusqueda = req.query.nombre
-		? req.query.nombre.toLowerCase()
-		: null
-
 	try {
+		const page =
+			parseInt(req.params.pagina) > 1 ? parseInt(req.params.pagina) : 1
+		const porPagina = 10
+		const nombreBusqueda = req.query.nombre
+			? req.query.nombre.toLowerCase()
+			: null
 		let pipeline = [
 			{
 				$project: {
@@ -63,9 +63,9 @@ export const obtenerNombresPacientes = async (req, res) => {
 				page,
 			})
 		} else {
-			return res.status(404).json({ message: 'No se encontraron pacientes' })
+			return res.status(404).json({ error: 'No se encontraron pacientes' })
 		}
 	} catch (err) {
-		return res.status(500).json({ message: err.message })
+		return res.status(500).json({ error: 'Error al buscar los nombres' })
 	}
 }

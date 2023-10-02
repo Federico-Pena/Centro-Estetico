@@ -1,50 +1,32 @@
 import './PacientesPage.scss'
-import { useContext, useState } from 'react'
+import {  useState } from 'react'
 import { BotónSecundario } from '../../components/Botones/BotonSecundario'
 import SelectNombre from '../../components/SelectNombre/SelectNombre'
 import { usePaciente } from '../../hooks/usePaciente'
 import { Paciente } from '../../components/Paciente/Paciente'
 import FormularioPaciente from '../../components/Formularios/Paciente/FormularioPaciente'
 import { LoaderChico } from '../../components/Loader/LoaderChico'
-import { MensajeToast } from '../../context/mensajeContext'
 export default function Pacientes() {
 	const [formulario, setFormulario] = useState(false)
 	const { setPacientes, getPaciente, pacientes, loading } = usePaciente()
-	const { setMensaje } = useContext(MensajeToast)
 
-	const visibleForm = () => {
-		setFormulario(!formulario)
-	}
 	const nuevoPaciente = (nuevo) => {
-		if (!nuevo.mensaje) {
+		if (nuevo) {
 			setFormulario(false)
-			const mensaje = `Nuevo paciente ${nuevo.nombre}
-			`
-			setMensaje(mensaje)
 			setPacientes((prev) => [...prev, nuevo])
-		} else {
-			const mensaje = nuevo.mensaje
-			setMensaje(mensaje)
 		}
 	}
 
 	return (
 		<>
 			<main className='containerPacientesPage'>
-				<BotónSecundario
-					className={'btn-cerrarFormulario'}
-					onClickFunction={visibleForm}
-					texto={
-						loading ? (
-							<LoaderChico />
-						) : formulario ? (
-							'Cerrar Formulario'
-						) : (
-							'Agregar Nuevo Paciente'
-						)
-					}
-				/>
-
+				{!formulario && (
+					<BotónSecundario
+						className={'btn-cerrarFormulario'}
+						onClickFunction={() => setFormulario(true)}
+						texto={loading ? <LoaderChico /> : 'Agregar Nuevo Paciente'}
+					/>
+				)}
 				{pacientes.length > 0 && !formulario && (
 					<div className='containersCardsPacientes'>
 						<BotónSecundario
@@ -64,8 +46,12 @@ export default function Pacientes() {
 						})}
 					</div>
 				)}
-
-				{formulario && <FormularioPaciente nuevoPaciente={nuevoPaciente} />}
+				{formulario && (
+					<FormularioPaciente
+						setFormulario={() => setFormulario(false)}
+						nuevoPaciente={nuevoPaciente}
+					/>
+				)}
 				{!pacientes.length && !formulario && (
 					<SelectNombre onChangeNombre={getPaciente} />
 				)}

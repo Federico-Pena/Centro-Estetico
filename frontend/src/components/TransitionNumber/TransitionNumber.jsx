@@ -1,18 +1,19 @@
 import { useEffect, useState, useRef } from 'react'
+
 export const TransitionNumber = ({ from, to, duration = 1000 }) => {
 	const [currentValue, setCurrentValue] = useState(from)
 	const previousToRef = useRef(to)
+
 	useEffect(() => {
 		let inicio
 		let ultimoFrame
 		const previousTo = previousToRef.current
-
 		const animate = (timestamp) => {
 			if (!inicio) inicio = timestamp
 			const progreso = timestamp - inicio
-			const porcentaje = Math.min(1, progreso / duration)
+			const porcentaje = duration > 0 ? Math.min(1, progreso / duration) : 1
 			const nuevoValor = Math.floor(previousTo + (to - previousTo) * porcentaje)
-			setCurrentValue(nuevoValor)
+			setCurrentValue(isNaN(nuevoValor) ? 0 : nuevoValor)
 			if (porcentaje < 1) {
 				ultimoFrame = requestAnimationFrame(animate)
 			}
@@ -24,5 +25,6 @@ export const TransitionNumber = ({ from, to, duration = 1000 }) => {
 		}
 		return () => cancelAnimationFrame(ultimoFrame)
 	}, [from, to, duration])
+
 	return <span>{currentValue}</span>
 }

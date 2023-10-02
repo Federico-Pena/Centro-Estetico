@@ -8,6 +8,7 @@ import { UserContext } from '../../context/userContext'
 import { apiEndPoint } from '../../services/apiConfig'
 import { formatFechaParaUser } from '../../helpers/Formato/formatFechaParaUser'
 import { formatHoraUser } from '../../helpers/Formato/formatHoraUser'
+
 export const ContenedorReservas = ({
 	reservas,
 	actualizarReservas,
@@ -51,7 +52,9 @@ export const ContenedorReservas = ({
 				fecha: reserva.horario.horaInicio,
 				nombre: reserva.pacienteNombre,
 			}}
-			actualizarReserva={actualizarReservas}
+			actualizarReserva={(res) => {
+				actualizarReservas(res)
+			}}
 			setForm={() => {
 				setForm(false)
 			}}

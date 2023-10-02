@@ -3,24 +3,24 @@ import { calcularPromedioDeEdades } from '../../helpers/calcularPromedioDeEdades
 import { Paciente } from '../../models/PacienteSchema.js'
 
 export const estadisticasPacientes = async (req, res, next) => {
-	try {
-		const [totalPacientes, pacientes] = await Promise.all([
-			Paciente.countDocuments({ nombre: { $ne: 'admin' } }),
-			Paciente.find({ nombre: { $ne: 'admin' } }),
-		])
-		const [tratamientosPacientes, promedioDeEdades] = await Promise.all([
-			contadorMotivosYTratamientos(pacientes),
-			calcularPromedioDeEdades(pacientes),
-		])
-		const estadisticas = {
-			totalPacientes,
-			tratamientosPacientes,
-			promedioDeEdades,
-		}
-		req.estadisticas = estadisticas
-		next()
-	} catch (error) {
-		console.log(error)
-		res.status(500).json({ error: 'Ocurrió un error al calcular estadísticas' })
-	}
+  try {
+    const [totalPacientes, pacientes] = await Promise.all([
+      Paciente.countDocuments({ nombre: { $ne: 'admin' } }),
+      Paciente.find({ nombre: { $ne: 'admin' } })
+    ])
+    const [tratamientosPacientes, promedioDeEdades] = await Promise.all([
+      contadorMotivosYTratamientos(pacientes),
+      calcularPromedioDeEdades(pacientes)
+    ])
+    const estadisticas = {
+      totalPacientes,
+      tratamientosPacientes,
+      promedioDeEdades
+    }
+    req.estadisticas = estadisticas
+    next()
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ error: 'Ocurrió un error al calcular estadísticas' })
+  }
 }

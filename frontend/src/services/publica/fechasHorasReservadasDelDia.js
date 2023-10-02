@@ -17,10 +17,14 @@ export const fechasHorasReservadasDelDia = async (dia, authToken) => {
 				},
 			}
 		)
-		const { fechasHoras } = await res.json()
-
-		const horas = obtenerHorasReservadas(diaSeleccionado.horas, fechasHoras)
-		return { horas, fechasHoras }
+		const data = await res.json()
+		const { fechasHoras, error } = data
+		if (error) {
+			return { error }
+		} else {
+			const horas = obtenerHorasReservadas(diaSeleccionado.horas, fechasHoras)
+			return { horas, fechasHoras }
+		}
 	} catch (error) {
 		console.log(error)
 	}

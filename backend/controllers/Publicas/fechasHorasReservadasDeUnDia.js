@@ -19,6 +19,6 @@ export const fechasHorasReservadasDeUnDia = async (req, res) => {
 			fechasHoras,
 		})
 	} catch (error) {
-		res.status(500).json({ error: 'Error al obtener las reservas.' })
+		res.status(500).json({ error: 'Error al obtener las horas.' })
 	}
 }
