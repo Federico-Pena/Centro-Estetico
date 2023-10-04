@@ -3,10 +3,12 @@ import { Paciente } from '../../models/PacienteSchema.js'
 import { Tratamiento } from '../../models/TratamientoSchema.js'
 import { formatFechaParaUser } from '../../../frontend/src/helpers/Formato/formatFechaParaUser.js'
 import { formatHoraUser } from '../../../frontend/src/helpers/Formato/formatHoraUser.js'
+import { ESTADOS_RESERVAS } from '../../constantes.js'
 
 export const agregarReserva = async (req, res) => {
   try {
     const { pacienteNombre, fecha, observaciones, tratamiento, sesionSeleccionada } = req.body
+
     const horaInicio = new Date(`${fecha}`)
     const horaDeFin = new Date(horaInicio)
     const horaValida = horaInicio.getHours()
@@ -14,13 +16,16 @@ export const agregarReserva = async (req, res) => {
       return res.status(500).json({ error: 'Hora no valida para hacer reserva' })
     }
     horaDeFin.setMinutes(horaDeFin.getMinutes() + 30)
-    const ReservaExistente = await Reserva.find({
+    const reservaExistente = await Reserva.find({
       'horario.horaInicio': horaInicio
     })
-    if (ReservaExistente.length) {
-      return res.status(500).json({
-        error: 'Horario ya reservado'
-      })
+    if (reservaExistente.length) {
+      const noCancelada = reservaExistente.find((res) => res.estado !== ESTADOS_RESERVAS.cancelada)
+      if (noCancelada) {
+        return res.status(500).json({
+          error: 'Horario ya reservado'
+        })
+      }
     }
     let pacienteExistente = await Paciente.findOne({ nombre: pacienteNombre })
     if (!pacienteExistente) {

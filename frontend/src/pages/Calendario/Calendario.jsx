@@ -163,7 +163,9 @@ function Calendario() {
                           reservasSemanales,
                           diasSemana
                         ).find(
-                          (reservadaHora) => reservadaHora.hora.toISOString() === hora.toISOString()
+                          (reservadaHora) =>
+                            reservadaHora.hora.toISOString() === hora.toISOString() &&
+                            reservadaHora.estado !== ESTADOS_RESERVAS.cancelada
                         )
                         const claseHora =
                           i == 0 || i == 1
