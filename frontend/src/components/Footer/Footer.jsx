@@ -3,7 +3,7 @@ import './Footer.scss'
 import { Link } from 'react-router-dom'
 export const Footer = () => {
   const email = import.meta.env.VITE_IS_ALLOWED_ACCESS_1
-
+  console.log(email)
   return (
     <footer>
       <div className='footer'>
