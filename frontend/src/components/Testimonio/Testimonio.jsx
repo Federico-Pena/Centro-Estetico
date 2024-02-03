@@ -1,33 +1,24 @@
-import { useEffect, useRef, useState } from 'react'
-import './Testimonio.scss'
+import { useRef } from 'react'
+import { useObserver } from '../../Hooks/useObserver.jsx'
 export const Testimonio = ({ testimonio }) => {
-  const [visible, setVisible] = useState(false)
-  const [src, setSrc] = useState('')
   const { imgURL, titulo, contenido } = testimonio
   const imgRef = useRef()
-  useEffect(() => {
-    const { current } = imgRef
-    const observerFunction = (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          setVisible(true)
-          setSrc(imgURL)
-          entry.target.classList.add('visible')
-        }
-      })
-    }
-    const observador = new IntersectionObserver(observerFunction)
-    imgRef.current && observador.observe(current)
-    return () => current && observador.unobserve(current)
-  }, [visible, imgURL])
-
+  const { isVisible } = useObserver(imgRef)
   return (
-    <article className='testimonio' ref={imgRef}>
-      {visible && src ? (
+    <article
+      className={`grid gap-8 p-5 border border-gray-500 rounded ${
+        isVisible ? 'animate-fadeIn' : ''
+      }`}
+      ref={imgRef}>
+      {isVisible && imgURL ? (
         <>
-          <header className='headerTestimonio'>
-            <img className='imgTestimonio' src={src} alt={`testimonio de paciente `} />
-            <h4 className='tituloTestimonio'>{titulo}</h4>
+          <header className='grid gap-4 grid-flow-col items-center'>
+            <img
+              className='w-12 h-12 rounded-full object-cover'
+              src={imgURL}
+              alt={`testimonio de paciente ${titulo.split('.')[0]}`}
+            />
+            <h4 className='font-bold text-xl font-betonga text-color-violeta'>{titulo}</h4>
           </header>
           <p className='contenidoTestimonio'>{contenido}</p>
         </>

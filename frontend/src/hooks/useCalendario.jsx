@@ -1,62 +1,65 @@
 import { useContext, useEffect, useState } from 'react'
-import { fetchData } from './fetchData'
-import { UserContext } from '../context/userContext'
-import { apiEndPoint } from '../services/apiConfig'
-import { MensajeToast } from '../context/mensajeContext'
-import { DIAS_DE_LA_SEMANA } from '../constantes'
-import { diasSemanaConHoras } from '../helpers/FechasHoras/diasSemanaConHoras'
+import { DIAS_DE_LA_SEMANA, HOY_FECHA_STRING } from '../constantes.js'
+import { ACTIONS_RESERVAS } from '../Context/Reservas/reducerReservas.js'
+import { ReservasContext } from '../Context/Reservas/ReservasContext.jsx'
+import { ToastContext } from '../Context/Toast/mensajeContext.jsx'
+import { UserContext } from '../Context/User/userContext.jsx'
+import { fechasDelCalendario } from '../Helpers/fechasDelCalendario.js'
+import { getReservasSemana } from './Api/helpers/Reservas/getReservasSemana.js'
 
-export const useCalendario = (dia) => {
+export const useCalendario = () => {
   const [loading, setLoading] = useState(false)
-  const [currentDate, setCurrentDate] = useState(dia)
-  const [reservasSemanales, setReservasSemanales] = useState([])
-  const { setMensaje } = useContext(MensajeToast)
-  const diasSemana = diasSemanaConHoras(currentDate, reservasSemanales)
+  const [diaDeLaSemana, setDiaDeLaSemana] = useState(HOY_FECHA_STRING.split('T')[0])
+  const { setMensaje } = useContext(ToastContext)
   const { accessToken } = useContext(UserContext)
+  const { dispatch } = useContext(ReservasContext)
+  const diasSemana = fechasDelCalendario(diaDeLaSemana)
 
   useEffect(() => {
     const getReservas = async () => {
       setLoading(true)
-      const options = {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${accessToken || ''}`
+      const res = await getReservasSemana(accessToken, diaDeLaSemana)
+      const { datos, error, status } = res
+      console.log(datos)
+      if (status === 200) {
+        dispatch({ type: ACTIONS_RESERVAS.SET_RESERVAS, payload: datos })
+      } else if (!datos) {
+        dispatch({ type: ACTIONS_RESERVAS.SET_RESERVAS, payload: [] })
+      } else {
+        if (error) {
+          setMensaje(error)
+        } else {
+          setMensaje('Ocurrió un error al obtener las reservas de la semana')
         }
       }
-      const url = `${apiEndPoint.reservas.deLaSemana}${currentDate}`
-      await fetchData(url, options, (res) => {
-        if (res.error) {
-          setMensaje(res.error)
-          return
-        } else {
-          setReservasSemanales(res.reservas)
-        }
-      })
       setLoading(false)
     }
-    /* accessToken && */ currentDate && getReservas()
-  }, [accessToken, setMensaje, currentDate])
-
+    /* accessToken && */ diaDeLaSemana && getReservas()
+  }, [accessToken, setMensaje, diaDeLaSemana, dispatch])
   const semanaAnterior = () => {
-    setLoading(true)
-    const newDate = new Date(`${currentDate} 00:00:00.000Z`)
+    const newDate = new Date(`${diaDeLaSemana} 00:00:00.000Z`)
     newDate.setDate(newDate.getDate() - DIAS_DE_LA_SEMANA)
-    setCurrentDate(newDate.toISOString().split('T')[0])
-    setLoading(false)
+    const fecha = newDate.toISOString().split('T')[0]
+    setDiaDeLaSemana(fecha)
   }
   const semanaSiguiente = () => {
-    setLoading(true)
-    const newDate = new Date(`${currentDate} 00:00:00.000Z`)
+    const newDate = new Date(`${diaDeLaSemana} 00:00:00.000Z`)
     newDate.setDate(newDate.getDate() + DIAS_DE_LA_SEMANA)
-    setCurrentDate(newDate.toISOString().split('T')[0])
-    setLoading(false)
+    const fecha = newDate.toISOString().split('T')[0]
+    setDiaDeLaSemana(fecha)
+  }
+  const seleccionarDia = (fechaInput) => {
+    setDiaDeLaSemana(fechaInput)
+  }
+  const setSeleccionadas = (seleccionadas) => {
+    dispatch({ type: ACTIONS_RESERVAS.SET_RESERVAS_SELECCIONADAS, payload: seleccionadas })
   }
   return {
-    reservasSemanales,
     loading,
-    diasSemana,
     semanaAnterior,
     semanaSiguiente,
-    setReservasSemanales
+    diasSemana,
+    setSeleccionadas,
+    seleccionarDia
   }
 }

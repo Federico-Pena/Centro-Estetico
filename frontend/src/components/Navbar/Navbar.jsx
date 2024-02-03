@@ -1,150 +1,47 @@
 import { Link } from 'react-router-dom'
-import { useAuth0 } from '@auth0/auth0-react'
-import './Navbar.scss'
 import { useState } from 'react'
-import { BotónSecundario } from '../Botones/BotonSecundario'
-//import { UserContext } from '../../context/userContext'
-import { Menu } from '../Icons/Icons'
+import { Menu, MenuCross } from '../Icons/Icons'
+import { navLinks } from './links.js'
+import { NavbarLink } from './NavbarLink.jsx'
+import { AdminMenu } from './AdminMenu.jsx'
+import { NavbarSesion } from './NavbarSesion.jsx'
 
-const Navbar = () => {
-  const { isAuthenticated, user, loginWithRedirect, logout } = useAuth0()
+const Navbar = ({ isAllowedAccess }) => {
   const [openMenu, setOpenMenu] = useState(false)
-  //const { isAllowedAccess } = useContext(UserContext)
-  const handleLogin = () => {
-    loginWithRedirect({
-      authorizationParams: {
-        redirect_uri: window.location.origin
-      }
-    })
-  }
-  const handleLogout = () => {
-    logout({
-      logoutParams: {
-        returnTo: window.location.origin
-      }
-    })
-  }
+
   const setMenuState = () => {
     setOpenMenu(!openMenu)
     window.scrollTo(0, 0)
   }
+
   return (
-    <header className='header'>
-      <div className='headerdiv'>
-        <div
-          onClick={() => (openMenu ? setMenuState() : setOpenMenu(false))}
-          className={`${openMenu ? 'divLogo' : ''}`}>
-          <Link to='/' onClick={() => (openMenu ? setMenuState() : setOpenMenu(false))}>
-            <img src='/assets/icons/icon-192.png' alt='Logo' />
-          </Link>
-        </div>
+    <header className='sticky top-0 h-28 p-2 grid grid-flow-col gap-8 bg-color-violeta text-slate-50 z-30'>
+      <Link
+        title='Volver a inicio'
+        to='/'
+        onClick={() => (openMenu ? setMenuState() : setOpenMenu(false))}
+        className='w-16 h-full bg-contain bg-no-repeat bg-center bg-[url("/assets/icons/icon-192.png")]'></Link>
+      <i
+        onClick={setMenuState}
+        className={`flex z-30 items-center justify-end cursor-pointer md:hidden`}>
+        {openMenu ? <MenuCross /> : <Menu />}
+      </i>
+      <nav
+        className={`text-2xl w-full h-screen px-8 fixed left-0 transition-transform ${
+          openMenu ? 'translate-x-0' : 'translate-x-full'
+        }  grid grid-flow-row bg-color-violeta md:relative md:text-lg md:translate-x-0 md:visible md:flex md:justify-end md:max-5xl md:h-auto`}>
+        <ul
+          className='w-full h-full grid justify-center items-center py-24 gap-4 text-center md:grid-flow-col md:py-0 md:place-content-center md:justify-between hover:[&>li>a]:opacity-50
+        [&>li]:px-2  [&>li]:transition-colors
+         [&>li>a]:transition-opacity'>
+          {navLinks.map((link) => (
+            <NavbarLink key={link.name} {...link} onClick={() => setMenuState()} />
+          ))}
 
-        <i onClick={setMenuState} className={`${openMenu ? '' : 'label-close'}`}>
-          <Menu />
-        </i>
-        <nav className={`navbar ${openMenu ? 'menuActive' : ''}`}>
-          <ul>
-            <li>
-              <Link onClick={setMenuState} to='/'>
-                Inicio
-              </Link>
-            </li>
-            <li>
-              <Link onClick={setMenuState} to='/Servicios'>
-                Servicios
-              </Link>
-            </li>
-
-            <li>
-              <Link onClick={setMenuState} to='/nosotros'>
-                Nosotros
-              </Link>
-            </li>
-            <li>
-              <Link onClick={setMenuState} to='/Contacto'>
-                Contacto
-              </Link>
-            </li>
-            <li>
-              <Link onClick={setMenuState} to='/calendario'>
-                Calendario
-              </Link>
-            </li>
-            {/* 	{isAllowedAccess && (
-							<li>
-								<Link onClick={setMenuState} to='/calendario'>
-									Calendario
-								</Link>
-							</li>
-						)} */}
-
-            <li>
-              <Link onClick={setMenuState} to='/estadisticas'>
-                Estadísticas
-              </Link>
-            </li>
-            {/* {isAllowedAccess && (
-							<li>
-								<Link onClick={setMenuState} to='/estadisticas'>
-									Estadísticas
-								</Link>
-							</li>
-						)} */}
-            <li>
-              <Link onClick={setMenuState} to='/pacientes'>
-                Pacientes
-              </Link>
-            </li>
-            {/* {isAllowedAccess && (
-							<li>
-								<Link onClick={setMenuState} to='/pacientes'>
-									Pacientes
-								</Link>
-							</li>
-						)} */}
-            <li>
-              <Link onClick={setMenuState} to='/reservas'>
-                Reservas
-              </Link>
-            </li>
-            {/* {isAllowedAccess && (
-							<li>
-								<Link onClick={setMenuState} to='/reservas'>
-									Reservas
-								</Link>
-							</li>
-						)} */}
-
-            {isAuthenticated ? (
-              <li className='sesión'>
-                <figure>
-                  <picture>
-                    <img
-                      src={
-                        user.picture ||
-                        'https://res.cloudinary.com/fotoscloudinary/image/upload/v1692319008/Masajes/user-photo_cfemko.webp'
-                      }
-                    />
-                  </picture>
-                  <BotónSecundario
-                    texto={'Cerrar sesión'}
-                    onClickFunction={handleLogout}
-                    tipo={'button'}
-                  />
-                </figure>
-              </li>
-            ) : (
-              <li className='sesión'>
-                <BotónSecundario
-                  texto={'Iniciar sesión'}
-                  onClickFunction={handleLogin}
-                  tipo={'button'}
-                />
-              </li>
-            )}
-          </ul>
-        </nav>
-      </div>
+          {isAllowedAccess && <AdminMenu onClick={() => setMenuState()} />}
+          <NavbarSesion />
+        </ul>
+      </nav>
     </header>
   )
 }

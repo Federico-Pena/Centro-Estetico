@@ -1,1 +1,0 @@
-const o=async(n,a,r)=>{try{if(!n)throw new Error("URL no definida");const t=await fetch(n,a);if(t.ok){const e=await t.json();return r(e),e}else{const e=await t.json();return r(e),e}}catch(t){return r({error:t}),t.message}};export{o as f};

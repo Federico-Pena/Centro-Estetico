@@ -1,5 +1,5 @@
 import multer, { memoryStorage } from 'multer'
-const espacioParaFoto = memoryStorage()
-export const fotoASubir = multer({
-	storage: espacioParaFoto,
+const espacioParaImagen = memoryStorage()
+export const imagenASubir = multer({
+  storage: espacioParaImagen
 }).single('foto')

@@ -1,0 +1,48 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@layer utilities {
+  .Pago {
+    background-color: rgba(25, 148, 0, 1);
+  }
+  .Cancelada {
+    background-color: rgb(190, 49, 49);
+  }
+  .Pendiente {
+    background-color: rgb(33, 122, 150);
+  }
+  .imprimirPaciente {
+    position: fixed;
+    inset: 0;
+    color: #000;
+    display: grid;
+    justify-content: center;
+  }
+}
+
+@layer base {
+  ::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
+  ::-webkit-calendar-picker-indicator {
+    width: 100%;
+    position: absolute;
+    cursor: pointer;
+    opacity: 0;
+  }
+  ::-webkit-file-upload-button {
+    display: none;
+  }
+  html,
+  body {
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+  }
+}
+
+@font-face {
+  font-family: betonga;
+  src: url('/assets/fuente/Bentoga-Thin.woff2');
+  font-display: swap;
+}

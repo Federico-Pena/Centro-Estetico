@@ -1,0 +1,145 @@
+import { useContext, useState } from 'react'
+import { TratamientoContext } from '../../../context/Tratamiento/TratamientoContext.jsx'
+import { ServiciosContext } from '../../../context/Servicios/ServiciosContext.jsx'
+import { ACTIONS_SERVICIOS } from '../../../context/Servicios/serviciosReducer.js'
+import { ACTIONS_TRATAMIENTOS } from '../../../context/Tratamiento/tratamientoReducer.js'
+import { UserContext } from '../../../Context/User/userContext.jsx'
+import { ToastContext } from '../../../Context/Toast/mensajeContext.jsx'
+import { postServicio } from '../helpers/Servicios/postServicio.js'
+import { putServicio } from '../helpers/Servicios/putServicio.js'
+import { deleteServicio } from '../helpers/Servicios/deleteServicio.js'
+import { getServicio } from '../helpers/Servicios/getServicio.js'
+import { getServicios } from '../helpers/Servicios/getServicios.js'
+
+export const useServicio = () => {
+  const { accessToken } = useContext(UserContext)
+  const { setMensaje } = useContext(ToastContext)
+  const [loading, setLoading] = useState(false)
+  const { dispatch, servicios } = useContext(ServiciosContext)
+  const { dispatch: dispatchTratamientos } = useContext(TratamientoContext)
+
+  const obtenerServicios = async () => {
+    setLoading(true)
+    try {
+      const res = await getServicios(accessToken)
+      const { error, datos, status } = res
+      if (status === 200) {
+        dispatch({ type: ACTIONS_SERVICIOS.SET_SERVICIOS, payload: datos })
+      } else {
+        if (error) {
+          setMensaje(error)
+        }
+      }
+    } catch (error) {
+      setMensaje('Ocurrió un error')
+    } finally {
+      setLoading(false)
+    }
+  }
+  const agregarServicio = async (data) => {
+    setLoading(true)
+    try {
+      const res = await postServicio(accessToken, data)
+      const { error, mensaje, datos, status } = res
+      if (status === 200) {
+        setMensaje(mensaje)
+        dispatch({ type: ACTIONS_SERVICIOS.SET_SERVICIO_NUEVO, payload: datos })
+        return true
+      } else {
+        if (error) {
+          setMensaje(error)
+          return false
+        }
+      }
+    } catch (error) {
+      setMensaje('Ocurrió un error')
+      return false
+    } finally {
+      setLoading(false)
+    }
+  }
+  const editarServicio = async (data) => {
+    setLoading(true)
+    try {
+      const response = await putServicio(accessToken, data)
+      const { error, mensaje, datos, status } = response
+      if (status === 200) {
+        setMensaje(mensaje)
+        dispatch({
+          type: ACTIONS_SERVICIOS.SET_SERVICIO_NUEVO,
+          payload: datos
+        })
+        return true
+      } else {
+        if (error) {
+          setMensaje(error)
+          return false
+        }
+      }
+    } catch (error) {
+      setMensaje('Ocurrió un error')
+      return false
+    } finally {
+      setLoading(false)
+    }
+  }
+  const eliminarServicio = async (id) => {
+    try {
+      const response = await deleteServicio(accessToken, id)
+      const { mensaje, error, datos, status } = response
+      if (status === 200) {
+        setMensaje(mensaje)
+        dispatch({
+          type: ACTIONS_SERVICIOS.DELETE_SERVICIO,
+          payload: datos.servicio
+        })
+        dispatchTratamientos({
+          type: ACTIONS_TRATAMIENTOS.DELETE_TRATAMIENTO,
+          payload: datos.tratamiento
+        })
+      } else {
+        if (error) {
+          setMensaje(error)
+        } else {
+          setMensaje('Ocurrió un error')
+        }
+      }
+    } catch (error) {
+      setMensaje('Ocurrió un error')
+    } finally {
+      setLoading(false)
+    }
+  }
+  /*
+  const seleccionarServicio = (id) => {
+    const seleccionado = servicios.find((ser) => ser._id === id)
+    dispatch({ type: ACTIONS_SERVICIOS.SET_SERVICIO_FILTRADO, payload: seleccionado })
+  }
+  const obtenerServicio = async (id) => {
+    try {
+      const res = await getServicio(accessToken, id)
+      const { error, mensaje, datos, status } = res
+      if (status === 200) {
+        setMensaje(mensaje)
+        return datos
+      } else {
+        if (error) {
+          setMensaje(error)
+        }
+      }
+    } catch (error) {
+      setMensaje('Ocurrió un error')
+      return false
+    }
+  } */
+  return {
+    loading,
+    editarServicio,
+    obtenerServicios,
+    agregarServicio,
+    eliminarServicio
+    /* 
+    seleccionarServicio,
+    obtenerServicio, */
+  }
+}

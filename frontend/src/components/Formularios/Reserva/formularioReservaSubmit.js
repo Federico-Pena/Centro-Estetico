@@ -1,22 +1,19 @@
-import { formatFechaParaUser } from '../../../helpers/Formato/formatFechaParaUser'
-
-export const formularioReservaSubmit = (formRef, hora) => {
-	const form = formRef.current
-	const reserva = {
-		pacienteNombre: form.pacienteNombre.value,
-		fecha: form.fecha.value,
-		hora: hora,
-		observaciones: form.observaciones.value,
-	}
-	const linwhat = import.meta.env.VITE_W_NUM
-	const mensaje = `Me interesa hacer la siguiente reserva.
-      Nombre: ${reserva.pacienteNombre}	 
-      Fecha: ${formatFechaParaUser(reserva)}	 
-      Hora: ${reserva.hora}	 
-      Observaciones: ${reserva.observaciones}`
-	window.open(
-		`https://wa.me/${linwhat}?text=${encodeURIComponent(mensaje)}`,
-		'_blank'
-	)
-	form.reset()
+import { formatFechaParaUser } from '../../../Helpers/formatFechaParaUser.js'
+// ERROR CON TILDE EN FUNCIÓN toCapitalize
+function toCapitalize(str) {
+  return str
+    .split(' ')
+    .map((word) => {
+      return word[0].toUpperCase() + word.substring(1)
+    })
+    .join(' ')
+}
+export const formularioReservaSubmit = (reserva) => {
+  const linwhat = import.meta.env.VITE_W_NUM
+  const mensaje = `Me interesa hacer la siguiente reserva. 
+  Nombre: ${toCapitalize(reserva.nombre)}.
+  Fecha: ${toCapitalize(formatFechaParaUser(`${reserva.fecha} ${reserva.hora}`))}.
+  Hora: ${reserva.hora}. 
+  Observaciones: ${toCapitalize(reserva.observaciones)}.`
+  window.open(`https://wa.me/${linwhat}?text=${encodeURIComponent(mensaje)}`, '_blank')
 }

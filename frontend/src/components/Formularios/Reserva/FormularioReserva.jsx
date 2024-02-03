@@ -1,150 +1,128 @@
-import { useContext, useEffect, useRef, useState } from 'react'
-import './FormularioReserva.scss'
+import { useContext, useRef } from 'react'
 import { formularioReservaSubmit } from './formularioReservaSubmit'
-import { BotónPrimario } from '../../Botones/BotonPrimario'
-import { fechasHorasReservadasDelDia } from '../../../services/publica/fechasHorasReservadasDelDia'
-import { LoaderChico } from '../../Loader/LoaderChico'
-import { UserContext } from '../../../context/userContext'
-import { MensajeToast } from '../../../context/mensajeContext'
-import { BotónSecundario } from '../../Botones/BotonSecundario'
-import { formatFechaParaUser } from '../../../helpers/Formato/formatFechaParaUser'
-import { ESTADOS_RESERVAS } from '../../../constantes'
+import { ToastContext } from '../../../Context/Toast/mensajeContext.jsx'
+import { LabelInput } from '../LabelInput.jsx'
+import useForm from '../../../Hooks/Formulario/useForm.jsx'
+import { TextAreaLabel } from '../TextAreaLabel.jsx'
+import { useFormReserva } from './useFormReserva.jsx'
+import { HorasForm } from './HorasForm.jsx'
+import { ResumerReserva } from './ResumerReserva.jsx'
+import { BtnSecundario } from '../../Botones/BtnSecundario.jsx'
+import { HOY_FECHA_STRING } from '../../../constantes.js'
 
+const formRules = {
+  nombre: { required: true },
+  fecha: { required: true },
+  hora: { required: true }
+}
 export const FormularioReserva = ({ observaciones, cerrarFormulario }) => {
-  const [nombre, setNombre] = useState('')
-  const [dia, setDia] = useState('')
-  const [hora, setHora] = useState('')
-  const [loading, setLoading] = useState(false)
-  const [horasDisponibles, setHorasDisponibles] = useState([])
-  const formRef = useRef()
-  const { accessToken } = useContext(UserContext)
-  const { setMensaje } = useContext(MensajeToast)
-
-  useEffect(() => {
-    formRef.current.scrollIntoView({
-      behavior: 'smooth',
-      block: 'center'
-    })
-    const horasLibres = async () => {
-      setLoading(true)
-      try {
-        const res = await fechasHorasReservadasDelDia(dia, accessToken)
-        const { horas, error } = res
-        if (error) {
-          setMensaje(error)
-          setHora('')
-          setHorasDisponibles([])
-        } else {
-          setHorasDisponibles(horas)
-          if (horas.length === 0) {
-            setHora('')
-          }
-        }
-        setLoading(false)
-      } catch (error) {
-        setLoading(false)
-      }
-    }
-    /* accessToken && */ dia && horasLibres()
-  }, [accessToken, dia, setMensaje])
+  const sectionFormRef = useRef()
+  const { setMensaje } = useContext(ToastContext)
+  const initialForm = {
+    nombre: '',
+    fecha: '',
+    hora: '',
+    observaciones: observaciones || ''
+  }
+  const { errors, handleChange, values, validateForm } = useForm(initialForm, formRules)
+  const { horasDisponibles, loading } = useFormReserva(values.fecha)
+  const esDomingo = new Date(values.fecha).getDay() === 6
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    const form = formRef.current
-    if (form.pacienteNombre.value.trim() && dia && hora) {
-      formularioReservaSubmit(formRef, hora)
-      cerrarFormulario(e)
-      setHorasDisponibles([])
-      setMensaje('')
+    const isValid = validateForm() && !esDomingo && values.nombre
+    if (isValid) {
+      formularioReservaSubmit(values)
+      animationClose()
     } else {
-      setMensaje('Faltan campos requeridos')
+      setMensaje(`Faltan campos requeridos.`)
     }
   }
-  const onClickReservar = (e) => {
-    setHora(e.target.textContent)
+  const animationClose = () => {
+    sectionFormRef.current.classList.add('animate-toastOut')
+  }
+  const handleSetHora = (value) => {
+    const hora = { target: { name: 'hora', value: value } }
+    handleChange(hora)
   }
   return (
-    <section className='formReservaContainer'>
-      <BotónSecundario
-        className='cerrarForm'
-        texto={'Cerrar Formulario'}
-        tipo={'button'}
-        onClickFunction={cerrarFormulario}
-      />
-      <form onSubmit={handleSubmit} className='formReserva' ref={formRef}>
-        <h3>Reserva</h3>
-        <div className='input'>
-          <label htmlFor='pacienteNombre'>Nombre</label>
-          <input
-            id='pacienteNombre'
-            type='text'
-            name='pacienteNombre'
-            required
-            onChange={(e) => setNombre(e.target.value)}
-          />
-        </div>
-        <div className='input'>
-          <label htmlFor='fecha'>Fecha</label>
-          <input
-            id='fecha'
-            type='date'
-            name='fecha'
-            required
-            onChange={(e) => setDia(e.target.value.split('T')[0])}
-          />
-        </div>
+    <section
+      id='sectionForm'
+      ref={sectionFormRef}
+      className='fixed overflow-auto bg-gradient-to-b from-slate-900 to-black py-8 inset-0 z-50 grid'
+      onAnimationEnd={(e) => {
+        if (e.target.id === 'sectionForm' && e.animationName !== 'fadeIn') {
+          cerrarFormulario()
+        }
+      }}>
+      <form
+        onSubmit={handleSubmit}
+        className='animate-fadeIn grid w-full max-w-md py-8 px-4 rounded bg-color-logo gap-4 m-auto'>
+        <h3 className='font-betonga text-color-violeta font-bold capitalize text-center underline underline-offset-4 text-2xl px-4'>
+          Reserva
+        </h3>
+        <LabelInput
+          errors={errors}
+          labelText={'Nombre'}
+          name={'nombre'}
+          onChange={handleChange}
+          placeholder={'Nombre'}
+          type={'text'}
+          value={values.nombre}
+        />
+        <LabelInput
+          errors={errors}
+          labelText={'Fecha'}
+          name={'fecha'}
+          onChange={(e) => {
+            handleChange(e)
+            handleSetHora('')
+          }}
+          type={'date'}
+          value={values.fecha}
+          min={HOY_FECHA_STRING.split('T')[0]}
+        />
+        {esDomingo ? (
+          <span className='p-2 rounded-xl w-full text-center shadow-md bg-color-violeta text-slate-50'>
+            * Los días domingos no se realizan reservas
+          </span>
+        ) : null}
         {horasDisponibles.length > 0 && (
-          <div className={`input`}>
-            <ul className='horasDisplay'>
-              {horasDisponibles.map((hora, i) => {
-                return (
-                  i !== 0 &&
-                  i !== 1 &&
-                  hora.estado !== ESTADOS_RESERVAS.pendiente &&
-                  hora.estado !== ESTADOS_RESERVAS.pago &&
-                  !hora.proximaHoraNoDisponible && (
-                    <li className='liHora' key={hora.id} onClick={onClickReservar}>
-                      {hora.id.split(' ')[1]}
-                    </li>
-                  )
-                )
-              })}
-            </ul>
-          </div>
+          <>
+            <HorasForm
+              horasDisponibles={horasDisponibles}
+              handleSetHora={handleSetHora}
+              values={values}
+            />
+            {errors.hora && <small className='text-red-600'>* Este campo es requerido</small>}
+          </>
         )}
-        <div className='input'>
-          <label htmlFor='observaciones'>Observaciones</label>
-          <input
-            id='observaciones'
-            type='text'
-            name='observaciones'
-            value={observaciones}
-            disabled={true}
+        <TextAreaLabel
+          disabled={true}
+          value={values.observaciones}
+          placeholder={'Observación'}
+          onChange={handleChange}
+          name={'observaciones'}
+          labelText={'Observación'}
+          error={errors.observaciones}
+        />
+        <ResumerReserva horasDisponibles={horasDisponibles} values={values} />
+        <footer className='grid grid-flow-col pt-8 px-4 gap-4'>
+          <BtnSecundario
+            className='font-bold text-color-violeta border-color-violeta border-[1px] rounded-md py-2 px-4 transition-colors hover:text-slate-50 hover:bg-color-violeta'
+            tipo={'button'}
+            onClickFunction={animationClose}
+            texto={'Volver'}
           />
-        </div>
-        <div className='input'>
-          {nombre && (
-            <span className='spanHora'>
-              Nombre <strong>{nombre}</strong>
-            </span>
-          )}
-          {dia && (
-            <span className='spanHora'>
-              Dia <strong>{formatFechaParaUser({ fecha: `${dia} ${hora}` })}</strong>
-            </span>
-          )}
-          {hora && (
-            <span className='spanHora'>
-              Hora <strong>{hora}</strong>
-            </span>
-          )}
-          {observaciones && (
-            <span className='spanHora'>
-              Observaciones <strong>{observaciones}</strong>
-            </span>
-          )}
-        </div>
-        <BotónPrimario texto={loading ? <LoaderChico /> : 'Enviar'} tipo={'submit'} />
+          <BtnSecundario
+            className={`${
+              loading ? 'opacity-65' : ''
+            } font-bold text-slate-50 border-color-violeta bg-color-violeta border-[1px] rounded-md py-2 px-4 transition-colors hover:text-color-violeta hover:bg-transparent cursor-pointer`}
+            tipo={'submit'}
+            texto={'Enviar'}
+            disabled={loading}
+          />
+        </footer>
       </form>
     </section>
   )

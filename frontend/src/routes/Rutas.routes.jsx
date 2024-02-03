@@ -1,19 +1,17 @@
 import { Route, Routes } from 'react-router-dom'
 //import { UserContext } from '../context/userContext'
-import { Suspense, lazy /* useContext */ } from 'react'
-import { Loader } from '../components/Loader/Loader'
+import { Suspense, lazy } from 'react'
 import { useAuth0 } from '@auth0/auth0-react'
+import { Loader } from '../Components/Loader/Loader.jsx'
+import { RUTAS } from '../constantes.js'
 
-const Home = lazy(() => import('../pages/Home/Home'))
-const Contacto = lazy(() => import('../pages/Contacto/Contacto'))
-const Nosotros = lazy(() => import('../pages/nosotros/nosotros'))
-const Calendario = lazy(() => import('../pages/Calendario/Calendario'))
-const Servicios = lazy(() => import('../pages/Servicios/Servicios'))
-const Pacientes = lazy(() => import('../pages/Pacientes/PacientesPage'))
-const Reservas = lazy(() => import('../pages/Reservas/Reservas'))
-const Estadisticas = lazy(() => import('../pages/Estadisticas/Estadisticas'))
+const Home = lazy(() => import('../Pages/Home.jsx'))
+const Servicios = lazy(() => import('../Pages/Servicios.jsx'))
+const Contacto = lazy(() => import('../Pages/Contacto.jsx'))
+const Nosotros = lazy(() => import('../Pages/Nosotros.jsx'))
+import('../Components/Formularios/Reserva/FormularioReservaAdmin.jsx')
+
 const Rutas = () => {
-  //const { isAllowedAccess } = useContext(UserContext)
   const { isLoading } = useAuth0()
   if (isLoading) {
     return <Loader />
@@ -21,7 +19,7 @@ const Rutas = () => {
   return (
     <Routes>
       <Route
-        path='/'
+        path={RUTAS.user.inicio}
         exact
         element={
           <Suspense fallback={<Loader />}>
@@ -30,7 +28,7 @@ const Rutas = () => {
         }
       />
       <Route
-        path='/servicios'
+        path={RUTAS.user.servicios}
         element={
           <Suspense fallback={<Loader />}>
             <Servicios />
@@ -38,15 +36,8 @@ const Rutas = () => {
         }
       />
       <Route
-        path='/contacto'
-        element={
-          <Suspense fallback={<Loader />}>
-            <Contacto />
-          </Suspense>
-        }
-      />
-      <Route
-        path='/nosotros'
+        path={RUTAS.user.nosotros}
+        exact
         element={
           <Suspense fallback={<Loader />}>
             <Nosotros />
@@ -54,41 +45,20 @@ const Rutas = () => {
         }
       />
       <Route
-        path='/reservas'
+        path={RUTAS.user.contacto}
         element={
           <Suspense fallback={<Loader />}>
-            {/* 						{isAllowedAccess ? <Reservas /> : <Home />} */}
-            <Reservas />
+            <Contacto />
           </Suspense>
         }
       />
       <Route
-        path='/pacientes'
+        path='*'
         element={
           <Suspense fallback={<Loader />}>
-            {/* {isAllowedAccess ? <Pacientes /> : <Home />} */}
-            <Pacientes />
+            <Home />
           </Suspense>
-        }
-      />
-      <Route
-        path='/calendario'
-        element={
-          <Suspense fallback={<Loader />}>
-            {/* {isAllowedAccess ? <Calendario /> : <Home />} */}
-            <Calendario />
-          </Suspense>
-        }
-      />
-      <Route
-        path='/estadisticas'
-        element={
-          <Suspense fallback={<Loader />}>
-            {/* 						{isAllowedAccess ? <Reservas /> : <Home />} */}
-            <Estadisticas />
-          </Suspense>
-        }
-      />
+        }></Route>
     </Routes>
   )
 }
