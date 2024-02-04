@@ -52,8 +52,6 @@ const FormularioReservaAdmin = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     const isValid = validateForm() && !esDomingo
-    console.log(isValid)
-
     if (isValid) {
       const datos = formularioReservaAdminSubmit(values)
       const res = edicion ? await editarReserva(datos, reserva._id) : await agregarReserva(datos)
@@ -82,7 +80,7 @@ const FormularioReservaAdmin = () => {
     handleChange(nombreValue)
   }
   return (
-    <section className='bg-gradient-to-b from-slate-900 to-black fixed inset-0 z-50 grid grid-rows-[auto_1fr] gap-4 p-4 overflow-auto'>
+    <section className='grid grid-rows-[auto_1fr] gap-4 p-4'>
       <BtnSecundario
         className={
           'border border-color-violeta bg-color-violeta text-white  flex items-center justify-center max-w-fit justify-self-center rounded-lg px-4 py-2  hover:opacity-70 transition-opacity'

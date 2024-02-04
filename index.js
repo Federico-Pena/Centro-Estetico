@@ -12,6 +12,7 @@ import { serviciosRoutes } from './backend/routes/Servicios/servicios.routes.js'
 import { tratamientosRouter } from './backend/routes/Tratamientos/tratamientos.routes.js'
 import { pacientesRoutes } from './backend/routes/Pacientes/pacientes.routes.js'
 import { estadisticasRoutes } from './backend/routes/Estadisticas/estadisticas.routes.js'
+// import { decodificarToken, jwtCheck } from './backend/middlewares/autorization.js'
 
 connectToDatabase()
 const app = express()

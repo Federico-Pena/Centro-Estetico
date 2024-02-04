@@ -60,11 +60,7 @@ export const FormServicio = () => {
     }
   }
   return (
-    <section
-      className={`${
-        previewServicio ? 'bg-slate-50' : 'bg-gradient-to-b from-slate-900 to-black'
-      } fixed inset-0 z-50 grid grid-rows-[5rem_1fr] p-4 overflow-auto`}
-      ref={formServicioContainerRef}>
+    <section className={`grid grid-rows-[5rem_1fr] p-4`} ref={formServicioContainerRef}>
       {!previewServicio && (
         <BtnSecundario
           onClickFunction={cerrarForm}
@@ -81,7 +77,10 @@ export const FormServicio = () => {
           onSubmit={handleSubmit}
           className='animate-fadeIn bg-color-logo grid gap-4 px-4 py-8 rounded-lg max-w-lg m-auto w-full'
           title='Formulario agregar servicio'>
-          <HeaderFormServicio edicion={edicion} masInfo={masInfo} setMasInfo={setMasInfo} />
+          <h3 className='uppercase w-full  text-center text-color-violeta font-bold font-betonga text-2xl tracking-widest border-b border-slate-500'>
+            {edicion ? 'Editar servicio' : 'Agregar servicio'}
+          </h3>
+          <HeaderFormServicio masInfo={masInfo} setMasInfo={setMasInfo} />
           <PrimerParte
             edicion={edicion}
             errors={errors}

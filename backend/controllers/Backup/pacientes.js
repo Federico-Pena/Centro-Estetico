@@ -8,7 +8,6 @@ export const backupPacientes = async (req, res) => {
 
     res.setHeader('Content-Type', 'application/json')
     res.setHeader('Content-Disposition', 'attachment; filename=pacientes_backup.json')
-    console.log(pacientesJSON)
     res.send(pacientesJSON)
   } catch (error) {
     console.error('Error al realizar el backup:', error)

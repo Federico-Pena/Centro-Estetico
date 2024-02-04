@@ -2,42 +2,47 @@ import { BtnSecundario } from '../../Botones/BtnSecundario.jsx'
 
 export const HeaderForm = ({ cambiarActivo, seccion }) => {
   return (
-    <article className='grid grid-cols-2 grid-rows-[50px_50px] max-w-xl mx-auto w-full md:grid-cols-4 md:max-w-3xl'>
+    <article className='relative grid justify-between grid-flow-col'>
+      <div className='absolute -z-10 h-1 w-full self-center bg-color-violeta rounded'></div>
       <BtnSecundario
+        id={'Personales'}
         disabled={seccion.Personales}
         onClickFunction={cambiarActivo}
         tipo={'button'}
-        texto={'Personales'}
+        texto={'1'}
         className={`${
           seccion.Personales ? 'bg-slate-300 text-black' : 'bg-color-violeta'
-        } border grid place-content-center cursor-pointer rounded text-white  hover:bg-transparent  transition-colors`}
+        } border grid w-8 h-8 rounded-full place-content-center cursor-pointer text-white  hover:bg-color-logo hover:text-color-violeta hover:border-color-violeta transition-colors`}
       />
       <BtnSecundario
+        id={'Costumbres'}
         disabled={seccion.Costumbres}
         onClickFunction={cambiarActivo}
         tipo={'button'}
-        texto={'Costumbres'}
+        texto={'2'}
         className={`${
           seccion.Costumbres ? 'bg-slate-300 text-black' : 'bg-color-violeta'
-        } border grid place-content-center cursor-pointer rounded text-white hover:bg-transparent  transition-colors`}
+        } border grid w-8 h-8 rounded-full place-content-center cursor-pointer text-white hover:bg-color-logo hover:text-color-violeta hover:border-color-violeta transition-colors`}
       />
       <BtnSecundario
+        id={'Afecciones'}
         disabled={seccion.Afecciones}
         onClickFunction={cambiarActivo}
         tipo={'button'}
-        texto={'Afecciones'}
+        texto={'3'}
         className={`${
           seccion.Afecciones ? 'bg-slate-300 text-black' : 'bg-color-violeta'
-        } border grid place-content-center cursor-pointer rounded text-white hover:bg-transparent  transition-colors`}
+        } border grid w-8 h-8 rounded-full place-content-center cursor-pointer text-white hover:bg-color-logo hover:text-color-violeta hover:border-color-violeta transition-colors`}
       />
       <BtnSecundario
+        id={'Servicio'}
         disabled={seccion.Servicio}
         onClickFunction={cambiarActivo}
         tipo={'button'}
-        texto={'Servicio'}
+        texto={'4'}
         className={`${
           seccion.Servicio ? 'bg-slate-300 text-black' : 'bg-color-violeta'
-        } border grid place-content-center cursor-pointer rounded text-white  hover:bg-transparent  transition-colors`}
+        } border grid w-8 h-8 rounded-full place-content-center cursor-pointer text-white  hover:bg-color-logo hover:text-color-violeta hover:border-color-violeta transition-colors`}
       />
     </article>
   )

@@ -15,7 +15,7 @@ const Estadisticas = () => {
     return <Loader />
   }
   return (
-    <main className='flex flex-col py-4 px-2 '>
+    <main className='flex flex-col py-4 px-2'>
       <section className='grid gap-4 max-w-6xl m-auto w-full h-full md:grid-cols-4 md:gap-y-8'>
         <GananciasComponent
           gananciasTotales={reservasTodas.gananciasTotales}

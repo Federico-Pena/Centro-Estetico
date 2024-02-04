@@ -11,8 +11,6 @@ const Carrusel = () => {
   const handleReservar = (promo) => {
     const observacion = `${promo.servicio.nombre}\r ${promo.descripcion}`
     setObservacionReserva(observacion)
-    console.log(promo)
-    console.log(observacion)
     setOpenForm(true)
   }
   if (!(promos instanceof Array)) {

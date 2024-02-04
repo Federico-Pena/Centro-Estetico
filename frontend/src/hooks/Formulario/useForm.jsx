@@ -1,13 +1,17 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { validateField } from './validateField'
 import { handleChangeForm } from './handleChangeForm.js'
 
 const useForm = (initialValues, validationRules) => {
   const [values, setValues] = useState(initialValues)
-  const [errors, setErrors] = useState({ error: 'Campo requerido' })
+  const [errors, setErrors] = useState({})
+  useEffect(() => {
+    Object.keys(validationRules).forEach((name) => {
+      validateField(name, values[name], setErrors, validationRules)
+    })
+  }, [validationRules, values])
   const handleChange = (e) => {
     handleChangeForm(e, setErrors, setValues, validationRules, validateField)
-    console.log(errors)
   }
   const validateForm = () => {
     Object.keys(validationRules).forEach((name) => {

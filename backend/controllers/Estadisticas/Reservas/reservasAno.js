@@ -1,6 +1,6 @@
 import { crearRespuestaJSON } from '../../../helpers/crearRespuestaJSON.js'
 import { Reserva } from '../../../models/ReservaSchema.js'
-import { funcionReservasDelAno } from './funcionReservasDelAno.js'
+import { formatDatosReservasMesYAno } from './formatDatosReservasMesYAno.js'
 
 export const getReservasDelAno = async (req, res) => {
   const { year } = req.params
@@ -15,7 +15,7 @@ export const getReservasDelAno = async (req, res) => {
     })
       .populate('tratamiento', 'descripcion costoPorSesion')
       .populate('paciente', 'nombre')
-      .populate('servicio', 'nombre estado')
+      .populate('servicio', 'nombre')
       .select('estado')
       .select('horario.horaInicio')
 
@@ -27,7 +27,7 @@ export const getReservasDelAno = async (req, res) => {
       }
       return crearRespuestaJSON(response)
     }
-    const datos = funcionReservasDelAno(reservas)
+    const datos = formatDatosReservasMesYAno(reservas)
 
     const response = {
       datos,

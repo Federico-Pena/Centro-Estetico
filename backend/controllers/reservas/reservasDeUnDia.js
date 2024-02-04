@@ -1,7 +1,7 @@
 import { crearRespuestaJSON } from '../../helpers/crearRespuestaJSON.js'
 import { Reserva } from '../../models/ReservaSchema.js'
 
-export const reservasDeUnDia = async (req, res, next) => {
+export const reservasDeUnDia = async (req, res) => {
   try {
     const fecha = req.params.fecha
     const fechaParaFiltrar = new Date(fecha)

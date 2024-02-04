@@ -16,6 +16,7 @@ export const apiRoutes = {
     todoBackup: `${BASE_URL}todoBackup`
   },
   reservas: {
+    reservasDia: `${BASE_URL}admin/reservasDia/`,
     deLaSemana: `${BASE_URL}admin/reservasSemana/`,
     deUnPacientes: `${BASE_URL}admin/reservasPaciente/`,
     postReserva: `${BASE_URL}admin/reservas/nueva`,
@@ -49,6 +50,7 @@ export const apiRoutes = {
   },
   estadisticas: {
     reservas: `${BASE_URL}admin/estadisticas/reservas`,
-    reservasAno: `${BASE_URL}admin/estadisticas/reservas/ano/`
+    reservasAno: `${BASE_URL}admin/estadisticas/reservas/ano/`,
+    reservasMes: `${BASE_URL}admin/estadisticas/reservas/mes/`
   }
 }

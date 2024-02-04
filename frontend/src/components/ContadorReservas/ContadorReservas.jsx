@@ -44,7 +44,6 @@ function ContadorReservas({ setSeleccionadas }) {
 
   const onClickMostrar = (e) => {
     const estado = e.currentTarget.id
-    console.log(estado)
     mostrarReservadas(estado)
   }
   return (

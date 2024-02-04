@@ -10,7 +10,7 @@ const inicialStateEstadisticas = {
     },
     gananciasTotales: 0
   },
-  reservasAno: null,
+  reservas: null,
   dispatch: () => {}
 }
 export const EstadisticasContext = createContext(inicialStateEstadisticas)

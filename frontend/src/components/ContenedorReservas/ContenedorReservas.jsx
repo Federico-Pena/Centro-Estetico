@@ -12,7 +12,7 @@ export const ContenedorReservas = ({ reservas }) => {
     <section
       className={`${
         pageCalendario
-          ? 'animate-growIn fixed inset-0 z-30 m-0 p-4 bg-white bg-opacity-30 backdrop-blur-sm flex gap-4 justify-start overflow-x-auto snap-x snap-proximity'
+          ? 'animate-growIn fixed inset-0 z-30 m-0 p-4 bg-white bg-opacity-30 backdrop-blur-sm flex gap-4 justify-start overflow-x-auto snap-x snap-proximity scroll-smooth'
           : 'grid gap-4 m-auto w-full max-w-5xl md:grid-cols-2 xl:grid-cols-3'
       } `}
       ref={contenedorReservasRef}>

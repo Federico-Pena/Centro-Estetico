@@ -6,7 +6,6 @@ export const editarServicio = async (req, res) => {
   try {
     const { nombre, descripcion, descripcionSecundaria, tituloBeneficios, beneficiosLista } =
       req.body
-    console.log(req.body)
     if (!nombre) {
       const response = {
         error: 'El nombre es requerido',

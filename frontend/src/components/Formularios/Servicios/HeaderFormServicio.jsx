@@ -1,21 +1,27 @@
 import { BtnSecundario } from '../../Botones/BtnSecundario.jsx'
-import { Change } from '../../Icons/Icons.jsx'
 
-export const HeaderFormServicio = ({ edicion, setMasInfo, masInfo }) => {
+export const HeaderFormServicio = ({ setMasInfo, masInfo }) => {
   return (
-    <header className='grid gap-4'>
-      <h3 className='uppercase text-center text-color-violeta font-bold font-betonga text-2xl tracking-widest border-b border-slate-500'>
-        {edicion ? 'Editar servicio' : 'Agregar servicio'}
-      </h3>
+    <header className='relative grid justify-between grid-flow-col w-1/2 mx-auto'>
+      <div className='absolute -z-10 rounded h-1 w-full bg-color-violeta self-center'></div>
       <BtnSecundario
-        className={
-          'border border-color-violeta bg-color-violeta text-white flex items-center justify-center gap-2  max-w-fit justify-self-center rounded-lg px-4 py-2  hover:opacity-70 transition-opacity [&>span>svg]:text-xl [&>span>svg]:hover:rotate-180 [&>span>svg]:transition'
-        }
-        icono={<Change />}
+        className={`${
+          masInfo ? 'bg-white text-color-violeta' : ''
+        } border w-8 h-8 grid place-content-center border-color-violeta bg-color-violeta text-white rounded-full p-2 hover:text-color-violeta hover:bg-color-logo transition-colors`}
         onClickFunction={() => {
-          setMasInfo(!masInfo)
+          setMasInfo(false)
         }}
-        texto={masInfo ? 'Parte 2/2' : 'Parte 1/2'}
+        texto={'1'}
+        tipo={'button'}
+      />
+      <BtnSecundario
+        className={`${
+          masInfo ? '' : 'bg-white text-color-violeta'
+        } border w-8 h-8 grid place-content-center border-color-violeta bg-color-violeta text-white rounded-full p-2 hover:text-color-violeta hover:bg-color-logo transition-colors`}
+        onClickFunction={() => {
+          setMasInfo(true)
+        }}
+        texto={'2'}
         tipo={'button'}
       />
     </header>

@@ -1,7 +1,6 @@
 import { LabelInput } from '../LabelInput.jsx'
 
 export const DatosPersonales = ({ edicion, handleChange, errors, values }) => {
-  console.log(values.foto)
   return (
     <>
       <div className={'grid gap-4 border-b border-slate-500 py-2'}>

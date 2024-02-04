@@ -27,7 +27,6 @@ export const agregarTratamiento = async (req, res) => {
       }
       return crearRespuestaJSON(response)
     }
-    console.log(typeof enPromocion)
     let resultCloudinary = null
     let fotoNueva = null
     if (enPromocion === 'true' && req.file && req.file.buffer) {

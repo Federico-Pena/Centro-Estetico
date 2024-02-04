@@ -5,7 +5,6 @@ import Servicio from '../../models/ServicioSchema.js'
 export const migraDatos = async (req, res) => {
   try {
     const pacientes = await Paciente.find({})
-    console.log(pacientes)
     for (const paciente of pacientes) {
       const servicio = await Servicio.findOne({ nombre: paciente.tratamiento.toLowerCase() })
 

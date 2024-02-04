@@ -1,6 +1,7 @@
-export const BtnSecundario = ({ onClickFunction, texto, tipo, className, icono, disabled }) => {
+export const BtnSecundario = ({ id, onClickFunction, texto, tipo, className, icono, disabled }) => {
   return (
     <button
+      id={id}
       disabled={disabled}
       type={tipo ? tipo : null}
       title={typeof texto === 'string' ? texto : ''}

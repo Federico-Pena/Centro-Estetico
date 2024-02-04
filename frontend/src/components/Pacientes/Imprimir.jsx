@@ -2,7 +2,6 @@ import ReactToPrint from 'react-to-print'
 export const Imprimir = ({ referencia, className }) => {
   return (
     <ReactToPrint
-      bodyClass='imprimirPaciente'
       trigger={() => (
         <svg
           xmlns='http://www.w3.org/2000/svg'

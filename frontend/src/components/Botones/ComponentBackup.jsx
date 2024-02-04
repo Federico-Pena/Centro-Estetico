@@ -4,6 +4,7 @@ import { apiRoutes } from '../../Api/routes.js'
 import { UserContext } from '../../Context/User/userContext.jsx'
 import { ToastContext } from '../../Context/Toast/mensajeContext.jsx'
 import { ArrowDown } from '../Icons/Icons.jsx'
+import { formatFechaActualIso } from '../../Helpers/formatFechaActualIso.js'
 
 function crearLink(blob, nombre) {
   const link = document.createElement('a')
@@ -32,7 +33,7 @@ export const ComponentBackup = () => {
     try {
       const url = apiRoutes.backup.reservas
       const blob = await fetchBlob(url, accessToken)
-      crearLink(blob, 'reservas_backup.json')
+      crearLink(blob, `reservas_backup_${formatFechaActualIso(new Date())}.json`)
       setMensaje('Datos listos para guardar')
     } catch (error) {
       console.log(error)
@@ -43,7 +44,7 @@ export const ComponentBackup = () => {
     try {
       const url = apiRoutes.backup.servicios
       const blob = await fetchBlob(url, accessToken)
-      crearLink(blob, 'servicios_backup.json')
+      crearLink(blob, `servicios_backup_${formatFechaActualIso(new Date())}.json`)
       setMensaje('Datos listos para guardar')
     } catch (error) {
       console.log(error)
@@ -54,7 +55,7 @@ export const ComponentBackup = () => {
     try {
       const url = apiRoutes.backup.pacientes
       const blob = await fetchBlob(url, accessToken)
-      crearLink(blob, 'pacientes_backup.json')
+      crearLink(blob, `pacientes_backup_${formatFechaActualIso(new Date())}.json`)
       setMensaje('Datos listos para guardar')
     } catch (error) {
       console.log(error)
@@ -65,7 +66,7 @@ export const ComponentBackup = () => {
     try {
       const url = apiRoutes.backup.tratamientos
       const blob = await fetchBlob(url, accessToken)
-      crearLink(blob, 'tratamientos_backup.json')
+      crearLink(blob, `tratamientos_backup_${formatFechaActualIso(new Date())}.json`)
       setMensaje('Datos listos para guardar')
     } catch (error) {
       console.log(error)
@@ -77,7 +78,7 @@ export const ComponentBackup = () => {
     try {
       const url = apiRoutes.backup.todoBackup
       const blob = await fetchBlob(url, accessToken)
-      crearLink(blob, 'todo_backup.json')
+      crearLink(blob, `todo_backup_${formatFechaActualIso(new Date())}.json`)
       setMensaje('Datos listos para guardar')
     } catch (error) {
       console.log(error)

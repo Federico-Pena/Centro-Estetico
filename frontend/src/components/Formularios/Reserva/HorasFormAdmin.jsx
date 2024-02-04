@@ -36,12 +36,10 @@ export const HorasFormAdmin = ({
         {horasDisponibles.map((hor) => {
           return (
             <li
-              className={`p-2 rounded-xl w-full grid place-content-center shadow-md max-w-20  transition-[max-width]  ${formarClases(
+              className={`p-2 rounded-xl w-full grid place-content-center shadow-md max-w-20 transition-[max-width] ${formarClases(
                 hor,
                 values
-              )} ${
-                formarClases(hor, values).includes('cursor-not-allowed') ? '' : 'cursor-pointer'
-              }`}
+              )}`}
               key={hor.id}
               onClick={handleSetHora}>
               {hor.id.split('T')[1]}
@@ -50,9 +48,8 @@ export const HorasFormAdmin = ({
         })}
       </ul>
       {errors.hora && <small className='text-red-600'>* {errors.hora}</small>}
-
       <ul className='grid grid-flow-col grid-rows-3 gap-4 border border-slate-500 p-4 rounded-lg'>
-        <li className='col-span-full opacity-50 p-2 rounded-xl w-full grid place-content-center shadow-md m-auto bg-slate-50'>
+        <li className='col-span-full opacity-50 p-2 rounded-xl w-full grid place-content-center shadow-md m-auto'>
           No disponible
         </li>
         <li
@@ -60,41 +57,37 @@ export const HorasFormAdmin = ({
           Disponible
         </li>
         <li
-          className={`${estadoClases.Pago} p-2 rounded-xl w-full grid place-content-center shadow-md m-auto  bg-slate-50`}>
+          className={`${ESTADOS_RESERVAS.pago} text-white p-2 rounded-xl w-full grid place-content-center shadow-md m-auto  bg-slate-50`}>
           Paga
         </li>
         <li
-          className={`${estadoClases.Pendiente} p-2 rounded-xl w-full grid place-content-center shadow-md m-auto  bg-slate-50`}>
+          className={`${ESTADOS_RESERVAS.pendiente} text-white p-2 rounded-xl w-full grid place-content-center shadow-md m-auto  bg-slate-50`}>
           Pendiente
         </li>
         <li
-          className={`${estadoClases.Cancelada} p-2 rounded-xl w-full grid place-content-center shadow-md m-auto  bg-slate-50`}>
+          className={`${ESTADOS_RESERVAS.cancelada} text-white p-2 rounded-xl w-full grid place-content-center shadow-md m-auto  bg-slate-50`}>
           Cancelada
         </li>
       </ul>
     </>
   )
 }
-const estadoClases = {
-  Pago: 'text-color-paga font-bold',
-  Cancelada: 'text-color-cancelada font-bold',
-  Pendiente: 'text-color-pendiente font-bold'
-}
+
 const formarClases = (hor, values) => {
   const esProximaHoraNoDisponible = hor.proximaHoraNoDisponible
   const esHoraActual = hor.id.split('T')[1] === values.hora
-  const esEstadoPagoPendiente =
-    estadoClases[hor.estado] === estadoClases.Pago ||
-    estadoClases[hor.estado] === estadoClases.Pendiente
-
+  const horaEstado = hor.estado
   const clases = [
     esProximaHoraNoDisponible && 'opacity-50 cursor-not-allowed',
-    estadoClases[hor.estado],
-    esHoraActual
-      ? 'bg-color-violeta col-span-full row-start-2 text-white max-w-xl font-bold opacity-100 cursor-not-allowed'
-      : 'bg-slate-50 ',
-    esEstadoPagoPendiente && ' opacity-50 cursor-not-allowed'
+    (horaEstado === ESTADOS_RESERVAS.pago || horaEstado === ESTADOS_RESERVAS.pendiente) &&
+      `${horaEstado} cursor-not-allowed text-white`,
+    horaEstado === ESTADOS_RESERVAS.cancelada && `${horaEstado} text-white`,
+    esHoraActual &&
+      'bg-color-violeta col-span-full row-start-2 text-white max-w-xl font-bold opacity-100 cursor-default',
+    !esProximaHoraNoDisponible &&
+      !esHoraActual &&
+      (horaEstado !== ESTADOS_RESERVAS.pago || horaEstado !== ESTADOS_RESERVAS.pendiente) &&
+      'bg-slate-50 cursor-pointer'
   ]
-
   return clases.filter(Boolean).join(' ')
 }

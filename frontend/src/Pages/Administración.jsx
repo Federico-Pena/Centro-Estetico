@@ -31,7 +31,7 @@ const Administración = () => {
   }
 
   return (
-    <main className=' grid grid-rows-[auto_1fr] p-4 gap-4'>
+    <main className='relative grid p-4 gap-4'>
       {loading && <Loader />}
       <HeaderPageAdministracion activo={activo} cambiarActivo={cambiarActivo} />
       <section className='grid gap-4 '>

@@ -20,10 +20,8 @@ export const backupTodo = async (req, res) => {
     }
 
     const backupJSON = JSON.stringify(backupData, null, 2)
-
     res.setHeader('Content-Type', 'application/json')
     res.setHeader('Content-Disposition', 'attachment; filename=todo_backup.json')
-
     res.send(backupJSON)
   } catch (error) {
     console.error('Error al realizar el backup:', error)

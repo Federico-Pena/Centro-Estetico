@@ -60,7 +60,6 @@ export const useTratamientos = () => {
     try {
       const response = await deleteTratamiento(accessToken, id)
       const { error, mensaje, datos, status } = response
-      console.log(datos)
       if (status === 200) {
         setMensaje(mensaje)
         dispatch({ type: ACTIONS_TRATAMIENTOS.DELETE_TRATAMIENTO, payload: datos })

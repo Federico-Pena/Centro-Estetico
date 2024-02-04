@@ -56,7 +56,7 @@ export const compararFechas = (fecha, reservas) => {
     const finReservaISO = new Date(reserva.horario.horaDeFin).toISOString()
     return inicioReservaISO === fechaISOString || finReservaISO === fechaISOString
   })
-  const reservaAdmin = fechasOcupadas.some((reserva) => reserva.paciente.nombre === 'admin')
+  const reservaAdmin = fechasOcupadas.some((reserva) => reserva.paciente?.nombre === 'admin')
   const { paga, pendiente, cancelada } = conReserva(fechasOcupadas)
   const estado = paga?.estado || pendiente?.estado || cancelada?.estado || ''
   const proximaHora =

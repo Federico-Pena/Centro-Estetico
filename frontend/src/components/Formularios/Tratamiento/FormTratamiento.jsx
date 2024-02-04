@@ -59,7 +59,6 @@ export const FormTratamiento = () => {
           }
           const res = await fetcher(url, opciones)
           const { error, mensaje, datos, status } = res
-          console.log(datos)
           if (status === 200) {
             setMensaje(mensaje)
             setServicios(datos)
@@ -89,7 +88,6 @@ export const FormTratamiento = () => {
       return
     }
     const datos = formDataTratamiento(values)
-    console.log(values)
     const res = edicion
       ? await editarTratamiento(datos, tratamiento._id)
       : await crearTratamiento(datos)
@@ -108,7 +106,7 @@ export const FormTratamiento = () => {
     handleChange(nombreServicio)
   }
   return (
-    <section className='fixed inset-0 z-50 overflow-auto grid grid-rows-[auto_1fr] gap-8 p-8 bg-gradient-to-b from-slate-900 to-black '>
+    <section className='grid grid-rows-[auto_1fr] gap-8 p-8'>
       <BtnSecundario
         onClickFunction={cerrarForm}
         className={

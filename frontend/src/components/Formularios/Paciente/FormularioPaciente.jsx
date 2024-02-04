@@ -34,7 +34,7 @@ const FormularioPaciente = () => {
     Servicio: false
   })
   const cambiarActivo = (e) => {
-    const opcion = e.target.textContent
+    const opcion = e.target.id
     const nuevoActivo = { ...seccion }
     nuevoActivo[opcion] = !seccion[opcion]
     if (nuevoActivo[opcion]) {
@@ -54,11 +54,9 @@ const FormularioPaciente = () => {
 
   const submitAgregar = async (e) => {
     e.preventDefault()
-    const nuevoUsuario = formDataPaciente(values)
     const isValid = validateForm()
-
     if (isValid) {
-      console.log(values)
+      const nuevoUsuario = formDataPaciente(values)
       const res = edicion
         ? await editarPaciente(nuevoUsuario, paciente._id)
         : await agregarPaciente(nuevoUsuario)
@@ -69,14 +67,15 @@ const FormularioPaciente = () => {
   }
 
   return (
-    <section className='bg-gradient-to-b from-slate-900 to-black fixed inset-0 z-50 grid grid-rows-[auto_1fr] gap-4 p-4 overflow-auto'>
-      <HeaderForm cambiarActivo={cambiarActivo} seccion={seccion} />
+    <section className='grid p-4'>
       <form
-        className='animate-toastIn bg-color-logo rounded-lg p-4 max-w-2xl m-auto w-full grid gap-4 '
+        className='animate-toastIn bg-color-logo rounded-lg p-4  max-w-2xl m-auto w-full grid gap-4 '
         onSubmit={submitAgregar}>
         <h2 className='font-betonga font-bold text-color-violeta text-2xl tracking-wider text-center mb-4'>
           {edicion ? 'Editar ' : 'Agregar '}Paciente
         </h2>
+        <HeaderForm cambiarActivo={cambiarActivo} seccion={seccion} />
+
         {seccion.Personales && (
           <>
             <h3 className='font-betonga font-bold text-color-violeta text-xl tracking-wider'>

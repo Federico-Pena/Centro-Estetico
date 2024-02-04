@@ -20,7 +20,6 @@ export const useCalendario = () => {
       setLoading(true)
       const res = await getReservasSemana(accessToken, diaDeLaSemana)
       const { datos, error, status } = res
-      console.log(datos)
       if (status === 200) {
         dispatch({ type: ACTIONS_RESERVAS.SET_RESERVAS, payload: datos })
       } else if (!datos) {
