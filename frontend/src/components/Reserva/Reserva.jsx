@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useContext, useRef, useState } from 'react'
 import { formatFechaParaUser } from '../../Helpers/formatFechaParaUser.js'
 import { ConfirmationModal } from '../ConfirmationModal/ConfirmationModal.jsx'
 import { useObserver } from '../../Hooks/useObserver.jsx'
@@ -7,9 +7,12 @@ import { ReservaDatosAdmin } from './ReservaDatosAdmin.jsx'
 import { ReservaBotones } from './ReservaBotones.jsx'
 import { formatHoraUser } from '../../Helpers/formatHoraUser.js'
 import { useReserva } from '../../Hooks/Api/Reservas/useReserva.jsx'
+import { LoaderContext } from '../../Context/Loader/LoaderContext.jsx'
 
 export const Reserva = ({ datos, contenedorRef }) => {
-  const { loading, borrarReserva, cambiarEstadoReserva } = useReserva()
+  const { loading } = useContext(LoaderContext)
+
+  const { borrarReserva, cambiarEstadoReserva } = useReserva()
   const [reserva, setReserva] = useState(datos)
   const [modal, setModal] = useState(false)
   const reservaRef = useRef()

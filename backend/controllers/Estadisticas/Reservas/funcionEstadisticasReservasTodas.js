@@ -7,6 +7,7 @@ export const funcionEstadisticasReservasTodas = (reservas) => {
   const diasYhoras = []
   let gananciasTotales = 0
   let perdidasTotales = 0
+  let pendientesTotales = 0
 
   reservas.forEach((reserva) => {
     cantidadEstados[reserva.estado] = (cantidadEstados[reserva.estado] || 0) + 1
@@ -31,6 +32,13 @@ export const funcionEstadisticasReservasTodas = (reservas) => {
       perdidasTotales += reserva.tratamiento.costoPorSesion
     }
     if (
+      reserva.tratamiento &&
+      reserva.tratamiento.costoPorSesion &&
+      reserva.estado === ESTADOS_RESERVAS.pendiente
+    ) {
+      pendientesTotales += reserva.tratamiento.costoPorSesion
+    }
+    if (
       reserva.servicio &&
       reserva.servicio.nombre &&
       reserva.tratamiento &&
@@ -49,6 +57,7 @@ export const funcionEstadisticasReservasTodas = (reservas) => {
     horarios,
     gananciasTotales,
     perdidasTotales,
+    pendientesTotales,
     servicios
   }
 }

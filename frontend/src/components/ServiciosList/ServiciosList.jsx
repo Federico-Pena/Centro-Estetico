@@ -7,12 +7,11 @@ import { ServicioListItem } from './ServicioListItem.jsx'
 import { BtnSecundario } from '../Botones/BtnSecundario.jsx'
 import { Add } from '../Icons/Icons.jsx'
 import { useNavigate } from 'react-router-dom'
-import { Loader } from '../Loader/Loader.jsx'
 import { RUTAS } from '../../constantes.js'
 export const ServiciosList = () => {
   const [modal, setModal] = useState(false)
   const { servicio, servicios, dispatch } = useContext(ServiciosContext)
-  const { loading, eliminarServicio } = useServicio()
+  const { eliminarServicio } = useServicio()
   const navigate = useNavigate()
   const handleBorrarServicio = (ser) => {
     dispatch({
@@ -24,9 +23,6 @@ export const ServiciosList = () => {
   const handleEditarServicio = (servicio) => {
     dispatch({ type: ACTIONS_SERVICIOS.SET_SERVICIO, payload: servicio })
     navigate(RUTAS.admin.editarServicio)
-  }
-  if (loading) {
-    return <Loader />
   }
   return (
     <>

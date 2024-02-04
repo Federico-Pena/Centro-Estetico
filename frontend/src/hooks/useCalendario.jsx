@@ -6,12 +6,13 @@ import { ToastContext } from '../Context/Toast/mensajeContext.jsx'
 import { UserContext } from '../Context/User/userContext.jsx'
 import { fechasDelCalendario } from '../Helpers/fechasDelCalendario.js'
 import { getReservasSemana } from './Api/helpers/Reservas/getReservasSemana.js'
+import { LoaderContext } from '../Context/Loader/LoaderContext.jsx'
 
 export const useCalendario = () => {
-  const [loading, setLoading] = useState(false)
   const [diaDeLaSemana, setDiaDeLaSemana] = useState(HOY_FECHA_STRING.split('T')[0])
   const { setMensaje } = useContext(ToastContext)
   const { accessToken } = useContext(UserContext)
+  const { setLoading } = useContext(LoaderContext)
   const { dispatch } = useContext(ReservasContext)
   const diasSemana = fechasDelCalendario(diaDeLaSemana)
 
@@ -34,7 +35,8 @@ export const useCalendario = () => {
       setLoading(false)
     }
     /* accessToken && */ diaDeLaSemana && getReservas()
-  }, [accessToken, setMensaje, diaDeLaSemana, dispatch])
+  }, [accessToken, setMensaje, diaDeLaSemana, dispatch, setLoading])
+
   const semanaAnterior = () => {
     const newDate = new Date(`${diaDeLaSemana} 00:00:00.000Z`)
     newDate.setDate(newDate.getDate() - DIAS_DE_LA_SEMANA)
@@ -54,7 +56,6 @@ export const useCalendario = () => {
     dispatch({ type: ACTIONS_RESERVAS.SET_RESERVAS_SELECCIONADAS, payload: seleccionadas })
   }
   return {
-    loading,
     semanaAnterior,
     semanaSiguiente,
     diasSemana,

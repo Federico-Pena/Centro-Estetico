@@ -15,6 +15,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { RUTAS } from '../../../constantes.js'
 import { ACTIONS_RESERVAS } from '../../../Context/Reservas/reducerReservas.js'
 import { Dropdown } from '../../Dropdown/Dropdown.jsx'
+import { LoaderContext } from '../../../Context/Loader/LoaderContext.jsx'
 
 const FormularioReservaAdmin = () => {
   const location = useLocation()
@@ -25,18 +26,14 @@ const FormularioReservaAdmin = () => {
     location.pathname === RUTAS.admin.agregarReserva && from === RUTAS.admin.calendario
   const { setMensaje } = useContext(ToastContext)
   const { reserva, dispatch } = useContext(ReservasContext)
+  const { loading } = useContext(LoaderContext)
+
   const { handleChange, values, errors, validateForm, resetForm } = useForm(
     initialForm(reserva, edicion, desdeCalendario),
     validationRules
   )
-  const {
-    horasDisponibles,
-    reservasDelDia,
-    loading,
-    agregarReserva,
-    editarReserva,
-    pacientesNombres
-  } = useFormReserva(values.horaInicio)
+  const { horasDisponibles, reservasDelDia, agregarReserva, editarReserva, pacientesNombres } =
+    useFormReserva(values.horaInicio)
   const esDomingo = new Date(values.horaInicio).getDay() === 6
 
   const handleSetFecha = (e) => {
@@ -121,6 +118,7 @@ const FormularioReservaAdmin = () => {
           onChange={handleChange}
         />
         <LabelInput
+          className={'w-full'}
           value={values.horaInicio.split('T')[0]}
           labelText={'Fecha'}
           name={'horaInicio'}

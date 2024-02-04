@@ -9,9 +9,10 @@ import { deletePaciente } from '../helpers/Pacientes/deletePaciente.js'
 import { postPaciente } from '../helpers/Pacientes/postPaciente.js'
 import { putPaciente } from '../helpers/Pacientes/putPaciente.js'
 import { getPacienteId } from '../helpers/Pacientes/getPacienteId.js'
+import { LoaderContext } from '../../../Context/Loader/LoaderContext.jsx'
 
 export const usePaciente = () => {
-  const [loading, setLoading] = useState(false)
+  const { setLoading } = useContext(LoaderContext)
   const { accessToken } = useContext(UserContext)
   const { setMensaje } = useContext(ToastContext)
   const { dispatch } = useContext(PacientesContext)
@@ -44,142 +45,142 @@ export const usePaciente = () => {
  */
   useEffect(() => {
     const getPacientesPaginados = async () => {
-      const options = {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${accessToken || ''}`
+      try {
+        const options = {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${accessToken || ''}`
+          }
         }
+        setLoading(true)
+        const url = `${apiRoutes.pacientes.getPacientesPaginados}${pagina}`
+        const res = await fetcher(url, options)
+        const { status, error, datos } = res
+        if (status === 200) {
+          dispatch({
+            type: ACTIONS_PACIENTES.SET_PACIENTES,
+            payload: datos.pacientes
+          })
+          setPagina(datos.page)
+          setTotalPages(datos.totalPages)
+        } else {
+          if (error) {
+            setMensaje(error)
+          } else {
+            setMensaje('Ocurrió un error el obtener los pacientes')
+          }
+        }
+      } catch (error) {
+        setMensaje('Ocurrió un error el obtener los pacientes')
+      } finally {
+        setLoading(false)
       }
+    }
+    getPacientesPaginados()
+  }, [dispatch, setMensaje, accessToken, pagina, setLoading])
+
+  const borrarPaciente = async (paciente) => {
+    try {
       setLoading(true)
-      const url = `${apiRoutes.pacientes.getPacientesPaginados}${pagina}`
-      const res = await fetcher(url, options)
-      const { status, error, datos } = res
+      const res = await deletePaciente(accessToken, paciente._id)
+      const { status, error, mensaje } = res
       if (status === 200) {
+        setMensaje(mensaje)
         dispatch({
-          type: ACTIONS_PACIENTES.SET_PACIENTES,
-          payload: datos.pacientes
+          type: ACTIONS_PACIENTES.DELETE_PACIENTE,
+          payload: paciente
         })
-        setPagina(datos.page)
-        setTotalPages(datos.totalPages)
       } else {
         if (error) {
           setMensaje(error)
         } else {
-          setMensaje('Ocurrió un error el obtener los pacientes')
+          setMensaje('Ocurrió un error al eliminar el paciente')
         }
       }
+    } catch (error) {
+      setMensaje('Ocurrió un error al eliminar el paciente')
+    } finally {
       setLoading(false)
     }
-    getPacientesPaginados()
-  }, [dispatch, setMensaje, accessToken, pagina])
-
-  const borrarPaciente = async (paciente) => {
-    setLoading(true)
-    const res = await deletePaciente(accessToken, paciente._id)
-    const { status, error, mensaje } = res
-    if (status === 200) {
-      setMensaje(mensaje)
-      dispatch({
-        type: ACTIONS_PACIENTES.DELETE_PACIENTE,
-        payload: paciente
-      })
-    } else {
-      if (error) {
-        setMensaje(error)
-      } else {
-        setMensaje('Ocurrió un error al eliminar el paciente')
-      }
-    }
-    setLoading(false)
   }
   const agregarPaciente = async (nuevoUsuario) => {
-    const res = await postPaciente(accessToken, nuevoUsuario)
-    const { error, datos, mensaje, status } = res
-    if (status === 200) {
-      setMensaje(mensaje)
-      dispatch({
-        type: ACTIONS_PACIENTES.SET_PACIENTE_NUEVO,
-        payload: datos
-      })
-      return true
-    } else {
-      if (error) {
-        setMensaje(error)
-        return false
+    try {
+      setLoading(true)
+      const res = await postPaciente(accessToken, nuevoUsuario)
+      const { error, datos, mensaje, status } = res
+      if (status === 200) {
+        setMensaje(mensaje)
+        dispatch({
+          type: ACTIONS_PACIENTES.SET_PACIENTE_NUEVO,
+          payload: datos
+        })
+        return true
       } else {
-        setMensaje('Ocurrió un error')
-        return false
+        if (error) {
+          setMensaje(error)
+          return false
+        } else {
+          setMensaje('Ocurrió un error al guardar el paciente')
+          return false
+        }
       }
+    } catch (error) {
+      setMensaje('Ocurrió un error al guardar el paciente')
+    } finally {
+      setLoading(false)
     }
   }
   const editarPaciente = async (nuevoUsuario, id) => {
-    const res = await putPaciente(accessToken, nuevoUsuario, id)
-    const { error, datos, mensaje, status } = res
-    if (status === 200) {
-      setMensaje(mensaje)
-      dispatch({
-        type: ACTIONS_PACIENTES.SET_PACIENTE_NUEVO,
-        payload: datos
-      })
-      return true
-    } else {
-      if (error) {
-        setMensaje(error)
-        return false
+    try {
+      setLoading(true)
+
+      const res = await putPaciente(accessToken, nuevoUsuario, id)
+      const { error, datos, mensaje, status } = res
+      if (status === 200) {
+        setMensaje(mensaje)
+        dispatch({
+          type: ACTIONS_PACIENTES.SET_PACIENTE_NUEVO,
+          payload: datos
+        })
+        return true
       } else {
-        setMensaje('Ocurrió un error')
-        return false
+        if (error) {
+          setMensaje(error)
+          return false
+        } else {
+          setMensaje('Ocurrió un error al guardar el paciente')
+          return false
+        }
       }
+    } catch (error) {
+      setMensaje('Ocurrió un error al guardar el paciente')
+    } finally {
+      setLoading(false)
     }
   }
   const obtenerPacientePorId = async (id) => {
-    setLoading(true)
-    const res = await getPacienteId(accessToken, id)
-    const { status, error, datos } = res
-    if (status === 200) {
-      setMensaje(error)
-      dispatch({ type: ACTIONS_PACIENTES.SET_PACIENTE, payload: datos })
-    } else {
-      if (error) {
+    try {
+      setLoading(true)
+      const res = await getPacienteId(accessToken, id)
+      const { status, error, datos } = res
+      if (status === 200) {
         setMensaje(error)
+        dispatch({ type: ACTIONS_PACIENTES.SET_PACIENTE, payload: datos })
       } else {
-        setMensaje('Ocurrió un error el obtener los datos del paciente')
+        if (error) {
+          setMensaje(error)
+        } else {
+          setMensaje('Ocurrió un error el obtener los datos del paciente')
+        }
       }
+    } catch (error) {
+      setMensaje('Ocurrió un error el obtener los datos del paciente')
+    } finally {
+      setLoading(false)
     }
-    setLoading(false)
   }
-  /*  
-
-  
-  
-  const putPaciente = async (id, nuevoUsuario) => {
-    const url = `${apiEndPoint.paciente.editarPaciente}${id}`
-    const options = {
-      method: 'PUT',
-      body: nuevoUsuario,
-      headers: {
-        authorization: `Bearer ${accessToken}`
-      }
-    }
-    await fetchData(url, options, (res) => {
-      const { error, nuevoPaciente, mensaje } = res
-      if (error) {
-        setMensaje(error)
-      } else {
-        setMensaje(mensaje)
-        dispatch({
-          type: ACTIONS_PACIENTES.CLEAR_PACIENTE
-        })
-        dispatch({
-          type: ACTIONS_PACIENTES.SET_PACIENTE,
-          payload: nuevoPaciente
-        })
-      }
-    })
-  } */
   return {
     borrarPaciente,
-    loading,
     pagina,
     totalPages,
     setPagina,

@@ -7,7 +7,7 @@ const Home = () => {
       <section className='grid items-center max-w-5xl min-h-[80vh] px-4 py-8 md:grid-flow-col landscape:grid-flow-col'>
         <figure className='flex justify-center'>
           <img
-            className='max-h-[40vh] object-cover rounded-full'
+            className='max-h-[80vh] w-full aspect-square object-cover rounded-full'
             src='https://res.cloudinary.com/fotoscloudinary/image/upload/v1692718887/Masajes/heroImg_ut1ehd.webp'
             alt='imagen de sesión de masaje '
           />
@@ -20,7 +20,7 @@ const Home = () => {
             Relájate y disfruta de un momento de tranquilidad
           </p>
           <Link
-            className='font-bold mt-8 mx-auto max-w-fit h-max text-slate-50 border-color-violeta bg-color-violeta border-[1px] rounded-md grid place-content-center py-2 px-4 transition-colors hover:text-color-violeta hover:bg-slate-50 md:mx-0'
+            className='font-bold mt-8 mx-auto max-w-fit h-max text-slate-50 border-color-violeta bg-color-violeta border-[1px] rounded-md grid place-content-center py-2 px-4 transition-colors hover:text-color-violeta hover:bg-slate-50'
             title='Ir a Servicios'
             to='/Servicios'>
             Reserva ahora

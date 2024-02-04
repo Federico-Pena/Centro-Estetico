@@ -14,6 +14,7 @@ import { Dropdown } from '../../Dropdown/Dropdown.jsx'
 import { TratamientoContext } from '../../../context/Tratamiento/TratamientoContext.jsx'
 import { RUTAS } from '../../../constantes.js'
 import { ACTIONS_TRATAMIENTOS } from '../../../context/Tratamiento/tratamientoReducer.js'
+import { LoaderContext } from '../../../Context/Loader/LoaderContext.jsx'
 
 const validationRules = {
   servicio: {
@@ -38,8 +39,9 @@ export const FormTratamiento = () => {
   const { tratamiento: trata, dispatch } = useContext(TratamientoContext)
   const { accessToken } = useContext(UserContext)
   const { setMensaje } = useContext(ToastContext)
-  const { crearTratamiento, editarTratamiento, loading } = useTratamientos()
-  const [tratamiento, setTratamiento] = useState(trata || initialFormData)
+  const { loading } = useContext(LoaderContext)
+  const { crearTratamiento, editarTratamiento } = useTratamientos()
+  const [tratamiento] = useState(trata || initialFormData)
   const [servicios, setServicios] = useState([])
   const { handleChange, values, validateForm, errors, resetForm } = useForm(
     tratamiento,

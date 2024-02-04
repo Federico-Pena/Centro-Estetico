@@ -3,12 +3,10 @@ import { Loader } from '../Components/Loader/Loader.jsx'
 import { ComponentBackup } from '../Components/Botones/ComponentBackup.jsx'
 import { ServiciosList } from '../Components/ServiciosList/ServiciosList.jsx'
 import { TratamientosList } from '../Components/TratamientosList/TratamientosList.jsx'
-import { useTratamientos } from '../Hooks/Api/Tratamiento/useTratamientos.jsx'
 import { PacientesList } from '../Components/Pacientes/PacientesList.jsx'
 import { HeaderPageAdministracion } from '../Components/HeaderPageAdministracion/HeaderPageAdministracion.jsx'
 
 const Administración = () => {
-  const { loading } = useTratamientos()
   const [activo, setActivo] = useState({
     Backup: false,
     Tratamientos: false,
@@ -31,8 +29,7 @@ const Administración = () => {
   }
 
   return (
-    <main className='relative grid p-4 gap-4'>
-      {loading && <Loader />}
+    <main className='relative grid-rows-[100px_1fr] items-start grid p-4 gap-4'>
       <HeaderPageAdministracion activo={activo} cambiarActivo={cambiarActivo} />
       <section className='grid gap-4 '>
         {activo.Backup && <ComponentBackup />}

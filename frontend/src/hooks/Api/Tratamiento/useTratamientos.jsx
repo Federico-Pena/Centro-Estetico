@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react'
+import { useContext } from 'react'
 import { ToastContext } from '../../../Context/Toast/mensajeContext.jsx'
 import { UserContext } from '../../../Context/User/userContext.jsx'
 import { TratamientoContext } from '../../../context/Tratamiento/TratamientoContext.jsx'
@@ -7,15 +7,16 @@ import { getTratamientos } from '../helpers/Tratamientos/getTratamientos.js'
 import { postTratamiento } from '../helpers/Tratamientos/postTratamiento.js'
 import { deleteTratamiento } from '../helpers/Tratamientos/deleteTratamiento.js'
 import { putTratamiento } from '../helpers/Tratamientos/putTratamiento.js'
+import { LoaderContext } from '../../../Context/Loader/LoaderContext.jsx'
 export const useTratamientos = () => {
   const { accessToken } = useContext(UserContext)
   const { setMensaje } = useContext(ToastContext)
-  const [loading, setLoading] = useState(false)
-  const { dispatch, tratamientos } = useContext(TratamientoContext)
+  const { setLoading } = useContext(LoaderContext)
+  const { dispatch } = useContext(TratamientoContext)
 
   const obtenerTratamientos = async () => {
-    setLoading(true)
     try {
+      setLoading(true)
       const response = await getTratamientos(accessToken)
       const { error, datos, status } = response
       if (status === 200) {
@@ -23,17 +24,19 @@ export const useTratamientos = () => {
       } else {
         if (error) {
           setMensaje(error)
+        } else {
+          setMensaje('Ocurrió un error al obtener los tratamientos')
         }
       }
     } catch (error) {
-      setMensaje('Ocurrió un error')
+      setMensaje('Ocurrió un error al obtener los tratamientos')
     } finally {
       setLoading(false)
     }
   }
   const editarTratamiento = async (tratamientoNuevo, id) => {
-    setLoading(true)
     try {
+      setLoading(true)
       const response = await putTratamiento(accessToken, tratamientoNuevo, id)
       const { error, mensaje, datos, status } = response
       if (status === 200) {
@@ -44,20 +47,20 @@ export const useTratamientos = () => {
         if (error) {
           setMensaje(error)
         } else {
-          setMensaje('Ocurrió un error')
+          setMensaje('Ocurrió un error al guardar el tratamiento')
         }
         return false
       }
     } catch (error) {
-      setMensaje('Ocurrió un error')
+      setMensaje('Ocurrió un error al guardar el tratamiento')
       return false
     } finally {
       setLoading(false)
     }
   }
   const eliminarTratamiento = async (id) => {
-    setLoading(true)
     try {
+      setLoading(true)
       const response = await deleteTratamiento(accessToken, id)
       const { error, mensaje, datos, status } = response
       if (status === 200) {
@@ -67,18 +70,18 @@ export const useTratamientos = () => {
         if (error) {
           setMensaje(error)
         } else {
-          setMensaje('Ocurrió un error')
+          setMensaje('Ocurrió un error al eliminar el tratamiento')
         }
       }
     } catch (error) {
-      setMensaje('Ocurrió un error')
+      setMensaje('Ocurrió un error al eliminar el tratamiento')
     } finally {
       setLoading(false)
     }
   }
   const crearTratamiento = async (tratamiento) => {
-    setLoading(true)
     try {
+      setLoading(true)
       const response = await postTratamiento(accessToken, tratamiento)
       const { error, mensaje, datos, status } = response
       if (status === 200) {
@@ -88,28 +91,22 @@ export const useTratamientos = () => {
       } else {
         if (error) {
           setMensaje(error)
+        } else {
+          setMensaje('Ocurrió un error al guardar el tratamiento')
         }
         return false
       }
     } catch (error) {
-      setMensaje('Ocurrió un error')
+      setMensaje('Ocurrió un error al guardar el tratamiento')
     } finally {
       setLoading(false)
     }
   }
-  /*
-  const seleccionarTratamiento = (id) => {
-    const seleccionados = tratamientos.filter((ser) => ser._id === id)
-    dispatch({ type: ACTIONS_TRATAMIENTOS.SET_TRATAMIENTOS_FILTRADOS, payload: seleccionados })
-  }
- */
+
   return {
     obtenerTratamientos,
     editarTratamiento,
     eliminarTratamiento,
-    crearTratamiento,
-    loading
-    /* 
-    seleccionarTratamiento, */
+    crearTratamiento
   }
 }

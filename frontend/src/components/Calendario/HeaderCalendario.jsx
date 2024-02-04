@@ -1,7 +1,7 @@
 import { formatFechaParaUser } from '../../Helpers/formatFechaParaUser.js'
 import { HOY_FECHA_STRING } from '../../constantes.js'
 
-export const HeaderCalendario = ({ diasSemana, handleSeleccionarDia }) => {
+export const HeaderCalendario = ({ handleSeleccionarDia }) => {
   return (
     <section className='grid gap-x-4'>
       <h1

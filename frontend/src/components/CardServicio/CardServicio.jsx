@@ -1,7 +1,11 @@
 import { useRef, useState } from 'react'
 import { FormularioReserva } from '../Formularios/Reserva/FormularioReserva.jsx'
 import { useObserver } from '../../Hooks/useObserver.jsx'
+import { useLocation } from 'react-router-dom'
+import { RUTAS } from '../../constantes.js'
 export const CardServicio = ({ servicio, className }) => {
+  const location = useLocation()
+  const rutaServicios = location.pathname === RUTAS.user.servicios
   const [openInfo, setOpeninfo] = useState(false)
   const [openForm, setOpenForm] = useState(false)
   const imgRef = useRef()
@@ -133,7 +137,7 @@ export const CardServicio = ({ servicio, className }) => {
           </button>
           <button
             className='font-bold text-slate-50 border-color-violeta bg-color-violeta border-[1px] rounded-md py-2 px-4 transition-colors hover:text-color-violeta hover:bg-slate-50'
-            onClick={() => setOpenForm(true)}>
+            onClick={() => rutaServicios && setOpenForm(true)}>
             Reservar
           </button>
         </footer>

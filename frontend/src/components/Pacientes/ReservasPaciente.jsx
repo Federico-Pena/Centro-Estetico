@@ -8,11 +8,13 @@ import { HOY_FECHA_STRING, RUTAS } from '../../constantes.js'
 import { HeaderReservasPaciente } from './HeaderReservasPaciente.jsx'
 import { PacientesContext } from '../../Context/Pacientes/PacientesContext.jsx'
 import { useNavigate } from 'react-router-dom'
+import { LoaderContext } from '../../Context/Loader/LoaderContext.jsx'
 
 const ReservasPaciente = () => {
   const { paciente } = useContext(PacientesContext)
-  const { loading, totalPaginas, setPagina } = useReservasPaciente(paciente._id)
+  const { loading } = useContext(LoaderContext)
   const { reservas, dispatch } = useContext(ReservasContext)
+  const { totalPaginas, setPagina } = useReservasPaciente(paciente && paciente._id)
   const navigate = useNavigate()
   const handleAgregarReserva = () => {
     navigate(RUTAS.admin.agregarReserva)

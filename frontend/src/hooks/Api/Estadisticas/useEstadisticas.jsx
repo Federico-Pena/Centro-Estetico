@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect } from 'react'
 import { UserContext } from '../../../Context/User/userContext.jsx'
 import { ToastContext } from '../../../Context/Toast/mensajeContext.jsx'
 import { EstadisticasContext } from '../../../Context/Estadisticas/EstadisticasContext.jsx'
@@ -6,9 +6,10 @@ import { getEstadisticasReservas } from '../helpers/Estadisticas/getEstadisticas
 import { ACTIONS_ESTADISTICAS } from '../../../Context/Estadisticas/reducerEstadisticas.js'
 import { getEstadisticasReservasAno } from '../helpers/Estadisticas/getEstadisticasReservasAno.js'
 import { getEstadisticasReservasMes } from '../helpers/Estadisticas/getEstadisticasReservasMes.js'
+import { LoaderContext } from '../../../Context/Loader/LoaderContext.jsx'
 
 export const useEstadisticas = () => {
-  const [loading, setLoading] = useState(false)
+  const { setLoading } = useContext(LoaderContext)
   const { accessToken } = useContext(UserContext)
   const { setMensaje } = useContext(ToastContext)
   const { dispatch } = useContext(EstadisticasContext)
@@ -37,15 +38,13 @@ export const useEstadisticas = () => {
       }
     }
     getReservasEstadisticas()
-  }, [dispatch, setMensaje, accessToken])
+  }, [dispatch, setMensaje, accessToken, setLoading])
 
   const obtenerReservasDelAno = async (year) => {
-    setLoading(true)
     try {
+      setLoading(true)
       const res = await getEstadisticasReservasAno(accessToken, year)
       const { status, error, datos } = res
-      console.log(datos)
-
       if (status === 200) {
         dispatch({
           type: ACTIONS_ESTADISTICAS.SET_ESTADISTICAS_RESERVAS,
@@ -65,8 +64,9 @@ export const useEstadisticas = () => {
     }
   }
   const obtenerReservasDelMes = async (year, mes) => {
-    setLoading(true)
     try {
+      setLoading(true)
+
       const res = await getEstadisticasReservasMes(accessToken, year, mes)
       const { status, error, datos } = res
       if (status === 200) {
@@ -87,5 +87,5 @@ export const useEstadisticas = () => {
       setLoading(false)
     }
   }
-  return { loading, obtenerReservasDelAno, obtenerReservasDelMes }
+  return { obtenerReservasDelAno, obtenerReservasDelMes }
 }

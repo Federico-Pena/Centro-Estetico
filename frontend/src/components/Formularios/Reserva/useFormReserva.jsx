@@ -7,12 +7,13 @@ import { ACTIONS_RESERVAS } from '../../../Context/Reservas/reducerReservas.js'
 import { postReserva } from '../../../Hooks/Api/helpers/Reservas/postReserva.js'
 import { putReserva } from '../../../Hooks/Api/helpers/Reservas/putReserva.js'
 import { getPacientesNombres } from '../../../Hooks/Api/helpers/Pacientes/getPacientesNombres.js'
+import { LoaderContext } from '../../../Context/Loader/LoaderContext.jsx'
 
 export const useFormReserva = (dia) => {
   const { accessToken } = useContext(UserContext)
   const { setMensaje } = useContext(ToastContext)
+  const { setLoading } = useContext(LoaderContext)
   const { dispatch } = useContext(ReservasContext)
-  const [loading, setLoading] = useState(false)
   const [horasDisponibles, setHorasDisponibles] = useState([])
   const [pacientesNombres, setPacientesNombres] = useState([])
   const [reservasDelDia, setReservasDelDia] = useState([])
@@ -38,7 +39,7 @@ export const useFormReserva = (dia) => {
       }
     }
     obtenerNombrePacientes()
-  }, [accessToken, setMensaje])
+  }, [accessToken, setMensaje, setLoading])
 
   useEffect(() => {
     const horasLibres = async () => {
@@ -53,18 +54,18 @@ export const useFormReserva = (dia) => {
           setHorasDisponibles(horas)
           setReservasDelDia(datos)
         }
-        setLoading(false)
       } catch (error) {
+        setMensaje('Error al obtener lar horas disponibles')
+      } finally {
         setLoading(false)
       }
     }
     dia && horasLibres()
-  }, [accessToken, setMensaje, dia])
+  }, [accessToken, setMensaje, dia, setLoading])
 
   const agregarReserva = async (nuevoReserva) => {
     try {
       setLoading(true)
-
       const res = await postReserva(accessToken, nuevoReserva)
       const { error, datos, mensaje, status } = res
       if (status === 200) {
@@ -91,6 +92,7 @@ export const useFormReserva = (dia) => {
   }
   const editarReserva = async (reserva, id) => {
     try {
+      setLoading(true)
       const res = await putReserva(accessToken, reserva, id)
       const { status, datos, error, mensaje } = res
       if (status === 200) {
@@ -118,7 +120,6 @@ export const useFormReserva = (dia) => {
   }
   return {
     horasDisponibles,
-    loading,
     reservasDelDia,
     agregarReserva,
     editarReserva,

@@ -1,7 +1,9 @@
+import { useContext } from 'react'
 import { useEstadisticas } from '../../../Hooks/Api/Estadisticas/useEstadisticas.jsx'
 import useForm from '../../../Hooks/Formulario/useForm.jsx'
 import { BtnSecundario } from '../../Botones/BtnSecundario.jsx'
 import { LabelInput } from '../../Formularios/LabelInput.jsx'
+import { LoaderContext } from '../../../Context/Loader/LoaderContext.jsx'
 const initialValues = {
   year: ''
 }
@@ -13,13 +15,12 @@ const validations = {
   }
 }
 export const FormAno = ({ setAno }) => {
-  const { obtenerReservasDelAno, loading } = useEstadisticas()
-
+  const { loading } = useContext(LoaderContext)
+  const { obtenerReservasDelAno } = useEstadisticas()
   const { errors, values, handleChange, validateForm, resetForm } = useForm(
     initialValues,
     validations
   )
-
   const getEstadisticasReservas = async (e) => {
     e.preventDefault()
     const ano = values.year
@@ -41,11 +42,11 @@ export const FormAno = ({ setAno }) => {
         type={'number'}
         placeholder={2024}
         value={values.year}
-        disabled={loading}
         maxLength={4}
         minLength={4}
       />
       <BtnSecundario
+        disabled={loading}
         tipo={'submit'}
         texto={'Buscar'}
         onClickFunction={getEstadisticasReservas}

@@ -13,12 +13,14 @@ import { HeaderCalendario } from '../Components/Calendario/HeaderCalendario.jsx'
 import { ACTIONS_RESERVAS } from '../Context/Reservas/reducerReservas.js'
 import { ContenedorReservas } from '../Components/ContenedorReservas/ContenedorReservas.jsx'
 import ContadorReservas from '../Components/ContadorReservas/ContadorReservas.jsx'
+import { LoaderContext } from '../Context/Loader/LoaderContext.jsx'
 
 function Calendario() {
   const { setMensaje } = useContext(ToastContext)
   const { loading: cargando } = useContext(UserContext)
+  const { loading } = useContext(LoaderContext)
   const { reservas, dispatch, seleccionadas } = useContext(ReservasContext)
-  const { semanaAnterior, semanaSiguiente, loading, diasSemana, setSeleccionadas, seleccionarDia } =
+  const { semanaAnterior, semanaSiguiente, diasSemana, setSeleccionadas, seleccionarDia } =
     useCalendario()
   const cerrarReserva = () => {
     setSeleccionadas([])
@@ -64,7 +66,7 @@ function Calendario() {
       <main className='grid py-8 px-2 w-full '>
         <ContadorReservas setSeleccionadas={setSeleccionadas} />
         <article className='max-w-4xl grid  mx-auto border rounded-lg border-black'>
-          <HeaderCalendario diasSemana={diasSemana} handleSeleccionarDia={seleccionarDia} />
+          <HeaderCalendario handleSeleccionarDia={seleccionarDia} />
           <Botones
             loading={loading}
             semanaAnterior={semanaAnterior}

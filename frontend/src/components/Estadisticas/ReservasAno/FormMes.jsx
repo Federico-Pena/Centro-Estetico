@@ -1,3 +1,5 @@
+import { useContext } from 'react'
+import { LoaderContext } from '../../../Context/Loader/LoaderContext.jsx'
 import { useEstadisticas } from '../../../Hooks/Api/Estadisticas/useEstadisticas.jsx'
 import useForm from '../../../Hooks/Formulario/useForm.jsx'
 import { MESES } from '../../../constantes.js'
@@ -18,7 +20,8 @@ const validations = {
 }
 
 export const FormMes = ({ setAno, setMes }) => {
-  const { obtenerReservasDelMes, loading } = useEstadisticas()
+  const { loading } = useContext(LoaderContext)
+  const { obtenerReservasDelMes } = useEstadisticas()
 
   const { errors, values, handleChange, validateForm, resetForm } = useForm(
     initialValues,
@@ -60,7 +63,6 @@ export const FormMes = ({ setAno, setMes }) => {
         type={'number'}
         placeholder={2024}
         value={values.year}
-        disabled={loading}
         maxLength={4}
         minLength={4}
       />
@@ -85,6 +87,7 @@ export const FormMes = ({ setAno, setMes }) => {
       </Dropdown>
 
       <BtnSecundario
+        disabled={loading}
         tipo={'submit'}
         texto={'Buscar'}
         onClickFunction={getEstadisticasReservas}

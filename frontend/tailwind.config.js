@@ -26,9 +26,24 @@ export default {
         fadeIn: 'fadeIn .8s ease-in-out forwards',
         fadeOut: 'fadeOut .8s ease-in-out forwards',
         growIn: 'growIn .5s ease-in-out forwards',
-        growOut: 'growOut .5s ease-in-out forwards'
+        growOut: 'growOut .5s ease-in-out forwards',
+        animloader: 'animloader 1s linear infinite alternate'
       },
       keyframes: {
+        animloader: {
+          '0%': {
+            boxShadow: '-38px -12px ,  -14px 0,  14px 0, 38px 0'
+          },
+          '33%': {
+            boxShadow: '-38px 0px, -14px -12px,  14px 0, 38px 0'
+          },
+          '66%': {
+            boxShadow: '-38px 0px , -14px 0, 14px -12px, 38px 0'
+          },
+          '100%': {
+            boxShadow: '-38px 0 , -14px 0, 14px 0 , 38px -12px'
+          }
+        },
         growIn: {
           '0%': { opacity: 0, transform: 'scale(0%)' },
           '100%': { opacity: 1, transform: 'scale(100%)' }

@@ -22,9 +22,9 @@ export const FormServicio = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [masInfo, setMasInfo] = useState(false)
   const [previewServicio, setPreviewServicio] = useState(false)
-  const [servicio, setServicio] = useState(ser || initialFormData)
+  const [servicio] = useState(ser || initialFormData)
   const formServicioContainerRef = useRef()
-  const { editarServicio, agregarServicio, loading } = useServicio()
+  const { editarServicio, agregarServicio } = useServicio()
   const { handleChange, values, validateForm, errors, resetForm } = useForm(
     servicio,
     validationRules
@@ -93,7 +93,6 @@ export const FormServicio = () => {
             errors={errors}
             handleChange={handleChange}
             handleVerServicio={handleVerServicio}
-            loading={loading}
             masInfo={masInfo}
             openDialog={openDialog}
             values={values}

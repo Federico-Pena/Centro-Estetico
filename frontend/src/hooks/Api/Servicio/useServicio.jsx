@@ -8,19 +8,19 @@ import { ToastContext } from '../../../Context/Toast/mensajeContext.jsx'
 import { postServicio } from '../helpers/Servicios/postServicio.js'
 import { putServicio } from '../helpers/Servicios/putServicio.js'
 import { deleteServicio } from '../helpers/Servicios/deleteServicio.js'
-import { getServicio } from '../helpers/Servicios/getServicio.js'
 import { getServicios } from '../helpers/Servicios/getServicios.js'
+import { LoaderContext } from '../../../Context/Loader/LoaderContext.jsx'
 
 export const useServicio = () => {
   const { accessToken } = useContext(UserContext)
   const { setMensaje } = useContext(ToastContext)
-  const [loading, setLoading] = useState(false)
-  const { dispatch, servicios } = useContext(ServiciosContext)
+  const { setLoading } = useContext(LoaderContext)
+  const { dispatch } = useContext(ServiciosContext)
   const { dispatch: dispatchTratamientos } = useContext(TratamientoContext)
 
   const obtenerServicios = async () => {
-    setLoading(true)
     try {
+      setLoading(true)
       const res = await getServicios(accessToken)
       const { error, datos, status } = res
       if (status === 200) {
@@ -37,8 +37,8 @@ export const useServicio = () => {
     }
   }
   const agregarServicio = async (data) => {
-    setLoading(true)
     try {
+      setLoading(true)
       const res = await postServicio(accessToken, data)
       const { error, mensaje, datos, status } = res
       if (status === 200) {
@@ -59,8 +59,8 @@ export const useServicio = () => {
     }
   }
   const editarServicio = async (data) => {
-    setLoading(true)
     try {
+      setLoading(true)
       const response = await putServicio(accessToken, data)
       const { error, mensaje, datos, status } = response
       if (status === 200) {
@@ -85,6 +85,7 @@ export const useServicio = () => {
   }
   const eliminarServicio = async (id) => {
     try {
+      setLoading(true)
       const response = await deleteServicio(accessToken, id)
       const { mensaje, error, datos, status } = response
       if (status === 200) {
@@ -93,10 +94,11 @@ export const useServicio = () => {
           type: ACTIONS_SERVICIOS.DELETE_SERVICIO,
           payload: datos.servicio
         })
-        dispatchTratamientos({
-          type: ACTIONS_TRATAMIENTOS.DELETE_TRATAMIENTO,
-          payload: datos.tratamiento
-        })
+        datos.tratamiento &&
+          dispatchTratamientos({
+            type: ACTIONS_TRATAMIENTOS.DELETE_TRATAMIENTO,
+            payload: datos.tratamiento
+          })
       } else {
         if (error) {
           setMensaje(error)
@@ -110,36 +112,11 @@ export const useServicio = () => {
       setLoading(false)
     }
   }
-  /*
-  const seleccionarServicio = (id) => {
-    const seleccionado = servicios.find((ser) => ser._id === id)
-    dispatch({ type: ACTIONS_SERVICIOS.SET_SERVICIO_FILTRADO, payload: seleccionado })
-  }
-  const obtenerServicio = async (id) => {
-    try {
-      const res = await getServicio(accessToken, id)
-      const { error, mensaje, datos, status } = res
-      if (status === 200) {
-        setMensaje(mensaje)
-        return datos
-      } else {
-        if (error) {
-          setMensaje(error)
-        }
-      }
-    } catch (error) {
-      setMensaje('Ocurrió un error')
-      return false
-    }
-  } */
+
   return {
-    loading,
     editarServicio,
     obtenerServicios,
     agregarServicio,
     eliminarServicio
-    /* 
-    seleccionarServicio,
-    obtenerServicio, */
   }
 }

@@ -44,49 +44,16 @@ export const TratamientosList = () => {
             'col-span-full border border-color-violeta bg-color-violeta text-white flex items-center justify-center gap-2  max-w-fit justify-self-center rounded-lg px-4 py-2  hover:opacity-70 transition-opacity [&>span>svg]:text-xl'
           }
         />
-        {
-          /* tratamientosFiltrados.length > 0
-          ? tratamientosFiltrados.map((trata) => (
-              <ul className='border border-slate-300' key={trata._id}>
-                <li>{trata.servicio.nombre}</li>
-                <li>
-                  <Edit
-                    onClickFunction={() => {
-                      handleEdit(trata)
-                    }}
-                  />
-                  <Delete
-                    onClickFunction={() => {
-                      handleDelete(trata)
-                    }}
-                  />
-                </li>
-                <li>{trata.descripcion}</li>
-                <li>{trata.tiempo} minutos por sesión</li>
-                <li>{`$ ${trata.costoPorSesion}`} por sesión</li>
-                <li>{`$ ${trata.costoTotal}`} total</li>
-                {trata.enPromocion ? (
-                  <li>
-                    En Promoción <CheckboxChecked />
-                  </li>
-                ) : (
-                  <li>
-                    En Promoción <Checkbox />
-                  </li>
-                )}
-              </ul>
+        {tratamientos.length > 0
+          ? tratamientos.map((trata) => (
+              <TratamientoListItem
+                key={trata._id}
+                handleDelete={handleDelete}
+                handleEdit={handleEdit}
+                tratamiento={trata}
+              />
             ))
-          :  */ tratamientos.length > 0
-            ? tratamientos.map((trata) => (
-                <TratamientoListItem
-                  key={trata._id}
-                  handleDelete={handleDelete}
-                  handleEdit={handleEdit}
-                  tratamiento={trata}
-                />
-              ))
-            : null
-        }
+          : null}
       </article>
     </>
   )

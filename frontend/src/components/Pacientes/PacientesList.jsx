@@ -10,6 +10,7 @@ import { PacienteListItem } from './PacienteListItem.jsx'
 import { Paciente } from './Paciente.jsx'
 import { useNavigate } from 'react-router-dom'
 import { RUTAS } from '../../constantes.js'
+import { LoaderContext } from '../../Context/Loader/LoaderContext.jsx'
 function primerYUltimaLetra(array) {
   const primera = array[0].nombre.charAt(0)
   const ultima = array[array.length - 1].nombre.charAt(0)
@@ -18,7 +19,8 @@ function primerYUltimaLetra(array) {
 export const PacientesList = () => {
   const navigate = useNavigate()
   const { pacientes, paciente, dispatch } = useContext(PacientesContext)
-  const { totalPages, setPagina, loading, borrarPaciente, obtenerPacientePorId } = usePaciente()
+  const { loading } = useContext(LoaderContext)
+  const { totalPages, setPagina, borrarPaciente, obtenerPacientePorId } = usePaciente()
   const [modal, setModal] = useState(false)
   const [verPaciente, setVerPaciente] = useState(false)
 

@@ -5,7 +5,7 @@ import { adminLinks } from './links.js'
 export const AdminMenu = ({ onClick }) => {
   return (
     <li className='grid group relative'>
-      <a className='grid grid-cols-[1fr_max-content] cursor-pointer md:flex md:items-center md:gap-2 '>
+      <a className='grid grid-cols-[1fr_max-content] cursor-pointer group-hover:opacity-0 md:flex md:items-center md:gap-2 '>
         Admin
         <ArrowDown className={'transition-transform group-hover:rotate-180'} />
       </a>

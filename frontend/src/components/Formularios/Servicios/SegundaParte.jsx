@@ -1,5 +1,4 @@
 import { BtnSecundario } from '../../Botones/BtnSecundario.jsx'
-import { LoaderChico } from '../../Loader/LoaderChico.jsx'
 import { LabelInput } from '../LabelInput.jsx'
 import { TextAreaLabel } from '../TextAreaLabel.jsx'
 
@@ -9,8 +8,7 @@ export const SegundaParte = ({
   handleChange,
   errors,
   openDialog,
-  handleVerServicio,
-  loading
+  handleVerServicio
 }) => {
   return (
     <section className={`${masInfo ? '' : 'hidden'}`}>
@@ -65,7 +63,7 @@ export const SegundaParte = ({
             'border border-color-violeta bg-color-violeta text-white flex items-center justify-center gap-2  max-w-fit justify-self-center rounded-lg px-4 py-2  hover:opacity-70 transition-opacity [&>span>svg]:text-xl [&>span>svg]:hover:rotate-180 [&>span>svg]:transition'
           }
           tipo={'submit'}
-          texto={loading ? <LoaderChico /> : 'Enviar'}
+          texto={'Enviar'}
         />
       </div>
     </section>

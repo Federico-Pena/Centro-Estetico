@@ -4,12 +4,13 @@ import { ToastContext } from '../../../Context/Toast/mensajeContext.jsx'
 import { deUnPaciente } from '../helpers/Reservas/deUnPaciente.js'
 import { ReservasContext } from '../../../Context/Reservas/ReservasContext.jsx'
 import { ACTIONS_RESERVAS } from '../../../Context/Reservas/reducerReservas.js'
+import { LoaderContext } from '../../../Context/Loader/LoaderContext.jsx'
 
 export const useReservasPaciente = (id) => {
   const { accessToken } = useContext(UserContext)
   const { setMensaje } = useContext(ToastContext)
   const { dispatch } = useContext(ReservasContext)
-  const [loading, setLoading] = useState(false)
+  const { setLoading } = useContext(LoaderContext)
   const [pagina, setPagina] = useState(1)
   const [totalPaginas, setTotalPaginas] = useState(false)
   /*  useEffect(() => {
@@ -64,7 +65,7 @@ export const useReservasPaciente = (id) => {
       }
     }
     getReservasPaciente()
-  }, [accessToken, pagina, dispatch, setMensaje, id])
+  }, [accessToken, pagina, dispatch, setMensaje, id, setLoading])
 
-  return { loading, pagina, totalPaginas, setPagina }
+  return { pagina, totalPaginas, setPagina }
 }

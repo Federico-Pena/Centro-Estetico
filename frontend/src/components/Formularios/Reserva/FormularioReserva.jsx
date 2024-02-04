@@ -9,6 +9,7 @@ import { HorasForm } from './HorasForm.jsx'
 import { ResumerReserva } from './ResumerReserva.jsx'
 import { BtnSecundario } from '../../Botones/BtnSecundario.jsx'
 import { HOY_FECHA_STRING } from '../../../constantes.js'
+import { LoaderContext } from '../../../Context/Loader/LoaderContext.jsx'
 
 const formRules = {
   nombre: { required: true },
@@ -16,6 +17,8 @@ const formRules = {
   hora: { required: true }
 }
 export const FormularioReserva = ({ observaciones, cerrarFormulario }) => {
+  const { loading } = useContext(LoaderContext)
+
   const sectionFormRef = useRef()
   const { setMensaje } = useContext(ToastContext)
   const initialForm = {
@@ -25,7 +28,7 @@ export const FormularioReserva = ({ observaciones, cerrarFormulario }) => {
     observaciones: observaciones || ''
   }
   const { errors, handleChange, values, validateForm } = useForm(initialForm, formRules)
-  const { horasDisponibles, loading } = useFormReserva(values.fecha)
+  const { horasDisponibles } = useFormReserva(values.fecha)
   const esDomingo = new Date(values.fecha).getDay() === 6
 
   const handleSubmit = (e) => {
@@ -49,7 +52,7 @@ export const FormularioReserva = ({ observaciones, cerrarFormulario }) => {
     <section
       id='sectionForm'
       ref={sectionFormRef}
-      className='fixed overflow-auto bg-gradient-to-b from-slate-900 to-black py-8 inset-0 z-50 grid'
+      className='fixed overflow-auto bg-gradient-to-b from-slate-50 to-color-verde-blanco py-8 inset-0 z-50 grid'
       onAnimationEnd={(e) => {
         if (e.target.id === 'sectionForm' && e.animationName !== 'fadeIn') {
           cerrarFormulario()
@@ -57,7 +60,7 @@ export const FormularioReserva = ({ observaciones, cerrarFormulario }) => {
       }}>
       <form
         onSubmit={handleSubmit}
-        className='animate-fadeIn grid w-full max-w-md py-8 px-4 rounded bg-color-logo gap-4 m-auto'>
+        className='animate-fadeIn grid w-full max-w-md py-8 px-4 rounded-lg bg-color-logo gap-4 m-auto'>
         <h3 className='font-betonga text-color-violeta font-bold capitalize text-center underline underline-offset-4 text-2xl px-4'>
           Reserva
         </h3>
@@ -71,6 +74,7 @@ export const FormularioReserva = ({ observaciones, cerrarFormulario }) => {
           value={values.nombre}
         />
         <LabelInput
+          className={'w-full'}
           errors={errors}
           labelText={'Fecha'}
           name={'fecha'}

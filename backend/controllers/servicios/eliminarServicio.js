@@ -29,15 +29,7 @@ export const eliminarServicio = async (req, res) => {
       }
     }
     const tratamiento = await Tratamiento.findOne({ servicio: id })
-    if (!tratamiento) {
-      const response = {
-        error: 'El tratamiento no existe',
-        status: 400,
-        res
-      }
-      return crearRespuestaJSON(response)
-    }
-    if (tratamiento.imagen && tratamiento.imagen.public_id) {
+    if (tratamiento && tratamiento.imagen && tratamiento.imagen.public_id) {
       try {
         await eliminarDeCloudinary(tratamiento.imagen.public_id)
       } catch (error) {
@@ -51,8 +43,8 @@ export const eliminarServicio = async (req, res) => {
     }
 
     const servicioABorrar = await Servicio.findOneAndDelete({ _id: id })
-    const tratamientoABorrar = await Tratamiento.findOneAndDelete({ servicio: id })
-    if (!servicioABorrar || !tratamientoABorrar) {
+    tratamiento && (await Tratamiento.findOneAndDelete({ servicio: id }))
+    if (!servicioABorrar) {
       const response = {
         error: 'Error al eliminar el servicio',
         status: 400,
