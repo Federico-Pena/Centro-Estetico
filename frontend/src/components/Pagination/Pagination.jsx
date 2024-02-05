@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { LoaderChico } from '../Loader/LoaderChico.jsx'
-import { BtnSecundario } from '../Botones/BtnSecundario.jsx'
+import { Button } from '../Botones/Button.jsx'
 
 const Pagination = ({ loading, totalPages, onPageChange }) => {
   const [currentPage, setCurrentPage] = useState(1)
@@ -28,25 +28,20 @@ const Pagination = ({ loading, totalPages, onPageChange }) => {
   }
 
   return (
-    <section className='grid grid-rows-[auto_auto_1fr] py-4 gap-4'>
+    <section className='grid gap-4'>
       <div className='flex justify-between items-center gap-4'>
-        <BtnSecundario
+        <Button
           disabled={currentPage === 1}
           tipo={'button'}
-          className={
-            'font-bold text-color-violeta border-color-violeta border-[1px] rounded-md py-2 px-4 transition-colors hover:text-slate-50 hover:bg-color-violeta'
-          }
+          className={'font-bold'}
           texto={'Anterior'}
           onClickFunction={() => handlePageChange(currentPage - 1)}
         />
-
         <p className='text-center'>{totalPages} páginas </p>
-        <BtnSecundario
+        <Button
           disabled={currentPage === totalPages}
           tipo={'button'}
-          className={
-            'font-bold text-color-violeta border-color-violeta border-[1px] rounded-md py-2 px-4 transition-colors hover:text-slate-50 hover:bg-color-violeta'
-          }
+          className={'font-bold'}
           texto={'Siguiente'}
           onClickFunction={() => handlePageChange(currentPage + 1)}
         />

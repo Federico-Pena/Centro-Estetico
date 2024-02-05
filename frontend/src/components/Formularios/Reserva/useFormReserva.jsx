@@ -2,18 +2,23 @@ import { useContext, useEffect, useState } from 'react'
 import { UserContext } from '../../../Context/User/userContext.jsx'
 import { ToastContext } from '../../../Context/Toast/mensajeContext.jsx'
 import { reservasDelDiaParaUser } from '../../../Api/Helpers/Formularios/reservasDelDiaParaUser.js'
-import { ReservasContext } from '../../../Context/Reservas/ReservasContext.jsx'
 import { ACTIONS_RESERVAS } from '../../../Context/Reservas/reducerReservas.js'
 import { postReserva } from '../../../Hooks/Api/helpers/Reservas/postReserva.js'
 import { putReserva } from '../../../Hooks/Api/helpers/Reservas/putReserva.js'
 import { getPacientesNombres } from '../../../Hooks/Api/helpers/Pacientes/getPacientesNombres.js'
 import { LoaderContext } from '../../../Context/Loader/LoaderContext.jsx'
+import { useReservaContext } from '../../../Hooks/Context/useReservaContext.jsx'
+import { RUTAS } from '../../../constantes.js'
+import { useLocation } from 'react-router-dom'
 
 export const useFormReserva = (dia) => {
+  const location = useLocation()
+
+  const rutaAgregarReserva = location.pathname === RUTAS.admin.agregarReserva
   const { accessToken } = useContext(UserContext)
   const { setMensaje } = useContext(ToastContext)
   const { setLoading } = useContext(LoaderContext)
-  const { dispatch } = useContext(ReservasContext)
+  const { dispatch } = useReservaContext()
   const [horasDisponibles, setHorasDisponibles] = useState([])
   const [pacientesNombres, setPacientesNombres] = useState([])
   const [reservasDelDia, setReservasDelDia] = useState([])
@@ -25,6 +30,7 @@ export const useFormReserva = (dia) => {
         const { datos, status, error } = res
         if (status === 200) {
           setPacientesNombres(datos)
+          console.log(datos)
         } else {
           if (error) {
             setMensaje(error)
@@ -38,8 +44,8 @@ export const useFormReserva = (dia) => {
         setLoading(false)
       }
     }
-    obtenerNombrePacientes()
-  }, [accessToken, setMensaje, setLoading])
+    rutaAgregarReserva && obtenerNombrePacientes()
+  }, [accessToken, setMensaje, setLoading, rutaAgregarReserva])
 
   useEffect(() => {
     const horasLibres = async () => {
@@ -118,6 +124,7 @@ export const useFormReserva = (dia) => {
       setLoading(false)
     }
   }
+
   return {
     horasDisponibles,
     reservasDelDia,

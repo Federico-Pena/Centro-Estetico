@@ -2,8 +2,8 @@ import { Schema, model } from 'mongoose'
 const servicioSchema = new Schema({
   nombre: {
     type: String,
-    required: [true, 'El campo nombre es obligatorio.'],
-    unique: [true, 'El nombre del servicio ya existe.'],
+    required: true,
+    unique: true,
     lowercase: true,
     trim: true
   },
@@ -13,12 +13,12 @@ const servicioSchema = new Schema({
     },
     secure_url: {
       type: String,
-      required: [true, 'la imagen es requerida.']
+      required: true
     }
   },
   descripcion: {
     type: String,
-    required: [true, 'El campo descripcion es obligatorio.']
+    required: true
   },
   tratamientos: [
     {
@@ -28,11 +28,11 @@ const servicioSchema = new Schema({
   ],
   descripcionSecundaria: {
     type: String,
-    required: [true, 'El campo Descripcion Secundaria es obligatorio.']
+    required: true
   },
   tituloBeneficios: {
     type: String,
-    required: [true, 'El campo Titulo Beneficios es obligatorio.']
+    required: true
   },
   beneficiosLista: [String]
 })

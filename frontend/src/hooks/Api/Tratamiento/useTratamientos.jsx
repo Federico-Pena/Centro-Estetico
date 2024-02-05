@@ -2,12 +2,12 @@ import { useContext } from 'react'
 import { ToastContext } from '../../../Context/Toast/mensajeContext.jsx'
 import { UserContext } from '../../../Context/User/userContext.jsx'
 import { TratamientoContext } from '../../../context/Tratamiento/TratamientoContext.jsx'
-import { ACTIONS_TRATAMIENTOS } from '../../../context/Tratamiento/tratamientoReducer.js'
 import { getTratamientos } from '../helpers/Tratamientos/getTratamientos.js'
 import { postTratamiento } from '../helpers/Tratamientos/postTratamiento.js'
 import { deleteTratamiento } from '../helpers/Tratamientos/deleteTratamiento.js'
 import { putTratamiento } from '../helpers/Tratamientos/putTratamiento.js'
 import { LoaderContext } from '../../../Context/Loader/LoaderContext.jsx'
+import { ACTIONS_TRATAMIENTOS } from '../../../Context/Tratamiento/tratamientoReducer.js'
 export const useTratamientos = () => {
   const { accessToken } = useContext(UserContext)
   const { setMensaje } = useContext(ToastContext)

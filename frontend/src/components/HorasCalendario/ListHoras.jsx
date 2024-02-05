@@ -1,10 +1,9 @@
-import { useContext } from 'react'
 import { compararFechas } from '../../Helpers/compararFechas.js'
 import { ESTADOS_RESERVAS } from '../../constantes.js'
 import { formatHoraUser } from '../../Helpers/formatHoraUser.js'
-import { ReservasContext } from '../../Context/Reservas/ReservasContext.jsx'
+import { useReservaContext } from '../../Hooks/Context/useReservaContext.jsx'
 export const ListHoras = ({ horas, reservarHora }) => {
-  const { reservas } = useContext(ReservasContext)
+  const { reservas } = useReservaContext()
 
   return (
     <ul className={`grid gap-2`}>

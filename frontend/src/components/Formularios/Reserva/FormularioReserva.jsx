@@ -7,7 +7,7 @@ import { TextAreaLabel } from '../TextAreaLabel.jsx'
 import { useFormReserva } from './useFormReserva.jsx'
 import { HorasForm } from './HorasForm.jsx'
 import { ResumerReserva } from './ResumerReserva.jsx'
-import { BtnSecundario } from '../../Botones/BtnSecundario.jsx'
+import { Button } from '../../Botones/Button.jsx'
 import { HOY_FECHA_STRING } from '../../../constantes.js'
 import { LoaderContext } from '../../../Context/Loader/LoaderContext.jsx'
 
@@ -58,12 +58,12 @@ export const FormularioReserva = ({ observaciones, cerrarFormulario }) => {
           cerrarFormulario()
         }
       }}>
+      <h1 className='font-betonga text-color-violeta font-bold capitalize text-center underline underline-offset-4 text-2xl px-4'>
+        Reserva
+      </h1>
       <form
         onSubmit={handleSubmit}
         className='animate-fadeIn grid w-full max-w-md py-8 px-4 rounded-lg bg-color-logo gap-4 m-auto'>
-        <h3 className='font-betonga text-color-violeta font-bold capitalize text-center underline underline-offset-4 text-2xl px-4'>
-          Reserva
-        </h3>
         <LabelInput
           errors={errors}
           labelText={'Nombre'}
@@ -112,13 +112,13 @@ export const FormularioReserva = ({ observaciones, cerrarFormulario }) => {
         />
         <ResumerReserva horasDisponibles={horasDisponibles} values={values} />
         <footer className='grid grid-flow-col pt-8 px-4 gap-4'>
-          <BtnSecundario
+          <Button
             className='font-bold text-color-violeta border-color-violeta border-[1px] rounded-md py-2 px-4 transition-colors hover:text-slate-50 hover:bg-color-violeta'
             tipo={'button'}
             onClickFunction={animationClose}
             texto={'Volver'}
           />
-          <BtnSecundario
+          <Button
             className={`${
               loading ? 'opacity-65' : ''
             } font-bold text-slate-50 border-color-violeta bg-color-violeta border-[1px] rounded-md py-2 px-4 transition-colors hover:text-color-violeta hover:bg-transparent cursor-pointer`}

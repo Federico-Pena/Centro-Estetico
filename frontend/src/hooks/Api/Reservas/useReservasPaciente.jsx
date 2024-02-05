@@ -2,14 +2,15 @@ import { useContext, useEffect, useState } from 'react'
 import { UserContext } from '../../../Context/User/userContext.jsx'
 import { ToastContext } from '../../../Context/Toast/mensajeContext.jsx'
 import { deUnPaciente } from '../helpers/Reservas/deUnPaciente.js'
-import { ReservasContext } from '../../../Context/Reservas/ReservasContext.jsx'
 import { ACTIONS_RESERVAS } from '../../../Context/Reservas/reducerReservas.js'
 import { LoaderContext } from '../../../Context/Loader/LoaderContext.jsx'
+import { useReservaContext } from '../../Context/useReservaContext.jsx'
 
 export const useReservasPaciente = (id) => {
   const { accessToken } = useContext(UserContext)
   const { setMensaje } = useContext(ToastContext)
-  const { dispatch } = useContext(ReservasContext)
+  const { dispatch } = useReservaContext()
+
   const { setLoading } = useContext(LoaderContext)
   const [pagina, setPagina] = useState(1)
   const [totalPaginas, setTotalPaginas] = useState(false)

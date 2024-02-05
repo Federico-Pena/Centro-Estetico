@@ -1,3 +1,4 @@
+import { Types } from 'mongoose'
 import { crearRespuestaJSON } from '../../helpers/crearRespuestaJSON.js'
 import { Paciente } from '../../models/PacienteSchema.js'
 import Servicio from '../../models/ServicioSchema.js'
@@ -32,7 +33,9 @@ export const editarPaciente = async (req, res) => {
       servicio,
       observaciones
     } = req.body
-    const idPaciente = req.params.id
+    let servicioId
+    let tratamientoId
+    const idPaciente = new Types.ObjectId(req.params.id)
     if (!idPaciente) {
       const response = {
         error: 'Debe proporcionar el id para la búsqueda',
@@ -41,7 +44,7 @@ export const editarPaciente = async (req, res) => {
       }
       return crearRespuestaJSON(response)
     }
-    const pacienteAnterior = await Paciente.findById(req.params.id)
+    const pacienteAnterior = await Paciente.findById(idPaciente)
 
     if (!pacienteAnterior) {
       const response = {
@@ -51,19 +54,33 @@ export const editarPaciente = async (req, res) => {
       }
       return crearRespuestaJSON(response)
     }
-    const servicioPromise = Servicio.findOne({ nombre: servicio.toLowerCase() })
-    const tratamientoPromise = Tratamiento.findOne({ descripcion: tratamiento.toLowerCase() })
-    const [servicioExistente, tratamientoExistente] = await Promise.all([
-      servicioPromise,
-      tratamientoPromise
-    ])
-    if (!servicioExistente || !tratamientoExistente) {
-      const response = {
-        error: 'Servicio o tratamiento incorrecto',
-        status: 500,
-        res
+    if (servicio) {
+      const servicioExistente = await Servicio.findOne({ nombre: servicio.toLowerCase() })
+      if (servicioExistente) {
+        servicioId = servicioExistente._id
+      } else {
+        const response = {
+          error: 'El servicio seleccionado no existe',
+          status: 404,
+          res
+        }
+        return crearRespuestaJSON(response)
       }
-      return crearRespuestaJSON(response)
+    }
+    if (tratamiento) {
+      const tratamientoExistente = await Tratamiento.findOne({
+        descripcion: tratamiento.toLowerCase()
+      })
+      if (tratamientoExistente) {
+        tratamientoId = tratamientoExistente._id
+      } else {
+        const response = {
+          error: 'El tratamiento seleccionado no existe',
+          status: 404,
+          res
+        }
+        return crearRespuestaJSON(response)
+      }
     }
     let resultCloudinary = null
     let fotoNueva = null
@@ -117,11 +134,11 @@ export const editarPaciente = async (req, res) => {
       enfermedades,
       medicamentos,
       implantes,
-      servicio: servicioExistente._id,
-      tratamiento: tratamientoExistente._id,
+      tratamiento: tratamientoId && tratamientoId,
+      servicio: servicioId && servicioId,
       foto: fotoNueva
     }
-    const paciente = await Paciente.findByIdAndUpdate(req.params.id, pacienteNuevo)
+    const paciente = await Paciente.findByIdAndUpdate(pacienteAnterior._id, pacienteNuevo)
     if (!paciente) {
       const response = {
         error: 'Error al actualizar el paciente',
@@ -130,7 +147,7 @@ export const editarPaciente = async (req, res) => {
       }
       return crearRespuestaJSON(response)
     }
-    const nuevoPaciente = await Paciente.findOne(paciente._id)
+    const nuevoPaciente = await Paciente.findOne(pacienteAnterior._id)
       .populate('servicio', 'nombre')
       .populate('tratamiento', 'descripcion')
     const response = {
@@ -141,6 +158,7 @@ export const editarPaciente = async (req, res) => {
     }
     return crearRespuestaJSON(response)
   } catch (error) {
+    console.log(error.message)
     if (error) {
       const response = {
         error: 'Error al actualizar al paciente',

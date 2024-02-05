@@ -1,14 +1,13 @@
-import { useContext, useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { PacienteDetalles } from './PacienteDetalles.jsx'
 import { PacienteContactoEmergencia } from './PacienteContactoEmergencia.jsx'
 import { PacienteCostumbres } from './PacienteCostumbres.jsx'
 import { PacienteAfecciones } from './PacienteAfecciones.jsx'
 import { PacienteHeader } from './PacienteHeader.jsx'
-import { PacientesContext } from '../../Context/Pacientes/PacientesContext.jsx'
+import { usePacienteContext } from '../../Hooks/Context/usePacienteContext.jsx'
 
 export const Paciente = ({ cerrarPaciente }) => {
-  const { paciente } = useContext(PacientesContext)
-
+  const { paciente } = usePacienteContext()
   const imprimirRef = useRef()
   const pacienteRef = useRef()
   useEffect(() => {

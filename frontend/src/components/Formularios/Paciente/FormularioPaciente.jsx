@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react'
 import { formDataPaciente } from './formDataPaciente'
-import { BtnSecundario } from '../../Botones/BtnSecundario.jsx'
+import { Button } from '../../Botones/Button.jsx'
 import useForm from '../../../Hooks/Formulario/useForm.jsx'
 import { initialForm, validationRules } from './initialFormYRules.js'
 import { DatosPersonales } from './DatosPersonales.jsx'
@@ -11,17 +11,17 @@ import { HeaderForm } from './HeaderForm.jsx'
 import { usePaciente } from '../../../Hooks/Api/Pacientes/usePaciente.jsx'
 import { RUTAS } from '../../../constantes.js'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { PacientesContext } from '../../../Context/Pacientes/PacientesContext.jsx'
 import { ACTIONS_PACIENTES } from '../../../Context/Pacientes/reducerPaciente.js'
+import { usePacienteContext } from '../../../Hooks/Context/usePacienteContext.jsx'
 
 const FormularioPaciente = () => {
   const location = useLocation()
+  const pacienteState = location.state?.paciente
   const navigate = useNavigate()
-
   const edicion = location.pathname === RUTAS.admin.editarPaciente
-  const { paciente: pac, dispatch } = useContext(PacientesContext)
 
-  const [paciente, setPaciente] = useState(initialForm(pac))
+  const { paciente: pac, dispatch } = usePacienteContext()
+  const [paciente] = useState(initialForm(pac || pacienteState))
   const { handleChange, values, validateForm, errors, resetForm } = useForm(
     paciente,
     validationRules
@@ -58,7 +58,7 @@ const FormularioPaciente = () => {
     if (isValid) {
       const nuevoUsuario = formDataPaciente(values)
       const res = edicion
-        ? await editarPaciente(nuevoUsuario, paciente._id)
+        ? await editarPaciente(nuevoUsuario, pac._id)
         : await agregarPaciente(nuevoUsuario)
       if (res) {
         cerrarForm()
@@ -68,14 +68,13 @@ const FormularioPaciente = () => {
 
   return (
     <section className='grid p-4'>
+      <h1 className='font-betonga font-bold text-color-violeta text-2xl tracking-wider text-center mb-4'>
+        {edicion ? 'Editar ' : 'Agregar '}Paciente
+      </h1>
       <form
-        className='animate-toastIn bg-color-logo rounded-lg p-4  max-w-2xl m-auto w-full grid gap-4 '
+        className='animate-toastIn bg-color-logo rounded-lg p-4 max-w-2xl m-auto w-full grid gap-4 border border-black'
         onSubmit={submitAgregar}>
-        <h2 className='font-betonga font-bold text-color-violeta text-2xl tracking-wider text-center mb-4'>
-          {edicion ? 'Editar ' : 'Agregar '}Paciente
-        </h2>
         <HeaderForm cambiarActivo={cambiarActivo} seccion={seccion} />
-
         {seccion.Personales && (
           <>
             <h3 className='font-betonga font-bold text-color-violeta text-xl tracking-wider'>
@@ -91,7 +90,7 @@ const FormularioPaciente = () => {
         )}
         {seccion.Costumbres && (
           <>
-            <h3 className='font-betonga font-bold text-color-violeta text-xl tracking-wider'>
+            <h3 className='font-betonga font-bold text-color-violeta text-xl tracking-wider text-center'>
               Costumbres
             </h3>
             <Costumbres handleChange={handleChange} values={values} />
@@ -108,26 +107,18 @@ const FormularioPaciente = () => {
         )}
         {seccion.Servicio && (
           <>
-            <h3 className='font-betonga font-bold text-color-violeta text-xl tracking-wider'>
+            <h3 className='font-betonga font-bold text-color-violeta text-xl tracking-wider text-center'>
               Servicios
             </h3>
             <SelectServicio values={values} handleChange={handleChange} />
           </>
         )}
-        <footer className='grid grid-cols-2 pt-4 border-t border-slate-500'>
-          <BtnSecundario
-            className={
-              'border-color-violeta bg-color-violeta text-white flex items-center justify-center  max-w-fit justify-self-center rounded-lg px-4 py-2  hover:opacity-70 transition-opacity'
-            }
-            tipo={'submit'}
-            texto={'Guardar'}
-          />
-          <BtnSecundario
+        <footer className='grid grid-flow-col gap-2 pt-4 '>
+          <Button className={'w-full'} bgColor={true} tipo={'submit'} texto={'Guardar'} />
+          <Button
+            className={'w-full'}
             onClickFunction={cerrarForm}
-            className={
-              'border border-color-violeta bg-transparent  flex items-center justify-center max-w-fit justify-self-center rounded-lg px-4 py-2  hover:opacity-70 transition-opacity '
-            }
-            tipo={'button'}
+            bgColor={false}
             texto={'Cerrar'}
           />
         </footer>

@@ -1,19 +1,20 @@
 import { useContext, useEffect, useState } from 'react'
 import { DIAS_DE_LA_SEMANA, HOY_FECHA_STRING } from '../constantes.js'
 import { ACTIONS_RESERVAS } from '../Context/Reservas/reducerReservas.js'
-import { ReservasContext } from '../Context/Reservas/ReservasContext.jsx'
 import { ToastContext } from '../Context/Toast/mensajeContext.jsx'
 import { UserContext } from '../Context/User/userContext.jsx'
 import { fechasDelCalendario } from '../Helpers/fechasDelCalendario.js'
 import { getReservasSemana } from './Api/helpers/Reservas/getReservasSemana.js'
 import { LoaderContext } from '../Context/Loader/LoaderContext.jsx'
+import { useReservaContext } from './Context/useReservaContext.jsx'
 
 export const useCalendario = () => {
   const [diaDeLaSemana, setDiaDeLaSemana] = useState(HOY_FECHA_STRING.split('T')[0])
   const { setMensaje } = useContext(ToastContext)
   const { accessToken } = useContext(UserContext)
   const { setLoading } = useContext(LoaderContext)
-  const { dispatch } = useContext(ReservasContext)
+  const { dispatch } = useReservaContext()
+
   const diasSemana = fechasDelCalendario(diaDeLaSemana)
 
   useEffect(() => {

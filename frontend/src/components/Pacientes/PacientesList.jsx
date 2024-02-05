@@ -1,16 +1,16 @@
 import { useContext, useState } from 'react'
-import { PacientesContext } from '../../Context/Pacientes/PacientesContext.jsx'
 import { usePaciente } from '../../Hooks/Api/Pacientes/usePaciente.jsx'
 import { Add } from '../Icons/Icons.jsx'
 import { ConfirmationModal } from '../ConfirmationModal/ConfirmationModal.jsx'
 import { ACTIONS_PACIENTES } from '../../Context/Pacientes/reducerPaciente.js'
 import Pagination from '../Pagination/Pagination.jsx'
-import { BtnSecundario } from '../Botones/BtnSecundario.jsx'
+import { Button } from '../Botones/Button.jsx'
 import { PacienteListItem } from './PacienteListItem.jsx'
 import { Paciente } from './Paciente.jsx'
 import { useNavigate } from 'react-router-dom'
 import { RUTAS } from '../../constantes.js'
 import { LoaderContext } from '../../Context/Loader/LoaderContext.jsx'
+import { usePacienteContext } from '../../Hooks/Context/usePacienteContext.jsx'
 function primerYUltimaLetra(array) {
   const primera = array[0].nombre.charAt(0)
   const ultima = array[array.length - 1].nombre.charAt(0)
@@ -18,7 +18,8 @@ function primerYUltimaLetra(array) {
 }
 export const PacientesList = () => {
   const navigate = useNavigate()
-  const { pacientes, paciente, dispatch } = useContext(PacientesContext)
+  const { pacientes, paciente, dispatch } = usePacienteContext()
+
   const { loading } = useContext(LoaderContext)
   const { totalPages, setPagina, borrarPaciente, obtenerPacientePorId } = usePaciente()
   const [modal, setModal] = useState(false)
@@ -29,8 +30,8 @@ export const PacientesList = () => {
     setModal(true)
   }
   const handleEdit = async (paciente) => {
-    await obtenerPacientePorId(paciente._id)
-    navigate(RUTAS.admin.editarPaciente)
+    const res = await obtenerPacientePorId(paciente._id)
+    navigate(RUTAS.admin.editarPaciente, { state: { paciente: res } })
   }
   const handleVerPaciente = async (paciente) => {
     await obtenerPacientePorId(paciente._id)
@@ -65,14 +66,12 @@ export const PacientesList = () => {
           />
         </header>
         <section className='grid gap-4 pt-8 md:grid-cols-2 border-t border-slate-500 '>
-          <BtnSecundario
+          <Button
             onClickFunction={() => navigate(RUTAS.admin.agregarPaciente)}
             tipo={'button'}
             texto={'Nuevo'}
             icono={<Add />}
-            className={
-              'border border-color-violeta bg-color-violeta text-white flex items-center justify-center gap-2  max-w-fit justify-self-center rounded-lg px-4 py-2  hover:opacity-70 transition-opacity [&>span>svg]:text-xl col-span-full mb-4'
-            }
+            className={'grid grid-flow-col gap-2 place-content-center col-span-full'}
           />
           <h2 className='text-center font-betonga font-bold text-color-violeta text-xl col-span-full mb-4'>
             {primerYUltimaLetra(pacientes)}

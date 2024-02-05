@@ -3,15 +3,15 @@ import { deleteReserva } from '../helpers/Reservas/deleteReserva.js'
 import { UserContext } from '../../../Context/User/userContext.jsx'
 import { ToastContext } from '../../../Context/Toast/mensajeContext.jsx'
 import { ACTIONS_RESERVAS } from '../../../Context/Reservas/reducerReservas.js'
-import { ReservasContext } from '../../../Context/Reservas/ReservasContext.jsx'
 import { putEstadoReserva } from '../helpers/Reservas/putEstadoReserva.js'
 import { LoaderContext } from '../../../Context/Loader/LoaderContext.jsx'
+import { useReservaContext } from '../../Context/useReservaContext.jsx'
 
 export const useReserva = () => {
   const { setLoading } = useContext(LoaderContext)
   const { accessToken } = useContext(UserContext)
   const { setMensaje } = useContext(ToastContext)
-  const { dispatch } = useContext(ReservasContext)
+  const { dispatch } = useReservaContext()
 
   const borrarReserva = async (reserva) => {
     try {

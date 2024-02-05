@@ -32,7 +32,9 @@ export const agregarPaciente = async (req, res) => {
       servicio,
       observaciones
     } = req.body
-
+    console.log(req.body)
+    let servicioId
+    let tratamientoId
     if (!nombre) {
       const response = {
         error: 'Debe proporcionar un nombre para el paciente',
@@ -50,26 +52,35 @@ export const agregarPaciente = async (req, res) => {
       }
       return crearRespuestaJSON(response)
     }
-    const servicioExistente = await Servicio.findOne({ nombre: servicio.toLowerCase() })
-    if (!servicioExistente) {
-      const response = {
-        error: 'El servicio seleccionado no existe',
-        status: 404,
-        res
+    if (servicio) {
+      const servicioExistente = await Servicio.findOne({ nombre: servicio.toLowerCase() })
+      if (servicioExistente) {
+        servicioId = servicioExistente._id
+      } else {
+        const response = {
+          error: 'El servicio seleccionado no existe',
+          status: 404,
+          res
+        }
+        return crearRespuestaJSON(response)
       }
-      return crearRespuestaJSON(response)
     }
-    const tratamientoExistente = await Tratamiento.findOne({
-      descripcion: tratamiento.toLowerCase()
-    })
-    if (!tratamientoExistente) {
-      const response = {
-        error: 'El tratamiento seleccionado no existe',
-        status: 404,
-        res
+    if (tratamiento) {
+      const tratamientoExistente = await Tratamiento.findOne({
+        descripcion: tratamiento.toLowerCase()
+      })
+      if (tratamientoExistente) {
+        tratamientoId = tratamientoExistente._id
+      } else {
+        const response = {
+          error: 'El tratamiento seleccionado no existe',
+          status: 404,
+          res
+        }
+        return crearRespuestaJSON(response)
       }
-      return crearRespuestaJSON(response)
     }
+
     let resultCloudinary = null
     let fotoNueva = null
     if (req.file && req.file.buffer) {
@@ -116,8 +127,8 @@ export const agregarPaciente = async (req, res) => {
       enfermedades,
       medicamentos,
       implantes,
-      tratamiento: tratamientoExistente._id,
-      servicio: servicioExistente._id
+      tratamiento: tratamientoId && tratamientoId,
+      servicio: servicioId && servicioId
     })
     if (fotoNueva !== null) {
       paciente.foto = fotoNueva

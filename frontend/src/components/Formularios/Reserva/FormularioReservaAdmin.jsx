@@ -1,7 +1,7 @@
 import { useContext } from 'react'
 import { ToastContext } from '../../../Context/Toast/mensajeContext.jsx'
 import useForm from '../../../Hooks/Formulario/useForm.jsx'
-import { BtnSecundario } from '../../Botones/BtnSecundario.jsx'
+import { Button } from '../../Botones/Button.jsx'
 import { LabelInput } from '../LabelInput.jsx'
 import { TextAreaLabel } from '../TextAreaLabel.jsx'
 import { SelectServicio } from '../Paciente/SelectServicio.jsx'
@@ -20,16 +20,16 @@ import { LoaderContext } from '../../../Context/Loader/LoaderContext.jsx'
 const FormularioReservaAdmin = () => {
   const location = useLocation()
   const navigate = useNavigate()
-  const from = location.state?.from
-  const edicion = location.pathname === RUTAS.admin.editarReserva
-  const desdeCalendario =
-    location.pathname === RUTAS.admin.agregarReserva && from === RUTAS.admin.calendario
+  const reservaState = location.state?.reserva
   const { setMensaje } = useContext(ToastContext)
   const { reserva, dispatch } = useContext(ReservasContext)
   const { loading } = useContext(LoaderContext)
-
+  const desdeCalendario =
+    location.pathname === RUTAS.admin.agregarReserva &&
+    location.state?.from === RUTAS.admin.calendario
+  const edicion = location.pathname === RUTAS.admin.editarReserva
   const { handleChange, values, errors, validateForm, resetForm } = useForm(
-    initialForm(reserva, edicion, desdeCalendario),
+    initialForm(reserva || reservaState, edicion, desdeCalendario),
     validationRules
   )
   const { horasDisponibles, reservasDelDia, agregarReserva, editarReserva, pacientesNombres } =
@@ -51,6 +51,7 @@ const FormularioReservaAdmin = () => {
     const isValid = validateForm() && !esDomingo
     if (isValid) {
       const datos = formularioReservaAdminSubmit(values)
+      console.log(values)
       const res = edicion ? await editarReserva(datos, reserva._id) : await agregarReserva(datos)
       if (res) {
         cerrarForm()
@@ -58,6 +59,8 @@ const FormularioReservaAdmin = () => {
         setMensaje(`Ocurrió un error al guardar el paciente.`)
       }
     } else {
+      console.log(errors)
+
       setMensaje(`Faltan campos requeridos.`)
     }
   }
@@ -76,94 +79,89 @@ const FormularioReservaAdmin = () => {
     }
     handleChange(nombreValue)
   }
+  const getNombresList = (listPaciente) => {
+    return listPaciente.map((paciente) => paciente.nombre)
+  }
   return (
-    <section className='grid grid-rows-[auto_1fr] gap-4 p-4'>
-      <BtnSecundario
-        className={
-          'border border-color-violeta bg-color-violeta text-white  flex items-center justify-center max-w-fit justify-self-center rounded-lg px-4 py-2  hover:opacity-70 transition-opacity'
-        }
-        tipo={'button'}
-        onClickFunction={cerrarForm}
-        texto={'Cerrar'}
-      />
-      <form
-        className='animate-toastIn bg-color-logo rounded-lg p-4 max-w-xl m-auto w-full grid gap-4 '
-        onSubmit={handleSubmit}>
-        <h2 className='font-betonga font-bold text-color-violeta text-2xl tracking-wider text-center mb-4'>
+    !loading && (
+      <section className='grid px-4 py-8'>
+        <h1 className='font-betonga font-bold text-color-violeta text-2xl tracking-wider text-center mb-4'>
           {edicion ? 'Editar' : 'Crear'} Reserva
-        </h2>
-        {!edicion && (
-          <Dropdown name={'Pacientes'} className={'gap-4'}>
-            <p
-              className='min-h-10 text-center p-2 border-b hover:bg-slate-300 transition-colors cursor-pointer'
-              onClick={handleNombreDropdown}></p>
-            {pacientesNombres.length > 0 &&
-              pacientesNombres.map((pac) => (
-                <p
-                  key={pac._id}
-                  className='min-h-10 text-center p-2 border-b hover:bg-slate-300 transition-colors cursor-pointer capitalize'
-                  onClick={handleNombreDropdown}>
-                  {pac.nombre}
-                </p>
-              ))}
-          </Dropdown>
-        )}
-        <LabelInput
-          placeholder={'Nombre'}
-          value={values.nombre}
-          labelText={'Nombre'}
-          name={'nombre'}
-          type={'text'}
-          errors={errors}
-          onChange={handleChange}
-        />
-        <LabelInput
-          className={'w-full'}
-          value={values.horaInicio.split('T')[0]}
-          labelText={'Fecha'}
-          name={'horaInicio'}
-          type={'date'}
-          errors={errors}
-          onChange={handleSetFecha}
-        />
-        {esDomingo ? (
-          <span className='p-2 rounded-xl w-full text-center shadow-md bg-color-violeta text-slate-50'>
-            * Los días domingos no se realizan reservas
-          </span>
-        ) : null}
-        {horasDisponibles.length > 0 && values.horaInicio && (
-          <>
-            <HorasFormAdmin
-              horasDisponibles={horasDisponibles}
-              values={values}
-              setMensaje={setMensaje}
-              handleChange={handleChange}
-              reservasDelDia={reservasDelDia}
-              errors={errors}
+        </h1>
+        <form
+          className='animate-toastIn bg-color-logo rounded-lg p-4 max-w-xl m-auto w-full grid gap-4 border border-black'
+          onSubmit={handleSubmit}>
+          {!edicion && (
+            <Dropdown
+              name={'Pacientes existentes'}
+              onClickFunction={handleNombreDropdown}
+              list={getNombresList(pacientesNombres)}
             />
-          </>
-        )}
-
-        <SelectServicio values={values} handleChange={handleChange} errors={errors} />
-        <TextAreaLabel
-          value={values.observaciones}
-          onChange={handleChange}
-          name={'observaciones'}
-          labelText={
-            values.nombre === 'admin' ? 'Compromisos separados por comas' : 'Observaciones'
-          }
-        />
-        <FormularioAdminResumen values={values} />
-        <BtnSecundario
-          className={`${
-            loading ? 'opacity-65 cursor-not-allowed' : ''
-          } font-bold text-slate-50 border-color-violeta bg-color-violeta border-[1px] rounded-md py-2 px-4 transition-colors hover:text-color-violeta hover:bg-transparent cursor-pointer`}
-          tipo={'submit'}
-          texto={'Guardar'}
-          disabled={loading}
-        />
-      </form>
-    </section>
+          )}
+          <LabelInput
+            placeholder={'Nombre'}
+            value={values.nombre}
+            labelText={'Nombre'}
+            name={'nombre'}
+            type={'text'}
+            errors={errors}
+            onChange={handleChange}
+          />
+          <LabelInput
+            className={'w-full'}
+            value={values.horaInicio.split('T')[0]}
+            labelText={'Fecha'}
+            name={'horaInicio'}
+            type={'date'}
+            errors={errors}
+            onChange={handleSetFecha}
+          />
+          {esDomingo ? (
+            <span className='p-2 rounded-xl w-full text-center shadow-md bg-color-violeta text-slate-50'>
+              * Los días domingos no se realizan reservas
+            </span>
+          ) : null}
+          {horasDisponibles.length > 0 && values.horaInicio && (
+            <>
+              <HorasFormAdmin
+                horasDisponibles={horasDisponibles}
+                values={values}
+                setMensaje={setMensaje}
+                handleChange={handleChange}
+                reservasDelDia={reservasDelDia}
+                errors={errors}
+              />
+            </>
+          )}
+          <label>Servicio y Tratamiento</label>
+          <SelectServicio values={values} handleChange={handleChange} errors={errors} />
+          <TextAreaLabel
+            value={values.observaciones}
+            onChange={handleChange}
+            name={'observaciones'}
+            labelText={
+              values.nombre === 'admin' ? 'Compromisos separados por comas' : 'Observaciones'
+            }
+          />
+          <FormularioAdminResumen values={values} />
+          <footer className='grid grid-flow-col gap-4'>
+            <Button
+              bgColor={true}
+              className={`${loading ? 'opacity-65 cursor-not-allowed' : ''} w-full`}
+              tipo={'submit'}
+              texto={'Guardar'}
+              disabled={loading}
+            />
+            <Button
+              className={'w-full'}
+              tipo={'button'}
+              onClickFunction={cerrarForm}
+              texto={'Cerrar'}
+            />
+          </footer>
+        </form>
+      </section>
+    )
   )
 }
 export default FormularioReservaAdmin

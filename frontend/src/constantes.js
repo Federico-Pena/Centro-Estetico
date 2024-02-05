@@ -50,7 +50,7 @@ export const RUTAS = {
     editarServicio: '/Servicios/Editar',
     agregarReserva: '/Reservas/Nueva',
     editarReserva: '/Reservas/Editar',
-    reservasPaciente: '/Reservas/Paciente',
+    reservasPaciente: '/Reservas/Paciente/:id',
     agregarPaciente: '/Pacientes/Nuevo',
     editarPaciente: '/Pacientes/Editar',
     calendario: '/Calendario',

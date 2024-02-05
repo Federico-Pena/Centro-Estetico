@@ -1,8 +1,9 @@
 import { useContext, useState } from 'react'
 import { ESTADOS_RESERVAS } from '../../constantes.js'
-import { BtnSecundario } from '../Botones/BtnSecundario.jsx'
+import { Button } from '../Botones/Button.jsx'
 import { TransitionNumber } from '../TransitionNumber/TransitionNumber.jsx'
 import { ReservasContext } from '../../Context/Reservas/ReservasContext.jsx'
+import { useReservaContext } from '../../Hooks/Context/useReservaContext.jsx'
 function contador(arrayReservas) {
   const counts = arrayReservas.reduce(
     (acc, reserva) => {
@@ -27,7 +28,8 @@ function contador(arrayReservas) {
 
 function ContadorReservas({ setSeleccionadas }) {
   const [isVisible, setIsVisible] = useState(false)
-  const { reservas } = useContext(ReservasContext)
+  const { reservas } = useReservaContext()
+
   const { reservasCanceladas, reservasPendientes, reservasTerminadas, reservasTodas } =
     contador(reservas)
   const mostrarReservadas = (estado) => {
@@ -48,7 +50,7 @@ function ContadorReservas({ setSeleccionadas }) {
   }
   return (
     <div className={`m-auto w-full max-w-4xl flex flex-col items-center gap-4 mb-4`}>
-      <BtnSecundario
+      <Button
         className={
           'text-white w-fit h-fit self-center font-bold bg-color-violeta border-color-violeta border-[1px] rounded-md py-2 px-4 transition-colors hover:text-color-violeta hover:bg-transparent'
         }

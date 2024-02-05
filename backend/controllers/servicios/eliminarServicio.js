@@ -17,45 +17,36 @@ export const eliminarServicio = async (req, res) => {
       return crearRespuestaJSON(response)
     }
     if (servicio.imagen && servicio.imagen.public_id) {
-      try {
-        await eliminarDeCloudinary(servicio.imagen.public_id)
-      } catch (error) {
+      await eliminarDeCloudinary(servicio.imagen.public_id).catch(() => {
         const response = {
           error: 'Error al eliminar la foto del servicio',
-          status: 400,
+          status: 500,
           res
         }
-        return crearRespuestaJSON(response)
-      }
-    }
-    const tratamiento = await Tratamiento.findOne({ servicio: id })
-    if (tratamiento && tratamiento.imagen && tratamiento.imagen.public_id) {
-      try {
-        await eliminarDeCloudinary(tratamiento.imagen.public_id)
-      } catch (error) {
-        const response = {
-          error: 'Error al eliminar la foto del tratamiento',
-          status: 400,
-          res
-        }
-        return crearRespuestaJSON(response)
-      }
+        crearRespuestaJSON(response)
+      })
     }
 
-    const servicioABorrar = await Servicio.findOneAndDelete({ _id: id })
-    tratamiento && (await Tratamiento.findOneAndDelete({ servicio: id }))
-    if (!servicioABorrar) {
-      const response = {
-        error: 'Error al eliminar el servicio',
-        status: 400,
-        res
+    const tratamientos = await Tratamiento.find({ servicio: id })
+    for (const tratamiento of tratamientos) {
+      if (tratamiento.imagen && tratamiento.imagen.public_id) {
+        await eliminarDeCloudinary(tratamiento.imagen.public_id).catch(() => {
+          const response = {
+            error: 'Error al eliminar la foto del tratamiento',
+            status: 500,
+            res
+          }
+          crearRespuestaJSON(response)
+        })
       }
-      return crearRespuestaJSON(response)
+      await Tratamiento.findByIdAndDelete(tratamiento._id)
     }
+
+    await Servicio.findByIdAndDelete(id)
     const response = {
       mensaje: `${servicio.nombre} eliminado con éxito.`,
       status: 200,
-      datos: { servicio, tratamiento },
+      datos: { servicio, tratamientosEliminados: tratamientos.length },
       res
     }
     return crearRespuestaJSON(response)

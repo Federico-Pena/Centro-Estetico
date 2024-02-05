@@ -1,6 +1,6 @@
 import { useServicio } from '../../Hooks/Api/Servicio/useServicio.jsx'
 import { useTratamientos } from '../../Hooks/Api/Tratamiento/useTratamientos.jsx'
-import { BtnSecundario } from '../Botones/BtnSecundario.jsx'
+import { Button } from '../Botones/Button.jsx'
 
 export const HeaderPageAdministracion = ({ cambiarActivo, activo }) => {
   const { obtenerTratamientos } = useTratamientos()
@@ -9,52 +9,45 @@ export const HeaderPageAdministracion = ({ cambiarActivo, activo }) => {
   return (
     <header
       className={`
-        grid grid-cols-2 grid-rows-[50px_50px] max-w-xl mx-auto w-full md:grid-cols-4 md:max-w-3xl`}>
-      <BtnSecundario
+        grid grid-cols-2 grid-rows-[50px_50px] max-w-xl m-auto gap-2 w-full md:grid-cols-4 md:grid-rows-1 md:max-w-3xl`}>
+      <Button
+        className={'w-full'}
         tipo={'button'}
         disabled={activo.Backup}
         onClickFunction={cambiarActivo}
-        className={`${
-          activo.Backup ? 'bg-slate-300' : ''
-        } border grid place-content-center cursor-pointer rounded hover:bg-color-violeta hover:text-white transition-colors`}
+        bgColor={activo.Backup}
         texto={'Backup'}
       />
-
-      <BtnSecundario
+      <Button
+        className={'w-full'}
         tipo={'button'}
         disabled={activo.Servicios}
+        bgColor={activo.Servicios}
         onClickFunction={(e) => {
           cambiarActivo(e)
           obtenerServicios()
         }}
-        className={`${
-          activo.Servicios ? 'bg-slate-300' : ''
-        } border grid place-content-center cursor-pointer rounded hover:bg-color-violeta hover:text-white transition-colors`}
         texto={'Servicios'}
       />
-
-      <BtnSecundario
+      <Button
+        className={'w-full'}
         tipo={'button'}
         disabled={activo.Tratamientos}
+        bgColor={activo.Tratamientos}
         onClickFunction={(e) => {
           cambiarActivo(e)
           obtenerTratamientos()
         }}
-        className={`${
-          activo.Tratamientos ? 'bg-slate-300' : ''
-        } border grid place-content-center cursor-pointer rounded hover:bg-color-violeta hover:text-white transition-colors`}
         texto={'Tratamientos'}
       />
-
-      <BtnSecundario
+      <Button
+        className={'w-full'}
         tipo={'button'}
         disabled={activo.Pacientes}
+        bgColor={activo.Pacientes}
         onClickFunction={(e) => {
           cambiarActivo(e)
         }}
-        className={`${
-          activo.Pacientes ? 'bg-slate-300' : ''
-        } border grid place-content-center cursor-pointer rounded hover:bg-color-violeta hover:text-white transition-colors`}
         texto={'Pacientes'}
       />
     </header>

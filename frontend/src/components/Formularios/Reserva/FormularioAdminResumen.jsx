@@ -8,12 +8,12 @@ export const FormularioAdminResumen = ({ values }) => {
       <li className='text-color-violeta text-xl text-center mb-4'>Resumen de la reserva</li>
 
       {values.nombre && (
-        <li className='grid gap-2 bg-color-verde-blanco p-4 rounded-lg text-color-violeta'>
+        <li className='capitalize grid gap-2 bg-color-verde-blanco p-4 rounded-lg text-color-violeta'>
           Nombre <strong className='text-end'>{values.nombre}</strong>
         </li>
       )}
       {values.horaInicio && !esDomingo && (
-        <li className='grid gap-2 bg-color-verde-blanco p-4 rounded-lg text-color-violeta'>
+        <li className='capitalize grid gap-2 bg-color-verde-blanco p-4 rounded-lg text-color-violeta'>
           Dia{' '}
           <strong className='text-end'>
             {formatFechaParaUser(new Date(`${values.horaInicio} 00:00:00`))}

@@ -1,7 +1,7 @@
 import { useContext, useState } from 'react'
 import { DatosDelAño } from '../DatosDelAño.jsx'
 import { FormAno } from './FormAno.jsx'
-import { BtnSecundario } from '../../Botones/BtnSecundario.jsx'
+import { Button } from '../../Botones/Button.jsx'
 import { EstadisticasContext } from '../../../Context/Estadisticas/EstadisticasContext.jsx'
 import { ACTIONS_ESTADISTICAS } from '../../../Context/Estadisticas/reducerEstadisticas.js'
 import { Change } from '../../Icons/Icons.jsx'
@@ -27,7 +27,7 @@ export const ReservasAno = () => {
   }
   return (
     <section className=' text-color-violeta grid gap-4 md:col-span-4 md:grid-cols-4'>
-      <BtnSecundario
+      <Button
         className={
           'grid grid-flow-col justify-center items-center gap-2 font-bold mt-4 text-slate-50 border-color-violeta bg-color-violeta border-[1px] rounded-md py-2 px-4 transition-colors [&>span>svg]:w-6 [&>span>svg]:h-6 hover:text-color-violeta hover:bg-slate-50 md:col-start-2 md:col-end-4'
         }
@@ -36,7 +36,7 @@ export const ReservasAno = () => {
         icono={<Change />}
       />
       {reservas && (
-        <BtnSecundario
+        <Button
           tipo={'button'}
           texto={'Limpiar'}
           onClickFunction={limpiarAno}

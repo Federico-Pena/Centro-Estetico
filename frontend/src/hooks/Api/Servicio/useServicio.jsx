@@ -1,8 +1,6 @@
-import { useContext, useState } from 'react'
-import { TratamientoContext } from '../../../context/Tratamiento/TratamientoContext.jsx'
+import { useContext } from 'react'
 import { ServiciosContext } from '../../../context/Servicios/ServiciosContext.jsx'
 import { ACTIONS_SERVICIOS } from '../../../context/Servicios/serviciosReducer.js'
-import { ACTIONS_TRATAMIENTOS } from '../../../context/Tratamiento/tratamientoReducer.js'
 import { UserContext } from '../../../Context/User/userContext.jsx'
 import { ToastContext } from '../../../Context/Toast/mensajeContext.jsx'
 import { postServicio } from '../helpers/Servicios/postServicio.js'
@@ -16,7 +14,6 @@ export const useServicio = () => {
   const { setMensaje } = useContext(ToastContext)
   const { setLoading } = useContext(LoaderContext)
   const { dispatch } = useContext(ServiciosContext)
-  const { dispatch: dispatchTratamientos } = useContext(TratamientoContext)
 
   const obtenerServicios = async () => {
     try {
@@ -94,11 +91,6 @@ export const useServicio = () => {
           type: ACTIONS_SERVICIOS.DELETE_SERVICIO,
           payload: datos.servicio
         })
-        datos.tratamiento &&
-          dispatchTratamientos({
-            type: ACTIONS_TRATAMIENTOS.DELETE_TRATAMIENTO,
-            payload: datos.tratamiento
-          })
       } else {
         if (error) {
           setMensaje(error)

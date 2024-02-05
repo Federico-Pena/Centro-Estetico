@@ -21,7 +21,7 @@ export const agregarTratamiento = async (req, res) => {
     })
     if (!servicioExistente) {
       const response = {
-        error: 'No existe servicio al que asociar la cuponera',
+        error: 'No existe servicio al que asociar la tratamiento',
         status: 400,
         res
       }
@@ -63,7 +63,7 @@ export const agregarTratamiento = async (req, res) => {
 
     if (!tratamientoNuevo) {
       const response = {
-        error: 'Error al crear la cuponera',
+        error: 'Error al crear la tratamiento',
         status: 400,
         res
       }
@@ -75,23 +75,28 @@ export const agregarTratamiento = async (req, res) => {
 
     if (!servicioNuevo) {
       const response = {
-        error: 'Error al crear la cuponera',
+        error: 'Error al crear la tratamiento',
         status: 400,
         res
       }
       return crearRespuestaJSON(response)
     }
+    const tratamientoActualizado = await Tratamiento.findOne(tratamientoNuevo._id).populate(
+      'servicio',
+      'nombre'
+    )
+
     const response = {
-      mensaje: `Cuponera creada con éxito ${tratamientoNuevo.descripcion}. Asociada al servicio ${servicioExistente.nombre}`,
+      mensaje: `Tratamiento creada con éxito ${tratamientoActualizado.descripcion}. Asociada al servicio ${servicioExistente.nombre}`,
       status: 200,
-      datos: tratamientoNuevo,
+      datos: tratamientoActualizado,
       res
     }
     return crearRespuestaJSON(response)
   } catch (error) {
     console.log(error)
     const response = {
-      error: 'Error al crear la cuponera',
+      error: 'Error al crear la tratamiento',
       status: 500,
       res
     }

@@ -3,7 +3,7 @@ import { LoaderContext } from '../../../Context/Loader/LoaderContext.jsx'
 import { useEstadisticas } from '../../../Hooks/Api/Estadisticas/useEstadisticas.jsx'
 import useForm from '../../../Hooks/Formulario/useForm.jsx'
 import { MESES } from '../../../constantes.js'
-import { BtnSecundario } from '../../Botones/BtnSecundario.jsx'
+import { Button } from '../../Botones/Button.jsx'
 import { Dropdown } from '../../Dropdown/Dropdown.jsx'
 import { LabelInput } from '../../Formularios/LabelInput.jsx'
 const initialValues = {
@@ -68,25 +68,15 @@ export const FormMes = ({ setAno, setMes }) => {
       />
       <label>Elige un mes</label>
       {errors.mes && <small className='text-red-600'>* {errors.mes}</small>}
-      <Dropdown name={'Meses'} className={'gap-4 [&>button]:w-full'}>
-        <p
-          onClick={(e) => {
-            dropdownChange('mes', e)
-          }}
-          className='min-h-10 text-center p-2 border-b hover:bg-slate-300 transition-colors cursor-pointer'></p>
-        {MESES.map((mes) => (
-          <p
-            onClick={(e) => {
-              dropdownChange('mes', e)
-            }}
-            key={mes}
-            className='min-h-10 text-center p-2 border-b hover:bg-slate-300 transition-colors cursor-pointer'>
-            {mes}
-          </p>
-        ))}
-      </Dropdown>
+      <Dropdown
+        name={'Meses'}
+        list={MESES}
+        onClickFunction={(e) => {
+          dropdownChange('mes', e)
+        }}
+      />
 
-      <BtnSecundario
+      <Button
         disabled={loading}
         tipo={'submit'}
         texto={'Buscar'}

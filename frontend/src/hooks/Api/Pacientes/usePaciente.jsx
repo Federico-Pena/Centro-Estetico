@@ -4,20 +4,21 @@ import { fetcher } from '../../../Api/Helpers/fetcher.js'
 import { UserContext } from '../../../Context/User/userContext.jsx'
 import { ToastContext } from '../../../Context/Toast/mensajeContext.jsx'
 import { ACTIONS_PACIENTES } from '../../../Context/Pacientes/reducerPaciente.js'
-import { PacientesContext } from '../../../Context/Pacientes/PacientesContext.jsx'
 import { deletePaciente } from '../helpers/Pacientes/deletePaciente.js'
 import { postPaciente } from '../helpers/Pacientes/postPaciente.js'
 import { putPaciente } from '../helpers/Pacientes/putPaciente.js'
 import { getPacienteId } from '../helpers/Pacientes/getPacienteId.js'
 import { LoaderContext } from '../../../Context/Loader/LoaderContext.jsx'
+import { usePacienteContext } from '../../Context/usePacienteContext.jsx'
 
 export const usePaciente = () => {
   const { setLoading } = useContext(LoaderContext)
   const { accessToken } = useContext(UserContext)
   const { setMensaje } = useContext(ToastContext)
-  const { dispatch } = useContext(PacientesContext)
+  const { dispatch } = usePacienteContext()
   const [pagina, setPagina] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
+
   /* useEffect(() => {
     const migrarDatos = async () => {
       const options = {
@@ -164,8 +165,8 @@ export const usePaciente = () => {
       const res = await getPacienteId(accessToken, id)
       const { status, error, datos } = res
       if (status === 200) {
-        setMensaje(error)
         dispatch({ type: ACTIONS_PACIENTES.SET_PACIENTE, payload: datos })
+        return datos
       } else {
         if (error) {
           setMensaje(error)

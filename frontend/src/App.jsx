@@ -8,7 +8,7 @@ import { Loader } from './Components/Loader/Loader.jsx'
 import Rutas from './routes/Rutas.routes.jsx'
 import RutasAdmin from './routes/RutasAdmin.routes.jsx'
 import { useRef } from 'react'
-import { BtnSecundario } from './Components/Botones/BtnSecundario.jsx'
+import { Button } from './Components/Botones/Button.jsx'
 import { ArrowDown } from './Components/Icons/Icons.jsx'
 import { LoaderProvider } from './Context/Loader/LoaderContext.jsx'
 import { LoaderApi } from './Components/Loader/LoaderApi.jsx'
@@ -36,14 +36,13 @@ function App() {
             <LoaderApi />
             <Navbar isAllowedAccess={isAllowedAccess} />
             {isAllowedAccess ? <RutasAdmin /> : <Rutas />}
-            <BtnSecundario
-              tipo={'button'}
-              onClickFunction={volverArriba}
-              icono={<ArrowDown />}
-              className={
-                'grid place-content-center fixed rotate-180 bottom-4 right-4 w-10 h-10 rounded-full bg-color-logo text-3xl shadow-2xl hover:scale-110 transition-transform'
-              }
-            />
+            <button
+              title='Volver Arriba'
+              onClick={volverArriba}
+              type='button'
+              className='grid place-content-center fixed rotate-180 bottom-4 right-4 w-10 h-10 rounded-full bg-color-logo text-3xl shadow-2xl hover:scale-110 transition-transform'>
+              <ArrowDown />
+            </button>
             <Footer />
           </div>
         </BrowserRouter>

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { BtnSecundario } from '../../Botones/BtnSecundario.jsx'
+import { Button } from '../../Botones/Button.jsx'
 import { TextAreaLabel } from '../TextAreaLabel.jsx'
 import { Delete } from '../../Icons/Icons.jsx'
 
@@ -22,9 +22,9 @@ export const DialogForm = ({ handleChange, values, closeDialog }) => {
   return (
     <dialog
       open
-      className='fixed inset-0 h-screen w-full z-50 bg-gradient-to-b from-slate-900 to-black grid p-4 '>
+      className='fixed inset-0 h-screen w-full z-50 bg-gradient-to-b from-white to-color-verde-blanco grid p-4 '>
       <form
-        className='grid gap-4 rounded-lg w-full max-w-lg m-auto p-4 border border-white bg-color-logo'
+        className='animate-fadeIn grid gap-4 rounded-lg w-full max-w-lg m-auto p-4 bg-color-logo border border-black'
         title='Formulario beneficio'>
         <TextAreaLabel
           name={'beneficiosLista'}
@@ -51,22 +51,13 @@ export const DialogForm = ({ handleChange, values, closeDialog }) => {
           ))}
         </div>
         <div className='grid grid-cols-2'>
-          <BtnSecundario
-            className={
-              'border border-color-violeta bg-color-violeta text-white flex items-center justify-center gap-2  max-w-fit justify-self-center rounded-lg px-4 py-2  hover:opacity-70 transition-opacity [&>span>svg]:text-xl [&>span>svg]:hover:rotate-180 [&>span>svg]:transition'
-            }
+          <Button
+            bgColor={true}
             tipo={'submit'}
             texto={'Agregar'}
             onClickFunction={handleDialogSubmit}
           />
-          <BtnSecundario
-            className={
-              'border border-color-violeta bg-color-violeta text-white flex items-center justify-center gap-2  max-w-fit justify-self-center rounded-lg px-4 py-2  hover:opacity-70 transition-opacity [&>span>svg]:text-xl [&>span>svg]:hover:rotate-180 [&>span>svg]:transition'
-            }
-            tipo={'button'}
-            texto={'Volver'}
-            onClickFunction={closeDialog}
-          />
+          <Button tipo={'button'} texto={'Volver'} onClickFunction={closeDialog} />
         </div>
       </form>
     </dialog>

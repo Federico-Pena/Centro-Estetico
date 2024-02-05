@@ -14,12 +14,14 @@ import { ACTIONS_RESERVAS } from '../Context/Reservas/reducerReservas.js'
 import { ContenedorReservas } from '../Components/ContenedorReservas/ContenedorReservas.jsx'
 import ContadorReservas from '../Components/ContadorReservas/ContadorReservas.jsx'
 import { LoaderContext } from '../Context/Loader/LoaderContext.jsx'
+import { useReservaContext } from '../Hooks/Context/useReservaContext.jsx'
 
 function Calendario() {
   const { setMensaje } = useContext(ToastContext)
   const { loading: cargando } = useContext(UserContext)
   const { loading } = useContext(LoaderContext)
-  const { reservas, dispatch, seleccionadas } = useContext(ReservasContext)
+  const { reservas, dispatch, seleccionadas } = useReservaContext()
+
   const { semanaAnterior, semanaSiguiente, diasSemana, setSeleccionadas, seleccionarDia } =
     useCalendario()
   const cerrarReserva = () => {

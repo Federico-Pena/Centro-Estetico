@@ -4,7 +4,7 @@ import { TratamientoContext } from '../../context/Tratamiento/TratamientoContext
 import { ACTIONS_TRATAMIENTOS } from '../../context/Tratamiento/tratamientoReducer.js'
 import { useTratamientos } from '../../Hooks/Api/Tratamiento/useTratamientos.jsx'
 import { TratamientoListItem } from './TratamientoListItem.jsx'
-import { BtnSecundario } from '../Botones/BtnSecundario.jsx'
+import { Button } from '../Botones/Button.jsx'
 import { Add } from '../Icons/Icons.jsx'
 import { useNavigate } from 'react-router-dom'
 import { RUTAS } from '../../constantes.js'
@@ -19,7 +19,7 @@ export const TratamientosList = () => {
   }
   const handleEdit = (tratamiento) => {
     dispatch({ type: ACTIONS_TRATAMIENTOS.SET_TRATAMIENTO_FILTRADO, payload: tratamiento })
-    navigate(RUTAS.admin.editarTratamiento)
+    navigate(RUTAS.admin.editarTratamiento, { state: { tratamiento: tratamiento } })
   }
   return (
     <>
@@ -35,14 +35,12 @@ export const TratamientosList = () => {
         />
       )}
       <article className='grid gap-4 md:grid-cols-2 xl:grid-cols-3 max-w-5xl m-auto'>
-        <BtnSecundario
+        <Button
           onClickFunction={() => navigate(RUTAS.admin.agregarTratamiento)}
           tipo={'button'}
           texto={'Nuevo'}
           icono={<Add />}
-          className={
-            'col-span-full border border-color-violeta bg-color-violeta text-white flex items-center justify-center gap-2  max-w-fit justify-self-center rounded-lg px-4 py-2  hover:opacity-70 transition-opacity [&>span>svg]:text-xl'
-          }
+          className={'col-span-full grid grid-flow-col gap-2 place-content-center'}
         />
         {tratamientos.length > 0
           ? tratamientos.map((trata) => (

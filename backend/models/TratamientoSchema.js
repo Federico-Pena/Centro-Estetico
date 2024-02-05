@@ -4,14 +4,14 @@ const tratamientoSchema = new Schema({
   servicio: { type: Schema.Types.ObjectId, ref: 'Servicio' },
   descripcion: {
     type: String,
-    required: [true, 'La descripción es obligatoria.'],
+    required: true,
     lowercase: true,
     trim: true
   },
-  costoTotal: { type: Number, required: [true, 'El costo total es obligatorio.'] },
-  sesiones: { type: Number, required: [true, 'El numero de sesiones es obligatorio.'] },
+  costoTotal: { type: Number, required: true },
+  sesiones: { type: Number, required: true },
   costoPorSesion: { type: Number },
-  tiempo: { type: Number, required: [true, 'El tiempo es obligatorio.'] },
+  tiempo: { type: Number, required: true },
   enPromocion: { type: Boolean, default: false },
   imagen: {
     public_id: {

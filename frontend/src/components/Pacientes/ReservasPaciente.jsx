@@ -2,29 +2,34 @@ import { useContext } from 'react'
 import { useReservasPaciente } from '../../Hooks/Api/Reservas/useReservasPaciente.jsx'
 import { ContenedorReservas } from '../ContenedorReservas/ContenedorReservas.jsx'
 import Pagination from '../Pagination/Pagination.jsx'
-import { ReservasContext } from '../../Context/Reservas/ReservasContext.jsx'
 import { ACTIONS_RESERVAS } from '../../Context/Reservas/reducerReservas.js'
 import { HOY_FECHA_STRING, RUTAS } from '../../constantes.js'
 import { HeaderReservasPaciente } from './HeaderReservasPaciente.jsx'
-import { PacientesContext } from '../../Context/Pacientes/PacientesContext.jsx'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { LoaderContext } from '../../Context/Loader/LoaderContext.jsx'
+import { usePacienteContext } from '../../Hooks/Context/usePacienteContext.jsx'
+import { useReservaContext } from '../../Hooks/Context/useReservaContext.jsx'
+import { usePaciente } from '../../Hooks/Api/Pacientes/usePaciente.jsx'
 
 const ReservasPaciente = () => {
-  const { paciente } = useContext(PacientesContext)
-  const { loading } = useContext(LoaderContext)
-  const { reservas, dispatch } = useContext(ReservasContext)
-  const { totalPaginas, setPagina } = useReservasPaciente(paciente && paciente._id)
+  const { id } = useParams()
   const navigate = useNavigate()
-  const handleAgregarReserva = () => {
-    navigate(RUTAS.admin.agregarReserva)
-    dispatch({
-      type: ACTIONS_RESERVAS.SET_RESERVA,
-      payload: {
-        paciente: {
-          nombre: paciente.nombre
-        },
-        horario: { horaInicio: HOY_FECHA_STRING.split('T')[0] }
+  const { paciente } = usePacienteContext()
+  const { loading } = useContext(LoaderContext)
+  const { reservas } = useReservaContext()
+  const { totalPaginas, setPagina } = useReservasPaciente(id)
+  const { obtenerPacientePorId } = usePaciente()
+
+  const handleAgregarReserva = async () => {
+    await obtenerPacientePorId(id)
+    navigate(RUTAS.admin.agregarReserva, {
+      state: {
+        reserva: {
+          paciente: {
+            nombre: paciente.nombre
+          },
+          horario: { horaInicio: HOY_FECHA_STRING.split('T')[0] }
+        }
       }
     })
   }

@@ -1,7 +1,7 @@
 import { useContext } from 'react'
 import { useEstadisticas } from '../../../Hooks/Api/Estadisticas/useEstadisticas.jsx'
 import useForm from '../../../Hooks/Formulario/useForm.jsx'
-import { BtnSecundario } from '../../Botones/BtnSecundario.jsx'
+import { Button } from '../../Botones/Button.jsx'
 import { LabelInput } from '../../Formularios/LabelInput.jsx'
 import { LoaderContext } from '../../../Context/Loader/LoaderContext.jsx'
 const initialValues = {
@@ -45,7 +45,7 @@ export const FormAno = ({ setAno }) => {
         maxLength={4}
         minLength={4}
       />
-      <BtnSecundario
+      <Button
         disabled={loading}
         tipo={'submit'}
         texto={'Buscar'}

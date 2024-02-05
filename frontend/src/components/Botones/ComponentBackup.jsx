@@ -1,5 +1,5 @@
 import { useContext, useState } from 'react'
-import { BtnSecundario } from './BtnSecundario.jsx'
+import { Button } from './Button.jsx'
 import { apiRoutes } from '../../Api/routes.js'
 import { UserContext } from '../../Context/User/userContext.jsx'
 import { ToastContext } from '../../Context/Toast/mensajeContext.jsx'
@@ -87,32 +87,27 @@ export const ComponentBackup = () => {
   }
   return (
     <section className='grid p-2 gap-2 animate-toastIn max-w-xl mx-auto w-full'>
-      <BtnSecundario
-        className='font-bold text-color-violeta border-color-violeta border-[1px] rounded-md py-2 px-4 transition-colors hover:text-slate-50 hover:bg-color-violeta'
-        tipo='button'
-        texto={'Todo'}
-        onClickFunction={backupTodo}
-      />
-      <BtnSecundario
-        className='font-bold text-color-violeta border-color-violeta border-[1px] rounded-md py-2 px-4 transition-colors hover:text-slate-50 hover:bg-color-violeta'
+      <Button className='w-full' tipo='button' texto={'Todo'} onClickFunction={backupTodo} />
+      <Button
+        className='w-full'
         tipo='button'
         texto={'Reservas'}
         onClickFunction={backupReservas}
       />
-      <BtnSecundario
-        className='font-bold text-color-violeta border-color-violeta border-[1px] rounded-md py-2 px-4 transition-colors hover:text-slate-50 hover:bg-color-violeta'
+      <Button
+        className='w-full'
         tipo='button'
         texto={'Servicios'}
         onClickFunction={backupServicios}
       />
-      <BtnSecundario
-        className='font-bold text-color-violeta border-color-violeta border-[1px] rounded-md py-2 px-4 transition-colors hover:text-slate-50 hover:bg-color-violeta'
+      <Button
+        className='w-full'
         tipo='button'
         texto={'Tratamientos'}
         onClickFunction={backupTratamientos}
       />
-      <BtnSecundario
-        className='font-bold text-color-violeta border-color-violeta border-[1px] rounded-md py-2 px-4 transition-colors hover:text-slate-50 hover:bg-color-violeta'
+      <Button
+        className='w-full'
         tipo='button'
         texto={'Pacientes'}
         onClickFunction={backupPacientes}

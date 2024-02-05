@@ -25,7 +25,7 @@ const Carrusel = () => {
             cerrarFormulario={() => setOpenForm(false)}
           />
         )}
-        <section className='relative flex justify-center max-w-4xl max-h-[500px] h-[60vh] m-auto mb-8'>
+        <section className='relative flex justify-center max-w-4xl   m-auto mb-8'>
           {promos.length > 1 && (
             <span
               className='rounded-md cursor-pointer text-4xl absolute z-10 left-0 top-1/2 flex justify-center items-center rotate-90 transition-transform px-4 bg-[#00000025] hover:bg-[#0000003f] hover:scale-95'
@@ -40,7 +40,7 @@ const Carrusel = () => {
                 className='transition-transform duration-500 relative flex-[0_0_100%]'
                 style={{ transform: `translateX(-${currentIndex * 100}%)` }}>
                 <img
-                  className='object-cover w-full h-full object-center bg-slate-50'
+                  className='object-cover w-full h-full bg-slate-50 aspect-square max-h-[500px]'
                   src={promocion.imagen?.secure_url || promocion.servicio.imagen?.secure_url}
                   alt={promocion.nombre}
                 />

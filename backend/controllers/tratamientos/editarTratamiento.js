@@ -7,12 +7,13 @@ import { eliminarDeCloudinary, guardarEnCloudinary } from '../cloudinaryImagenes
 export const editarTratamiento = async (req, res) => {
   try {
     const id = new Types.ObjectId(req.params.id)
+    console.log(req.params.id)
     const { descripcion, tiempo, costoTotal, enPromocion, sesiones } = req.body
 
     const servicioExistente = await Servicio.findOne({ tratamientos: id })
     if (!servicioExistente) {
       const response = {
-        error: 'No existe servicio asociado a esta cuponera',
+        error: 'No existe servicio asociado a esta tratamiento',
         status: 400,
         res
       }
@@ -21,7 +22,7 @@ export const editarTratamiento = async (req, res) => {
     const tratamientoExistente = await Tratamiento.findOne({ _id: id })
     if (!tratamientoExistente) {
       const response = {
-        error: 'No existe la cuponera',
+        error: 'No existe la tratamiento',
         status: 400,
         res
       }
@@ -74,17 +75,17 @@ export const editarTratamiento = async (req, res) => {
     tratamientoExistente.enPromocion = enPromocion
     tratamientoExistente.sesiones = sesiones
     tratamientoExistente.servicio = servicioExistente._id
-    const cuponeraActualizada = await tratamientoExistente.save()
-    if (!cuponeraActualizada) {
+    const tratamientoActualizada = await tratamientoExistente.save()
+    if (!tratamientoActualizada) {
       const response = {
-        error: 'Error al actualizar la cuponera',
+        error: 'Error al actualizar la tratamiento',
         status: 400,
         res
       }
       return crearRespuestaJSON(response)
     }
     const sinEditada = servicioExistente.tratamientos.filter((ser) => ser._id !== id)
-    sinEditada.push(cuponeraActualizada._id)
+    sinEditada.push(tratamientoActualizada._id)
     const servicioActualizado = await servicioExistente.save()
     if (!servicioActualizado) {
       const response = {
@@ -95,22 +96,22 @@ export const editarTratamiento = async (req, res) => {
       return crearRespuestaJSON(response)
     }
 
-    const cuponeraActualizadaConServicio = await Tratamiento.findOne({ _id: id }).populate(
+    const tratamientoActualizadaConServicio = await Tratamiento.findOne({ _id: id }).populate(
       'servicio',
       'nombre'
     )
 
     const response = {
-      mensaje: `Cuponera actualizada con éxito ${cuponeraActualizadaConServicio.descripcion}`,
+      mensaje: `Tratamiento actualizada con éxito ${tratamientoActualizadaConServicio.descripcion}`,
       status: 200,
-      datos: cuponeraActualizadaConServicio,
+      datos: tratamientoActualizadaConServicio,
       res
     }
     return crearRespuestaJSON(response)
   } catch (error) {
     console.log(error)
     const response = {
-      error: 'Error al actualizar la cuponera',
+      error: 'Error al actualizar la tratamiento',
       status: 500,
       res
     }

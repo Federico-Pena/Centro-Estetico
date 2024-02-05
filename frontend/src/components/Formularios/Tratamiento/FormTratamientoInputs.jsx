@@ -3,20 +3,20 @@ import { LabelInput } from '../LabelInput.jsx'
 export const FormTratamientoInputs = ({ values, errors, handleChange }) => {
   return (
     <>
-      <div className='grid gap-4 border-t border-slate-500 py-2 '>
+      <div className='grid gap-4 py-2 '>
         <LabelInput
           className={'capitalize'}
           errors={errors}
           disabled={true}
-          labelText={'Tratamiento'}
+          labelText={'Servicio'}
           name={'nombre'}
           onChange={handleChange}
           type={'text'}
-          value={values.servicio.nombre}
+          value={values.nombre}
           placeholder={'Masaje Estético'}
         />
       </div>
-      <div className='grid gap-4 border-t border-slate-500 py-2'>
+      <div className='grid gap-4 border-t border-black py-2'>
         <LabelInput
           value={values.descripcion}
           labelText={'Descripcion'}
@@ -27,7 +27,7 @@ export const FormTratamientoInputs = ({ values, errors, handleChange }) => {
           errors={errors}
         />
       </div>
-      <div className='grid gap-4 border-t border-slate-500 py-2'>
+      <div className='grid gap-4 border-t border-black py-2'>
         <LabelInput
           value={values.tiempo}
           labelText={'Tiempo'}
@@ -38,7 +38,7 @@ export const FormTratamientoInputs = ({ values, errors, handleChange }) => {
           errors={errors}
         />
       </div>
-      <div className='grid gap-4 border-t border-slate-500 py-2'>
+      <div className='grid gap-4 border-t border-black py-2'>
         <LabelInput
           value={values.sesiones}
           labelText={'Sesiones'}
@@ -49,7 +49,7 @@ export const FormTratamientoInputs = ({ values, errors, handleChange }) => {
           errors={errors}
         />
       </div>
-      <div className='grid gap-4 border-t border-slate-500 py-2'>
+      <div className='grid gap-4 border-t border-black py-2'>
         <LabelInput
           value={values.costoTotal}
           labelText={'Precio'}

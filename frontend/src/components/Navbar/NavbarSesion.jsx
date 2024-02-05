@@ -1,5 +1,5 @@
 import { useAuth0 } from '@auth0/auth0-react'
-import { BtnSecundario } from '../Botones/BtnSecundario.jsx'
+import { Button } from '../Botones/Button.jsx'
 
 export const NavbarSesion = () => {
   const { isAuthenticated, loginWithRedirect, logout } = useAuth0()
@@ -19,25 +19,23 @@ export const NavbarSesion = () => {
   }
   return isAuthenticated ? (
     <li className='sesión'>
-      <BtnSecundario
-        texto={'Cerrar sesión'}
-        onClickFunction={handleLogout}
-        tipo={'button'}
-        className={
-          'border-[1px] text-xs rounded-md grid place-content-center py-2 px-4 transition-opacity hover:opacity-50'
-        }
-      />
+      <button
+        title='Cerrar Sesión'
+        onClick={handleLogout}
+        type='Button'
+        className='relative border-[1px] text-xs rounded-md grid place-content-center py-2 px-4 after:absolute after:w-full after:h-0 after:bg-white after:bg-opacity-30 hover:after:h-full after:transition-all'>
+        Cerrar Sesión
+      </button>
     </li>
   ) : (
     <li className='sesión'>
-      <BtnSecundario
-        className={
-          'border-[1px] text-xs rounded-md grid place-content-center py-2 px-4 transition-opacity hover:opacity-50'
-        }
-        texto={'Iniciar sesión'}
-        onClickFunction={handleLogin}
-        tipo={'button'}
-      />
+      <button
+        title='Iniciar sesión'
+        onClick={handleLogin}
+        type='Button'
+        className='relative border-[1px] text-xs rounded-md grid place-content-center py-2 px-4 after:absolute after:w-full after:h-0 after:bg-white after:bg-opacity-30 hover:after:h-full after:transition-all'>
+        Iniciar sesión
+      </button>
     </li>
   )
 }

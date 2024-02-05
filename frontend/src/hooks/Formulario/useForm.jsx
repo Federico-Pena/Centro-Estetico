@@ -6,9 +6,10 @@ const useForm = (initialValues, validationRules) => {
   const [values, setValues] = useState(initialValues)
   const [errors, setErrors] = useState({})
   useEffect(() => {
-    Object.keys(validationRules).forEach((name) => {
-      validateField(name, values[name], setErrors, validationRules)
-    })
+    values &&
+      Object.keys(validationRules).forEach((name) => {
+        validateField(name, values[name], setErrors, validationRules)
+      })
   }, [validationRules, values])
   const handleChange = (e) => {
     handleChangeForm(e, setErrors, setValues, validationRules, validateField)

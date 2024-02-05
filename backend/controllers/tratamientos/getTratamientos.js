@@ -4,7 +4,6 @@ import Tratamientos from '../../models/TratamientoSchema.js'
 export const obtenerTratamientos = async (req, res) => {
   try {
     const tratamientos = await Tratamientos.find().populate('servicio', 'nombre')
-
     const tratamientosOrdenados = tratamientos.sort((a, b) => {
       const nombreA = a.servicio.nombre.toUpperCase()
       const nombreB = b.servicio.nombre.toUpperCase()
