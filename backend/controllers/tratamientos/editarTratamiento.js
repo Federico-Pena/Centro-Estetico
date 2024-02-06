@@ -12,8 +12,8 @@ export const editarTratamiento = async (req, res) => {
     const servicioExistente = await Servicio.findOne({ tratamientos: id })
     if (!servicioExistente) {
       const response = {
-        error: 'No existe servicio asociado a esta tratamiento',
-        status: 400,
+        error: 'No existe servicio asociado a este tratamiento',
+        status: 404,
         res
       }
       return crearRespuestaJSON(response)
@@ -21,8 +21,8 @@ export const editarTratamiento = async (req, res) => {
     const tratamientoExistente = await Tratamiento.findOne({ _id: id })
     if (!tratamientoExistente) {
       const response = {
-        error: 'No existe la tratamiento',
-        status: 400,
+        error: 'No existe el tratamiento',
+        status: 404,
         res
       }
       return crearRespuestaJSON(response)
@@ -77,8 +77,8 @@ export const editarTratamiento = async (req, res) => {
     const tratamientoActualizada = await tratamientoExistente.save()
     if (!tratamientoActualizada) {
       const response = {
-        error: 'Error al actualizar la tratamiento',
-        status: 400,
+        error: 'Error al actualizar el tratamiento',
+        status: 500,
         res
       }
       return crearRespuestaJSON(response)
@@ -89,7 +89,7 @@ export const editarTratamiento = async (req, res) => {
     if (!servicioActualizado) {
       const response = {
         error: 'Error al actualizar el servicio relacionado',
-        status: 400,
+        status: 500,
         res
       }
       return crearRespuestaJSON(response)
@@ -101,7 +101,7 @@ export const editarTratamiento = async (req, res) => {
     )
 
     const response = {
-      mensaje: `Tratamiento actualizada con éxito ${tratamientoActualizadaConServicio.descripcion}`,
+      mensaje: `Tratamiento actualizado con éxito ${tratamientoActualizadaConServicio.descripcion}`,
       status: 200,
       datos: tratamientoActualizadaConServicio,
       res
@@ -109,7 +109,7 @@ export const editarTratamiento = async (req, res) => {
     return crearRespuestaJSON(response)
   } catch (error) {
     const response = {
-      error: 'Error al actualizar la tratamiento',
+      error: 'Error al actualizar el tratamiento',
       status: 500,
       res
     }

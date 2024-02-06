@@ -15,7 +15,7 @@ import { useServiciosContext } from '../../../Hooks/Context/useServiciosContext.
 import { ACTIONS_SERVICIOS } from '../../../Context/Servicios/serviciosReducer.js'
 import { useToastContext } from '../../../Hooks/Context/useToastContext.jsx'
 
-export const FormServicio = () => {
+const FormServicio = () => {
   const location = useLocation()
   const stateServicio = location.state?.servicio
   const navigate = useNavigate()
@@ -119,3 +119,4 @@ export const FormServicio = () => {
     </section>
   )
 }
+export default FormServicio

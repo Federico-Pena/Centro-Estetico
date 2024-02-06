@@ -26,7 +26,7 @@ const FormularioReservaAdmin = () => {
   const desdeCalendario =
     location.pathname === RUTAS.admin.agregarReserva &&
     location.state?.from === RUTAS.admin.calendario
-  const edicion = location.pathname === RUTAS.admin.editarReserva
+  const edicion = reservaState.estado
   const { handleChange, values, errors, validateForm, resetForm } = useForm(
     initialForm(reserva || reservaState, edicion, desdeCalendario),
     validationRules
@@ -50,7 +50,9 @@ const FormularioReservaAdmin = () => {
     const isValid = validateForm() && !esDomingo
     if (isValid) {
       const datos = formularioReservaAdminSubmit(values)
-      const res = edicion ? await editarReserva(datos, reserva._id) : await agregarReserva(datos)
+      const res = edicion
+        ? await editarReserva(datos, reservaState._id)
+        : await agregarReserva(datos)
       if (res) {
         cerrarForm()
       } else {

@@ -9,34 +9,49 @@ export const TratamientoListItem = ({ tratamiento, handleEdit, handleDelete }) =
     <ul
       className={`${
         isVisible ? 'animate-toastIn' : ''
-      } grid p-4 pb-2 align-top border  border-slate-500 rounded-lg bg-color-logo [&>li]:flex [&>li]:p-2 [&>li]:border-b [&>li]:border-slate-500`}
+      } grid border border-black rounded-lg bg-color-logo`}
       ref={tratamientoRef}>
-      <li className='grid justify-between items-center uppercase text-center font-betonga font-bold text-xl text-color-violeta hover:[&>svg]:text-color-violeta [&>svg]:cursor-pointer [&>svg]:text-xl [&>svg]:text-slate-600'>
+      <li className='p-4 border-b border-black uppercase text-center font-betonga font-bold text-xl text-color-violeta'>
+        {tratamiento.servicio.nombre}
+      </li>
+      <li className='grid p-4 border-b border-black'>
+        Descripción <span className='text-end'>{tratamiento.descripcion}</span>
+      </li>
+      <li className='flex justify-between p-4 border-b border-black'>
+        Tiempo <span>{tratamiento.tiempo} minutos</span>
+      </li>
+      <li className='flex justify-between p-4 border-b border-black'>
+        {`${tratamiento.sesiones === 1 ? 'Sesión' : 'Sesiones'}`}
+        <span>{`${tratamiento.sesiones}`}</span>
+      </li>
+      <li className='flex justify-between p-4 border-b border-black'>
+        Costo por sesión <span>{`$ ${tratamiento.costoPorSesion.toFixed(2)}`}</span>
+      </li>
+      <li className='flex justify-between p-4 border-b border-black'>
+        Costo total <span>{`$ ${tratamiento.costoTotal}`}</span>
+      </li>
+      {tratamiento.enPromocion ? (
+        <li className='[&>svg]:text-green-600 [&>svg]:text-xl flex items-center justify-between p-4 border-b border-black'>
+          En Promoción <CheckboxChecked />
+        </li>
+      ) : (
+        <li className='[&>svg]:text-red-600 flex items-center justify-between p-4 border-b border-black'>
+          En Promoción <Checkbox />
+        </li>
+      )}
+      <li className='grid grid-flow-col justify-around p-4 [&>svg]:text-2xl [&>svg]:text-color-violeta hover:[&>svg]:scale-110 [&>svg]:cursor-pointer [&>svg]:transition-transform'>
         <Edit
           onClickFunction={() => {
             handleEdit(tratamiento)
           }}
         />
-        <span>{tratamiento.servicio.nombre}</span>
+
         <Delete
           onClickFunction={() => {
             handleDelete(tratamiento)
           }}
         />
       </li>
-      <li>{tratamiento.descripcion}</li>
-      <li>{tratamiento.tiempo} minutos por sesión</li>
-      <li>{`$ ${tratamiento.costoPorSesion.toFixed(2)}`} por sesión</li>
-      <li>{`$ ${tratamiento.costoTotal}`} total</li>
-      {tratamiento.enPromocion ? (
-        <li className='[&>svg]:text-green-600 [&>svg]:text-xl flex items-center justify-between border-none'>
-          En Promoción <CheckboxChecked />
-        </li>
-      ) : (
-        <li className='[&>svg]:text-red-600 flex items-center justify-between border-none'>
-          En Promoción <Checkbox />
-        </li>
-      )}
     </ul>
   )
 }

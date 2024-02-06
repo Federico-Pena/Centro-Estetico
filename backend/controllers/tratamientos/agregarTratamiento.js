@@ -21,7 +21,7 @@ export const agregarTratamiento = async (req, res) => {
     })
     if (!servicioExistente) {
       const response = {
-        error: 'No existe servicio al que asociar la tratamiento',
+        error: 'No existe servicio al que asociar el tratamiento',
         status: 400,
         res
       }
@@ -63,7 +63,7 @@ export const agregarTratamiento = async (req, res) => {
 
     if (!tratamientoNuevo) {
       const response = {
-        error: 'Error al crear la tratamiento',
+        error: 'Error al crear el tratamiento',
         status: 400,
         res
       }
@@ -75,7 +75,7 @@ export const agregarTratamiento = async (req, res) => {
 
     if (!servicioNuevo) {
       const response = {
-        error: 'Error al crear la tratamiento',
+        error: 'Error al crear el tratamiento',
         status: 400,
         res
       }
@@ -87,7 +87,7 @@ export const agregarTratamiento = async (req, res) => {
     )
 
     const response = {
-      mensaje: `Tratamiento creada con éxito ${tratamientoActualizado.descripcion}. Asociada al servicio ${servicioExistente.nombre}`,
+      mensaje: `Tratamiento creado con éxito ${tratamientoActualizado.descripcion}. Asociado al servicio ${servicioExistente.nombre}`,
       status: 200,
       datos: tratamientoActualizado,
       res
@@ -95,7 +95,7 @@ export const agregarTratamiento = async (req, res) => {
     return crearRespuestaJSON(response)
   } catch (error) {
     const response = {
-      error: 'Error al crear la tratamiento',
+      error: 'Error al crear el tratamiento',
       status: 500,
       res
     }

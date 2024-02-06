@@ -34,9 +34,9 @@ export const Reserva = ({ datos, contenedorRef }) => {
         <ConfirmationModal
           titulo={'Borrar Reserva'}
           mensaje={`¿Estás seguro de que deseas borrar la reserva de ${
-            reserva.paciente.nombre
-          } el dia ${formatFechaParaUser(reserva.horario.horaInicio)} a las ${formatHoraUser(
-            new Date(reserva.horario.horaInicio)
+            reserva.paciente?.nombre
+          } el dia ${formatFechaParaUser(reserva.horario?.horaInicio)} a las ${formatHoraUser(
+            new Date(reserva.horario?.horaInicio)
           )}?`}
           onConfirm={handleConfirmModal}
           onCancel={() => setModal(false)}
@@ -49,9 +49,11 @@ export const Reserva = ({ datos, contenedorRef }) => {
           reserva.estado
         }`}
         ref={reservaRef}>
-        <h3 className='font-betonga font-bold text-xl text-white capitalize grid place-content-center tracking-wider'>
-          {reserva.paciente.nombre}
-        </h3>
+        {reserva.paciente && (
+          <h3 className='font-betonga font-bold text-xl text-white capitalize grid place-content-center tracking-wider'>
+            {reserva.paciente.nombre || 'Paciente eliminado'}
+          </h3>
+        )}
         <section className={`grid border-t border-b border-slate-50`}>
           <ReservaDatos reserva={reserva} />
           <ReservaDatosAdmin reserva={reserva} />

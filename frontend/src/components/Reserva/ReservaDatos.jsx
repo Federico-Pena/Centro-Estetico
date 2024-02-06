@@ -4,31 +4,31 @@ import { Checkbox } from '../Icons/Icons.jsx'
 
 export const ReservaDatos = ({ reserva }) => {
   return (
-    <ul className='grid items p-4 gap-4 text-white'>
-      <li className='capitalize grid grid-flow-col justify-between'>
+    <ul className='grid text-white'>
+      <li className='capitalize grid grid-flow-col justify-between p-4 border-b'>
         Fecha:
         <span>{formatFechaParaUser(reserva.horario.horaInicio)}</span>
       </li>
-      <li className='grid grid-flow-col justify-between'>
+      <li className='p-4 border-b grid grid-flow-col justify-between'>
         Hora: <span>{formatHoraUser(new Date(reserva.horario.horaInicio))}</span>
       </li>
-      {reserva.paciente.nombre !== 'admin' && (
+      {reserva.paciente?.nombre !== 'admin' && (
         <>
-          <li className='capitalize grid gap-2'>
-            Servicio:{' '}
+          <li className='p-4 border-b capitalize grid gap-2'>
+            Servicio:
             <span className='grid justify-end'>{reserva.servicio?.nombre || <Checkbox />}</span>
           </li>
-          <li className='grid gap-2'>
+          <li className='p-4 border-b grid gap-2'>
             Tratamiento:
             <span className='grid justify-end'>
               {reserva.tratamiento?.descripcion || <Checkbox />}
             </span>
           </li>
-          <li className='grid gap-2'>
-            Observaciones:{' '}
+          <li className='p-4 border-b grid gap-2'>
+            Observaciones:
             <span className='grid justify-end'>{reserva.observaciones || <Checkbox />}</span>
           </li>
-          <li className='grid grid-flow-col justify-between'>
+          <li className='p-4 pb-8 grid grid-flow-col justify-between'>
             Valor:
             <span>$ {reserva.tratamiento?.costoPorSesion}</span>
           </li>

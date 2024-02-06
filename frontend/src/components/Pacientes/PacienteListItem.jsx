@@ -26,7 +26,7 @@ export const PacienteListItem = ({ paciente, handleDelete, handleEdit, handleVer
       <h2 className='grid gap-2 text-xl text-color-violeta text-center font-betonga font-bold'>
         Reservas <span>{paciente.totalReservas || 0}</span>{' '}
       </h2>
-      <ul className='grid gap-2 grid-cols-3 border-b border-black pb-4 font-bold'>
+      <ul className='grid gap-2 border-b border-black pb-4 font-bold md:grid-cols-3'>
         <li className={`${ESTADOS_RESERVAS.pago} grid gap-2 text-white text-center p-2 rounded-xl`}>
           Pagas <span>{paciente.reservasPagas || 0}</span>
         </li>
@@ -46,13 +46,13 @@ export const PacienteListItem = ({ paciente, handleDelete, handleEdit, handleVer
           </h2>
           <ul className='grid gap-4 border-b border-black pb-4'>
             {paciente.servicio?.nombre && (
-              <li className='grid grid-flow-col justify-between capitalize'>
-                Servicio: <span>{paciente.servicio.nombre}</span>{' '}
+              <li className='grid capitalize'>
+                Servicio: <span className='text-end'>{paciente.servicio.nombre}</span>{' '}
               </li>
             )}
             {paciente.tratamiento?.descripcion && (
-              <li className='grid grid-flow-col justify-between capitalize'>
-                Tratamiento: <span>{paciente.tratamiento.descripcion}</span>{' '}
+              <li className='grid capitalize'>
+                Tratamiento: <span className='text-end'>{paciente.tratamiento.descripcion}</span>{' '}
               </li>
             )}
           </ul>

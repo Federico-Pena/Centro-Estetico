@@ -16,7 +16,7 @@ import { useToastContext } from '../../../Hooks/Context/useToastContext.jsx'
 import { useUserContext } from '../../../Hooks/Context/useUserContext.jsx'
 import { useTratamientoContext } from '../../../Hooks/Context/useTratamientoContext.jsx'
 
-export const FormTratamiento = () => {
+const FormTratamiento = () => {
   const location = useLocation()
   const stateTratamiento = location.state?.tratamiento
   const edicion = location.pathname === RUTAS.admin.editarTratamiento
@@ -125,3 +125,4 @@ export const FormTratamiento = () => {
     </section>
   )
 }
+export default FormTratamiento
