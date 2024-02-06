@@ -40,7 +40,6 @@ export const getReservasPorMes = async (req, res) => {
 
     return crearRespuestaJSON(response)
   } catch (err) {
-    console.log(err)
     const response = {
       error: 'Error al obtener las reservas del mes',
       status: 500,

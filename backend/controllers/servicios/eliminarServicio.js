@@ -51,7 +51,11 @@ export const eliminarServicio = async (req, res) => {
     }
     return crearRespuestaJSON(response)
   } catch (error) {
-    console.log(error)
-    res.status(500).json({ error: 'Error al eliminar el servicio' })
+    const response = {
+      error: 'Error al eliminar el servicio',
+      status: 500,
+      res
+    }
+    return crearRespuestaJSON(response)
   }
 }

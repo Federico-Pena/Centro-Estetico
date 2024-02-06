@@ -1,12 +1,10 @@
 import { useContext } from 'react'
-import { ReservasContext } from '../../Context/Reservas/ReservasContext.jsx'
+import { ToastContext } from '../../Context/Toast/ToastContext.jsx'
 
-export const useReservaContext = () => {
-  const context = useContext(ReservasContext)
-
+export const useToastContext = () => {
+  const context = useContext(ToastContext)
   if (context === undefined) {
     throw new Error('usePacientes must be used within a PacientesProvider')
   }
-
   return context
 }

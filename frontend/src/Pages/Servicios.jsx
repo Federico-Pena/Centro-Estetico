@@ -1,14 +1,14 @@
-import { useContext, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { CardServicio } from '../Components/CardServicio/CardServicio.jsx'
 import { apiRoutes } from '../Api/routes.js'
 import { fetcher } from '../Api/Helpers/fetcher.js'
-import { ToastContext } from '../Context/Toast/mensajeContext.jsx'
-import { UserContext } from '../Context/User/userContext.jsx'
 import Carrusel from '../Components/Carrusel/Carrusel.jsx'
+import { useUserContext } from '../Hooks/Context/useUserContext.jsx'
+import { useToastContext } from '../Hooks/Context/useToastContext.jsx'
 
 export default function Servicios() {
-  const { setMensaje } = useContext(ToastContext)
-  const { accessToken } = useContext(UserContext)
+  const { setMensaje } = useToastContext()
+  const { accessToken } = useUserContext()
   const [servicios, setServicios] = useState([])
   useEffect(() => {
     const getServicios = async () => {

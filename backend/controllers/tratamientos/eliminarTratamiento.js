@@ -10,7 +10,7 @@ export const eliminarTratamiento = async (req, res) => {
     const servicio = await Servicio.findOne({ tratamientos: { _id: id } })
     if (!servicio) {
       const response = {
-        error: 'No se encontró el servicio asociado a la cuponera',
+        error: 'No se encontró el servicio asociado al tratamiento',
         status: 400,
         res
       }
@@ -22,7 +22,7 @@ export const eliminarTratamiento = async (req, res) => {
         await eliminarDeCloudinary(tratamientoExistente.imagen.public_id)
       } catch (error) {
         const response = {
-          error: 'Error al eliminar la imagen de la cuponera',
+          error: 'Error al eliminar la imagen de la tratamiento',
           status: 500,
           res
         }
@@ -37,14 +37,14 @@ export const eliminarTratamiento = async (req, res) => {
     )
     if (!tratamientoEliminado) {
       const response = {
-        error: 'Error al eliminar la cuponera',
+        error: 'Error al eliminar la tratamiento',
         status: 500,
         res
       }
       return crearRespuestaJSON(response)
     } else {
       const response = {
-        mensaje: `Cuponera eliminada con éxito ${tratamientoEliminado.descripcion}`,
+        mensaje: `Tratamiento eliminado con éxito ${tratamientoEliminado.descripcion}`,
         status: 200,
         datos: tratamientoEliminado,
         res
@@ -53,7 +53,7 @@ export const eliminarTratamiento = async (req, res) => {
     }
   } catch (error) {
     const response = {
-      error: 'Error al eliminar la cuponera',
+      error: 'Error al eliminar el tratamiento',
       status: 500,
       res
     }

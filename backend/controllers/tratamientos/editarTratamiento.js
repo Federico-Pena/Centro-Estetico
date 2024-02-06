@@ -7,7 +7,6 @@ import { eliminarDeCloudinary, guardarEnCloudinary } from '../cloudinaryImagenes
 export const editarTratamiento = async (req, res) => {
   try {
     const id = new Types.ObjectId(req.params.id)
-    console.log(req.params.id)
     const { descripcion, tiempo, costoTotal, enPromocion, sesiones } = req.body
 
     const servicioExistente = await Servicio.findOne({ tratamientos: id })
@@ -109,7 +108,6 @@ export const editarTratamiento = async (req, res) => {
     }
     return crearRespuestaJSON(response)
   } catch (error) {
-    console.log(error)
     const response = {
       error: 'Error al actualizar la tratamiento',
       status: 500,

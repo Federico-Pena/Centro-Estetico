@@ -33,7 +33,6 @@ export const obtenerTratamientos = async (req, res) => {
       return crearRespuestaJSON(response)
     }
   } catch (error) {
-    console.log(error)
     const response = {
       error: 'Ocurrió un error inesperado',
       status: 500,

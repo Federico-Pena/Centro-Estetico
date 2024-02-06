@@ -1,17 +1,16 @@
-import { useContext } from 'react'
 import { deleteReserva } from '../helpers/Reservas/deleteReserva.js'
-import { UserContext } from '../../../Context/User/userContext.jsx'
-import { ToastContext } from '../../../Context/Toast/mensajeContext.jsx'
 import { ACTIONS_RESERVAS } from '../../../Context/Reservas/reducerReservas.js'
 import { putEstadoReserva } from '../helpers/Reservas/putEstadoReserva.js'
-import { LoaderContext } from '../../../Context/Loader/LoaderContext.jsx'
-import { useReservaContext } from '../../Context/useReservaContext.jsx'
+import { useLoaderContext } from '../../Context/useLoaderContext.jsx'
+import { useToastContext } from '../../Context/useToastContext.jsx'
+import { useUserContext } from '../../Context/useUserContext.jsx'
+import { useReservasContext } from '../../Context/useReservasContext.jsx'
 
 export const useReserva = () => {
-  const { setLoading } = useContext(LoaderContext)
-  const { accessToken } = useContext(UserContext)
-  const { setMensaje } = useContext(ToastContext)
-  const { dispatch } = useReservaContext()
+  const { setLoading } = useLoaderContext()
+  const { accessToken } = useUserContext()
+  const { setMensaje } = useToastContext()
+  const { dispatch } = useReservasContext()
 
   const borrarReserva = async (reserva) => {
     try {

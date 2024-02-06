@@ -26,6 +26,33 @@ export const pipelinePaciente = (page, porPagina) => [
   {
     $addFields: {
       totalReservas: { $size: '$reservas' || 0 },
+      reservasPendientes: {
+        $size: {
+          $filter: {
+            input: '$reservas',
+            as: 'reserva',
+            cond: { $eq: ['$$reserva.estado', 'Pendiente'] }
+          }
+        }
+      },
+      reservasPagas: {
+        $size: {
+          $filter: {
+            input: '$reservas',
+            as: 'reserva',
+            cond: { $eq: ['$$reserva.estado', 'Pago'] }
+          }
+        }
+      },
+      reservasCanceladas: {
+        $size: {
+          $filter: {
+            input: '$reservas',
+            as: 'reserva',
+            cond: { $eq: ['$$reserva.estado', 'Cancelada'] }
+          }
+        }
+      },
       servicio: {
         $cond: {
           if: { $isArray: '$servicio' },
@@ -73,7 +100,10 @@ export const pipelinePaciente = (page, porPagina) => [
       foto: 1,
       servicio: 1,
       tratamiento: 1,
-      totalReservas: 1
+      totalReservas: 1,
+      reservasPendientes: 1,
+      reservasPagas: 1,
+      reservasCanceladas: 1
     }
   }
 ]

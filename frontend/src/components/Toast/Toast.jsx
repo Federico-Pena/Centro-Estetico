@@ -1,10 +1,10 @@
-import { useContext, useEffect, useState } from 'react'
-import { ToastContext } from '../../Context/Toast/mensajeContext.jsx'
+import { useEffect, useState } from 'react'
+import { useToastContext } from '../../Hooks/Context/useToastContext.jsx'
 
 export const Toast = () => {
   const [isVisible, setIsVisible] = useState(false)
   const [secondsVisible, setSecondsVisible] = useState(0)
-  const { mensaje, setMensaje } = useContext(ToastContext)
+  const { mensaje, setMensaje } = useToastContext()
 
   useEffect(() => {
     if (mensaje) {

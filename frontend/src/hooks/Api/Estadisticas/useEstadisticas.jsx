@@ -1,18 +1,18 @@
-import { useContext, useEffect } from 'react'
-import { UserContext } from '../../../Context/User/userContext.jsx'
-import { ToastContext } from '../../../Context/Toast/mensajeContext.jsx'
-import { EstadisticasContext } from '../../../Context/Estadisticas/EstadisticasContext.jsx'
+import { useEffect } from 'react'
 import { getEstadisticasReservas } from '../helpers/Estadisticas/getEstadisticasReservas.js'
 import { ACTIONS_ESTADISTICAS } from '../../../Context/Estadisticas/reducerEstadisticas.js'
 import { getEstadisticasReservasAno } from '../helpers/Estadisticas/getEstadisticasReservasAno.js'
 import { getEstadisticasReservasMes } from '../helpers/Estadisticas/getEstadisticasReservasMes.js'
-import { LoaderContext } from '../../../Context/Loader/LoaderContext.jsx'
+import { useLoaderContext } from '../../Context/useLoaderContext.jsx'
+import { useToastContext } from '../../Context/useToastContext.jsx'
+import { useUserContext } from '../../Context/useUserContext.jsx'
+import { useEstadisticasContext } from '../../Context/useEstadisticasContext.jsx'
 
 export const useEstadisticas = () => {
-  const { setLoading } = useContext(LoaderContext)
-  const { accessToken } = useContext(UserContext)
-  const { setMensaje } = useContext(ToastContext)
-  const { dispatch } = useContext(EstadisticasContext)
+  const { setLoading } = useLoaderContext()
+  const { accessToken } = useUserContext()
+  const { setMensaje } = useToastContext()
+  const { dispatch } = useEstadisticasContext()
   useEffect(() => {
     const getReservasEstadisticas = async () => {
       setLoading(true)

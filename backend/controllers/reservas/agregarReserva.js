@@ -101,7 +101,6 @@ export const agregarReserva = async (req, res) => {
     }
     return crearRespuestaJSON(response)
   } catch (error) {
-    console.log(error.message)
     const response = {
       error: 'Error al crear la reserva',
       status: 500,

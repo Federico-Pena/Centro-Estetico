@@ -1,12 +1,12 @@
 import { compararFechas } from '../../Helpers/compararFechas.js'
 import { ESTADOS_RESERVAS } from '../../constantes.js'
 import { formatHoraUser } from '../../Helpers/formatHoraUser.js'
-import { useReservaContext } from '../../Hooks/Context/useReservaContext.jsx'
+import { useReservasContext } from '../../Hooks/Context/useReservasContext.jsx'
 export const ListHoras = ({ horas, reservarHora }) => {
-  const { reservas } = useReservaContext()
+  const { reservas } = useReservasContext()
 
   return (
-    <ul className={`grid gap-2`}>
+    <ul className={`grid gap-2 p-2`}>
       {horas.map((hora, i) => {
         const horasReservadas = compararFechas(hora, reservas)
         return (

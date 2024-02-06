@@ -1,6 +1,5 @@
-import { useContext, useState } from 'react'
+import { useState } from 'react'
 import { ConfirmationModal } from '../ConfirmationModal/ConfirmationModal'
-import { TratamientoContext } from '../../context/Tratamiento/TratamientoContext.jsx'
 import { ACTIONS_TRATAMIENTOS } from '../../context/Tratamiento/tratamientoReducer.js'
 import { useTratamientos } from '../../Hooks/Api/Tratamiento/useTratamientos.jsx'
 import { TratamientoListItem } from './TratamientoListItem.jsx'
@@ -8,8 +7,9 @@ import { Button } from '../Botones/Button.jsx'
 import { Add } from '../Icons/Icons.jsx'
 import { useNavigate } from 'react-router-dom'
 import { RUTAS } from '../../constantes.js'
+import { useTratamientoContext } from '../../Hooks/Context/useTratamientoContext.jsx'
 export const TratamientosList = () => {
-  const { tratamiento, tratamientos, dispatch } = useContext(TratamientoContext)
+  const { tratamiento, tratamientos, dispatch } = useTratamientoContext()
   const { eliminarTratamiento } = useTratamientos()
   const [modal, setModal] = useState(false)
   const navigate = useNavigate()
@@ -25,7 +25,7 @@ export const TratamientosList = () => {
     <>
       {modal && (
         <ConfirmationModal
-          mensaje={`Desea borrar la cuponera ${tratamiento.descripcion}?.`}
+          mensaje={`Desea borrar el tratamiento ${tratamiento.descripcion}?.`}
           titulo={tratamiento.servicio.nombre}
           onCancel={() => setModal(false)}
           onConfirm={() => {

@@ -10,7 +10,7 @@ export const AdminMenu = ({ onClick }) => {
         <ArrowDown className={'transition-transform group-hover:rotate-180'} />
       </a>
       <ul
-        className='invisible -z-50 rounded-md grid opacity-0 absolute left-1/2 -translate-x-1/2 top-1/4 translate-y-full p-4 gap-4 bg-color-violeta transition-transform group-hover:z-auto group-hover:visible group-hover:translate-y-[0%] group-hover:opacity-100 hover:[&>li>a]:opacity-50 [&>li>a]:transition-opacity md:top-[100%]'
+        className='invisible -z-50 rounded-md grid opacity-0 absolute left-1/2 -translate-x-1/2 top-1/4 translate-y-full p-4 gap-4 bg-color-violeta transition-transform  group-hover:visible group-hover:z-10 group-hover:translate-y-[0%] group-hover:opacity-100 hover:[&>li>a]:opacity-50 [&>li>a]:transition-opacity md:top-[100%]'
         id='adminListMenu'>
         {adminLinks.map((link) => (
           <NavbarLink key={link.name} {...link} onClick={onClick} />

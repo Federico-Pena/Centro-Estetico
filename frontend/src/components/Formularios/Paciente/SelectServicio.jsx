@@ -1,12 +1,12 @@
-import { useContext, useEffect, useState } from 'react'
-import { ToastContext } from '../../../Context/Toast/mensajeContext.jsx'
-import { UserContext } from '../../../Context/User/userContext.jsx'
+import { useEffect, useState } from 'react'
 import { Dropdown } from '../../Dropdown/Dropdown.jsx'
 import { getServiciosNombresYTratamientos } from '../../../Hooks/Api/helpers/Servicios/getServiciosNombresYTratamientos.js'
+import { useUserContext } from '../../../Hooks/Context/useUserContext.jsx'
+import { useToastContext } from '../../../Hooks/Context/useToastContext.jsx'
 
 export const SelectServicio = ({ handleChange, values, errors }) => {
-  const { setMensaje } = useContext(ToastContext)
-  const { accessToken } = useContext(UserContext)
+  const { setMensaje } = useToastContext()
+  const { accessToken } = useUserContext()
   const [servicios, setServicios] = useState([])
   const [tratamientos, setTratamientos] = useState([])
 

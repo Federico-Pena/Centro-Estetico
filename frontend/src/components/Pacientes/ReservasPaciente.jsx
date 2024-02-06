@@ -1,32 +1,26 @@
-import { useContext } from 'react'
 import { useReservasPaciente } from '../../Hooks/Api/Reservas/useReservasPaciente.jsx'
 import { ContenedorReservas } from '../ContenedorReservas/ContenedorReservas.jsx'
 import Pagination from '../Pagination/Pagination.jsx'
-import { ACTIONS_RESERVAS } from '../../Context/Reservas/reducerReservas.js'
 import { HOY_FECHA_STRING, RUTAS } from '../../constantes.js'
 import { HeaderReservasPaciente } from './HeaderReservasPaciente.jsx'
-import { useNavigate, useParams } from 'react-router-dom'
-import { LoaderContext } from '../../Context/Loader/LoaderContext.jsx'
-import { usePacienteContext } from '../../Hooks/Context/usePacienteContext.jsx'
-import { useReservaContext } from '../../Hooks/Context/useReservaContext.jsx'
-import { usePaciente } from '../../Hooks/Api/Pacientes/usePaciente.jsx'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { useLoaderContext } from '../../Hooks/Context/useLoaderContext.jsx'
+import { useReservasContext } from '../../Hooks/Context/useReservasContext.jsx'
 
 const ReservasPaciente = () => {
-  const { id } = useParams()
+  const location = useLocation()
+  const statePaciente = location.state?.paciente
   const navigate = useNavigate()
-  const { paciente } = usePacienteContext()
-  const { loading } = useContext(LoaderContext)
-  const { reservas } = useReservaContext()
-  const { totalPaginas, setPagina } = useReservasPaciente(id)
-  const { obtenerPacientePorId } = usePaciente()
+  const { loading } = useLoaderContext()
+  const { reservas } = useReservasContext()
+  const { totalPaginas, setPagina } = useReservasPaciente(statePaciente._id)
 
   const handleAgregarReserva = async () => {
-    await obtenerPacientePorId(id)
     navigate(RUTAS.admin.agregarReserva, {
       state: {
         reserva: {
           paciente: {
-            nombre: paciente.nombre
+            nombre: statePaciente.nombre
           },
           horario: { horaInicio: HOY_FECHA_STRING.split('T')[0] }
         }

@@ -1,18 +1,18 @@
-import { useContext } from 'react'
-import { ToastContext } from '../../../Context/Toast/mensajeContext.jsx'
-import { UserContext } from '../../../Context/User/userContext.jsx'
-import { TratamientoContext } from '../../../context/Tratamiento/TratamientoContext.jsx'
 import { getTratamientos } from '../helpers/Tratamientos/getTratamientos.js'
 import { postTratamiento } from '../helpers/Tratamientos/postTratamiento.js'
 import { deleteTratamiento } from '../helpers/Tratamientos/deleteTratamiento.js'
 import { putTratamiento } from '../helpers/Tratamientos/putTratamiento.js'
-import { LoaderContext } from '../../../Context/Loader/LoaderContext.jsx'
-import { ACTIONS_TRATAMIENTOS } from '../../../Context/Tratamiento/tratamientoReducer.js'
+import { useLoaderContext } from '../../Context/useLoaderContext.jsx'
+import { useToastContext } from '../../Context/useToastContext.jsx'
+import { ACTIONS_TRATAMIENTOS } from '../../../context/Tratamiento/tratamientoReducer.js'
+import { useUserContext } from '../../Context/useUserContext.jsx'
+import { useTratamientoContext } from '../../Context/useTratamientoContext.jsx'
+
 export const useTratamientos = () => {
-  const { accessToken } = useContext(UserContext)
-  const { setMensaje } = useContext(ToastContext)
-  const { setLoading } = useContext(LoaderContext)
-  const { dispatch } = useContext(TratamientoContext)
+  const { accessToken } = useUserContext()
+  const { setMensaje } = useToastContext()
+  const { setLoading } = useLoaderContext()
+  const { dispatch } = useTratamientoContext()
 
   const obtenerTratamientos = async () => {
     try {

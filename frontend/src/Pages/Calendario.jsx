@@ -1,26 +1,23 @@
-import { useContext, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { compararFechas } from '../Helpers/compararFechas.js'
-import { UserContext } from '../Context/User/userContext.jsx'
-import { ToastContext } from '../Context/Toast/mensajeContext.jsx'
-import { ReservasContext } from '../Context/Reservas/ReservasContext.jsx'
 import { useCalendario } from '../Hooks/useCalendario.jsx'
 import { ESTADOS_RESERVAS, RUTAS } from '../constantes.js'
 import { Loader } from '../Components/Loader/Loader.jsx'
 import { Botones } from '../Components/Calendario/Botones.jsx'
 import { Dias } from '../Components/Calendario/Dias.jsx'
 import { HeaderCalendario } from '../Components/Calendario/HeaderCalendario.jsx'
-import { ACTIONS_RESERVAS } from '../Context/Reservas/reducerReservas.js'
 import { ContenedorReservas } from '../Components/ContenedorReservas/ContenedorReservas.jsx'
 import ContadorReservas from '../Components/ContadorReservas/ContadorReservas.jsx'
-import { LoaderContext } from '../Context/Loader/LoaderContext.jsx'
-import { useReservaContext } from '../Hooks/Context/useReservaContext.jsx'
+import { useLoaderContext } from '../Hooks/Context/useLoaderContext.jsx'
+import { useToastContext } from '../Hooks/Context/useToastContext.jsx'
+import { useUserContext } from '../Hooks/Context/useUserContext.jsx'
+import { useReservasContext } from '../Hooks/Context/useReservasContext.jsx'
 
 function Calendario() {
-  const { setMensaje } = useContext(ToastContext)
-  const { loading: cargando } = useContext(UserContext)
-  const { loading } = useContext(LoaderContext)
-  const { reservas, dispatch, seleccionadas } = useReservaContext()
+  const { setMensaje } = useToastContext()
+  const { loading: cargando } = useUserContext()
+  const { loading } = useLoaderContext()
+  const { reservas, seleccionadas } = useReservasContext()
 
   const { semanaAnterior, semanaSiguiente, diasSemana, setSeleccionadas, seleccionarDia } =
     useCalendario()
@@ -32,14 +29,21 @@ function Calendario() {
     const nombreAdmin = 'admin'
     const hora = e.target.getAttribute('data-fecha')
     const comprobación = compararFechas(new Date(`${hora}`), reservas)
-    const horaNoDispible =
+    const horaNoDisponible =
       (comprobación.estado && comprobación.estado !== ESTADOS_RESERVAS.cancelada) ||
       comprobación.proximaHoraNoDisponible
     const horaConReserva = comprobación.estado
+    const horaReservada =
+      comprobación.estado === ESTADOS_RESERVAS.pago ||
+      comprobación.estado === ESTADOS_RESERVAS.pendiente
+    if (horaReservada) {
+      setSeleccionadas(comprobación.reservadas)
+      return
+    }
     if (horaConReserva) {
       setSeleccionadas(comprobación.reservadas)
     }
-    if (horaNoDispible) {
+    if (horaNoDisponible) {
       setMensaje('Hora no disponible para hacer una reserva')
       return
     }
@@ -48,14 +52,16 @@ function Calendario() {
         horario: { horaInicio: comprobación.id },
         paciente: { nombre: nombreAdmin }
       }
-      dispatch({ type: ACTIONS_RESERVAS.SET_RESERVA, payload: reserva })
-      navigate(RUTAS.admin.agregarReserva, { state: { from: RUTAS.admin.calendario } })
+      navigate(RUTAS.admin.agregarReserva, {
+        state: { from: RUTAS.admin.calendario, reserva: reserva }
+      })
     } else {
       const reserva = {
         horario: { horaInicio: comprobación.id }
       }
-      dispatch({ type: ACTIONS_RESERVAS.SET_RESERVA, payload: reserva })
-      navigate(RUTAS.admin.agregarReserva, { state: { from: RUTAS.admin.calendario } })
+      navigate(RUTAS.admin.agregarReserva, {
+        state: { from: RUTAS.admin.calendario, reserva: reserva }
+      })
     }
   }
   return (

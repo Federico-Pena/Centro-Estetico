@@ -1,19 +1,18 @@
-import { useContext } from 'react'
-import { ServiciosContext } from '../../../context/Servicios/ServiciosContext.jsx'
-import { ACTIONS_SERVICIOS } from '../../../context/Servicios/serviciosReducer.js'
-import { UserContext } from '../../../Context/User/userContext.jsx'
-import { ToastContext } from '../../../Context/Toast/mensajeContext.jsx'
 import { postServicio } from '../helpers/Servicios/postServicio.js'
 import { putServicio } from '../helpers/Servicios/putServicio.js'
 import { deleteServicio } from '../helpers/Servicios/deleteServicio.js'
 import { getServicios } from '../helpers/Servicios/getServicios.js'
-import { LoaderContext } from '../../../Context/Loader/LoaderContext.jsx'
+import { useLoaderContext } from '../../Context/useLoaderContext.jsx'
+import { useToastContext } from '../../Context/useToastContext.jsx'
+import { useUserContext } from '../../Context/useUserContext.jsx'
+import { useServiciosContext } from '../../Context/useServiciosContext.jsx'
+import { ACTIONS_SERVICIOS } from '../../../Context/Servicios/serviciosReducer.js'
 
 export const useServicio = () => {
-  const { accessToken } = useContext(UserContext)
-  const { setMensaje } = useContext(ToastContext)
-  const { setLoading } = useContext(LoaderContext)
-  const { dispatch } = useContext(ServiciosContext)
+  const { accessToken } = useUserContext()
+  const { setMensaje } = useToastContext()
+  const { setLoading } = useLoaderContext()
+  const { dispatch } = useServiciosContext()
 
   const obtenerServicios = async () => {
     try {

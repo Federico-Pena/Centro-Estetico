@@ -1,9 +1,10 @@
-import { useContext, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import emailjs from '@emailjs/browser'
-import { ToastContext } from '../../../Context/Toast/mensajeContext.jsx'
 import useForm from '../../../Hooks/Formulario/useForm.jsx'
 import { LabelInput } from '../LabelInput.jsx'
 import { TextAreaLabel } from '../TextAreaLabel.jsx'
+import { Button } from '../../Botones/Button.jsx'
+import { useToastContext } from '../../../Hooks/Context/useToastContext.jsx'
 const initialForm = {
   nombre: '',
   email: '',
@@ -18,7 +19,7 @@ const validationRules = {
 }
 export const FormularioContacto = () => {
   const [cargando, setCargando] = useState(false)
-  const { setMensaje } = useContext(ToastContext)
+  const { setMensaje } = useToastContext()
   const { handleChange, errors, values, validateForm } = useForm(initialForm, validationRules)
   const form = useRef()
   const emailService = import.meta.env.VITE_EMAIL_JS_SERVICE
@@ -75,11 +76,14 @@ export const FormularioContacto = () => {
         error={errors.mensaje}
         onChange={handleChange}
       />
-      <button
-        className='font-bold mt-8 mx-auto max-w-fit h-max text-slate-50 border-color-violeta bg-color-violeta border-[1px] rounded-md grid place-content-center py-2 px-4 transition-colors hover:text-color-violeta hover:bg-slate-50'
-        type='submit'>
-        {cargando ? 'Enviando' : 'Enviar'}
-      </button>
+      <Button
+        className={'w-full'}
+        id={'Costumbres'}
+        disabled={cargando}
+        tipo={'submit'}
+        bgColor={true}
+        texto={cargando ? 'Enviando' : 'Enviar'}
+      />
     </form>
   )
 }

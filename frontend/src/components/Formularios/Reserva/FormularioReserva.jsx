@@ -1,6 +1,5 @@
-import { useContext, useRef } from 'react'
+import { useRef } from 'react'
 import { formularioReservaSubmit } from './formularioReservaSubmit'
-import { ToastContext } from '../../../Context/Toast/mensajeContext.jsx'
 import { LabelInput } from '../LabelInput.jsx'
 import useForm from '../../../Hooks/Formulario/useForm.jsx'
 import { TextAreaLabel } from '../TextAreaLabel.jsx'
@@ -9,7 +8,8 @@ import { HorasForm } from './HorasForm.jsx'
 import { ResumerReserva } from './ResumerReserva.jsx'
 import { Button } from '../../Botones/Button.jsx'
 import { HOY_FECHA_STRING } from '../../../constantes.js'
-import { LoaderContext } from '../../../Context/Loader/LoaderContext.jsx'
+import { useLoaderContext } from '../../../Hooks/Context/useLoaderContext.jsx'
+import { useToastContext } from '../../../Hooks/Context/useToastContext.jsx'
 
 const formRules = {
   nombre: { required: true },
@@ -17,10 +17,9 @@ const formRules = {
   hora: { required: true }
 }
 export const FormularioReserva = ({ observaciones, cerrarFormulario }) => {
-  const { loading } = useContext(LoaderContext)
-
+  const { loading } = useLoaderContext()
+  const { setMensaje } = useToastContext()
   const sectionFormRef = useRef()
-  const { setMensaje } = useContext(ToastContext)
   const initialForm = {
     nombre: '',
     fecha: '',
@@ -52,7 +51,7 @@ export const FormularioReserva = ({ observaciones, cerrarFormulario }) => {
     <section
       id='sectionForm'
       ref={sectionFormRef}
-      className='fixed overflow-auto bg-gradient-to-b from-slate-50 to-color-verde-blanco py-8 inset-0 z-50 grid'
+      className='fixed  inset-0 z-50 grid grid-rows-[50px_1fr] p-4 py-8  overflow-auto bg-gradient-to-b from-slate-50 to-color-verde-blanco'
       onAnimationEnd={(e) => {
         if (e.target.id === 'sectionForm' && e.animationName !== 'fadeIn') {
           cerrarFormulario()
@@ -63,7 +62,7 @@ export const FormularioReserva = ({ observaciones, cerrarFormulario }) => {
       </h1>
       <form
         onSubmit={handleSubmit}
-        className='animate-fadeIn grid w-full max-w-md py-8 px-4 rounded-lg bg-color-logo gap-4 m-auto'>
+        className='animate-fadeIn grid w-full max-w-md py-8 px-4 rounded-lg bg-color-logo gap-4 m-auto border border-black'>
         <LabelInput
           errors={errors}
           labelText={'Nombre'}
@@ -113,15 +112,14 @@ export const FormularioReserva = ({ observaciones, cerrarFormulario }) => {
         <ResumerReserva horasDisponibles={horasDisponibles} values={values} />
         <footer className='grid grid-flow-col pt-8 px-4 gap-4'>
           <Button
-            className='font-bold text-color-violeta border-color-violeta border-[1px] rounded-md py-2 px-4 transition-colors hover:text-slate-50 hover:bg-color-violeta'
+            className={'w-full'}
             tipo={'button'}
             onClickFunction={animationClose}
             texto={'Volver'}
           />
           <Button
-            className={`${
-              loading ? 'opacity-65' : ''
-            } font-bold text-slate-50 border-color-violeta bg-color-violeta border-[1px] rounded-md py-2 px-4 transition-colors hover:text-color-violeta hover:bg-transparent cursor-pointer`}
+            className={'w-full'}
+            bgColor={true}
             tipo={'submit'}
             texto={'Enviar'}
             disabled={loading}

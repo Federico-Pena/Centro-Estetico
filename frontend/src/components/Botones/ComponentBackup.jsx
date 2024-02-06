@@ -1,10 +1,8 @@
-import { useContext, useState } from 'react'
 import { Button } from './Button.jsx'
 import { apiRoutes } from '../../Api/routes.js'
-import { UserContext } from '../../Context/User/userContext.jsx'
-import { ToastContext } from '../../Context/Toast/mensajeContext.jsx'
-import { ArrowDown } from '../Icons/Icons.jsx'
 import { formatFechaActualIso } from '../../Helpers/formatFechaActualIso.js'
+import { useUserContext } from '../../Hooks/Context/useUserContext.jsx'
+import { useToastContext } from '../../Hooks/Context/useToastContext.jsx'
 
 function crearLink(blob, nombre) {
   const link = document.createElement('a')
@@ -26,8 +24,8 @@ async function fetchBlob(url, accessToken) {
   return blob
 }
 export const ComponentBackup = () => {
-  const { accessToken } = useContext(UserContext)
-  const { setMensaje } = useContext(ToastContext)
+  const { accessToken } = useUserContext()
+  const { setMensaje } = useToastContext()
 
   const backupReservas = async () => {
     try {
@@ -36,7 +34,6 @@ export const ComponentBackup = () => {
       crearLink(blob, `reservas_backup_${formatFechaActualIso(new Date())}.json`)
       setMensaje('Datos listos para guardar')
     } catch (error) {
-      console.log(error)
       setMensaje('Error al obtener los Datos')
     }
   }
@@ -47,7 +44,6 @@ export const ComponentBackup = () => {
       crearLink(blob, `servicios_backup_${formatFechaActualIso(new Date())}.json`)
       setMensaje('Datos listos para guardar')
     } catch (error) {
-      console.log(error)
       setMensaje('Error al obtener los Datos')
     }
   }
@@ -58,7 +54,6 @@ export const ComponentBackup = () => {
       crearLink(blob, `pacientes_backup_${formatFechaActualIso(new Date())}.json`)
       setMensaje('Datos listos para guardar')
     } catch (error) {
-      console.log(error)
       setMensaje('Error al obtener los Datos')
     }
   }
@@ -69,7 +64,6 @@ export const ComponentBackup = () => {
       crearLink(blob, `tratamientos_backup_${formatFechaActualIso(new Date())}.json`)
       setMensaje('Datos listos para guardar')
     } catch (error) {
-      console.log(error)
       setMensaje('Error al obtener los Datos')
     }
   }
@@ -81,7 +75,6 @@ export const ComponentBackup = () => {
       crearLink(blob, `todo_backup_${formatFechaActualIso(new Date())}.json`)
       setMensaje('Datos listos para guardar')
     } catch (error) {
-      console.log(error)
       setMensaje('Error al obtener los Datos')
     }
   }

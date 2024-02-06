@@ -1,17 +1,16 @@
-import { useContext, useEffect, useState } from 'react'
-import { UserContext } from '../../../Context/User/userContext.jsx'
-import { ToastContext } from '../../../Context/Toast/mensajeContext.jsx'
+import { useEffect, useState } from 'react'
 import { deUnPaciente } from '../helpers/Reservas/deUnPaciente.js'
 import { ACTIONS_RESERVAS } from '../../../Context/Reservas/reducerReservas.js'
-import { LoaderContext } from '../../../Context/Loader/LoaderContext.jsx'
-import { useReservaContext } from '../../Context/useReservaContext.jsx'
+import { useLoaderContext } from '../../Context/useLoaderContext.jsx'
+import { useToastContext } from '../../Context/useToastContext.jsx'
+import { useUserContext } from '../../Context/useUserContext.jsx'
+import { useReservasContext } from '../../Context/useReservasContext.jsx'
 
 export const useReservasPaciente = (id) => {
-  const { accessToken } = useContext(UserContext)
-  const { setMensaje } = useContext(ToastContext)
-  const { dispatch } = useReservaContext()
-
-  const { setLoading } = useContext(LoaderContext)
+  const { accessToken } = useUserContext()
+  const { setMensaje } = useToastContext()
+  const { dispatch } = useReservasContext()
+  const { setLoading } = useLoaderContext()
   const [pagina, setPagina] = useState(1)
   const [totalPaginas, setTotalPaginas] = useState(false)
   /*  useEffect(() => {

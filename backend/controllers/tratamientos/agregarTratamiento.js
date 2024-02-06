@@ -94,7 +94,6 @@ export const agregarTratamiento = async (req, res) => {
     }
     return crearRespuestaJSON(response)
   } catch (error) {
-    console.log(error)
     const response = {
       error: 'Error al crear la tratamiento',
       status: 500,

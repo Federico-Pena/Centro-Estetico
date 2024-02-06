@@ -1,14 +1,14 @@
-import { useContext, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { apiRoutes } from '../../Api/routes.js'
-import { ToastContext } from '../../Context/Toast/mensajeContext.jsx'
-import { UserContext } from '../../Context/User/userContext.jsx'
 import { fetcher } from '../../Api/Helpers/fetcher.js'
+import { useUserContext } from '../../Hooks/Context/useUserContext.jsx'
+import { useToastContext } from '../../Hooks/Context/useToastContext.jsx'
 
 export const useCarrusel = () => {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [promos, setPromos] = useState([])
-  const { setMensaje } = useContext(ToastContext)
-  const { accessToken } = useContext(UserContext)
+  const { setMensaje } = useToastContext()
+  const { accessToken } = useUserContext()
   useEffect(() => {
     const getServicios = async () => {
       const url = apiRoutes.publicas.getPromociones

@@ -8,9 +8,9 @@ export const Dias = ({ diasSemana, reservarHora }) => {
         const diaDate = new Date(dia.dia)
         return (
           !(diaDate.getDay() === 0) && (
-            <div key={diaDate} className={`grid grid-rows-[50px,1fr] p-2 gap-4`}>
+            <div key={diaDate} className={`grid grid-rows-[50px,1fr] gap-2`}>
               <h3
-                className={`grid place-content-center text-center capitalize text-md p-2 text-color-violeta font-betonga font-bold tracking-wide text-pretty rounded ${
+                className={`grid place-content-center text-center capitalize text-md p-2 text-color-violeta font-betonga font-bold tracking-wide text-pretty border-b border-black ${
                   diaDate.getDate() === new Date().getDate() &&
                   diaDate.getDay() === new Date().getDay()
                     ? 'bg-color-verde-blanco'

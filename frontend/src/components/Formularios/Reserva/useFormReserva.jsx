@@ -1,27 +1,27 @@
-import { useContext, useEffect, useState } from 'react'
-import { UserContext } from '../../../Context/User/userContext.jsx'
-import { ToastContext } from '../../../Context/Toast/mensajeContext.jsx'
+import { useEffect, useState } from 'react'
 import { reservasDelDiaParaUser } from '../../../Api/Helpers/Formularios/reservasDelDiaParaUser.js'
 import { ACTIONS_RESERVAS } from '../../../Context/Reservas/reducerReservas.js'
 import { postReserva } from '../../../Hooks/Api/helpers/Reservas/postReserva.js'
 import { putReserva } from '../../../Hooks/Api/helpers/Reservas/putReserva.js'
 import { getPacientesNombres } from '../../../Hooks/Api/helpers/Pacientes/getPacientesNombres.js'
-import { LoaderContext } from '../../../Context/Loader/LoaderContext.jsx'
-import { useReservaContext } from '../../../Hooks/Context/useReservaContext.jsx'
 import { RUTAS } from '../../../constantes.js'
 import { useLocation } from 'react-router-dom'
+import { useLoaderContext } from '../../../Hooks/Context/useLoaderContext.jsx'
+import { useToastContext } from '../../../Hooks/Context/useToastContext.jsx'
+import { useUserContext } from '../../../Hooks/Context/useUserContext.jsx'
+import { useReservasContext } from '../../../Hooks/Context/useReservasContext.jsx'
 
 export const useFormReserva = (dia) => {
   const location = useLocation()
-
   const rutaAgregarReserva = location.pathname === RUTAS.admin.agregarReserva
-  const { accessToken } = useContext(UserContext)
-  const { setMensaje } = useContext(ToastContext)
-  const { setLoading } = useContext(LoaderContext)
-  const { dispatch } = useReservaContext()
+  const { accessToken } = useUserContext()
+  const { setMensaje } = useToastContext()
+  const { setLoading } = useLoaderContext()
+  const { dispatch } = useReservasContext()
   const [horasDisponibles, setHorasDisponibles] = useState([])
   const [pacientesNombres, setPacientesNombres] = useState([])
   const [reservasDelDia, setReservasDelDia] = useState([])
+
   useEffect(() => {
     const obtenerNombrePacientes = async () => {
       setLoading(true)
@@ -30,7 +30,6 @@ export const useFormReserva = (dia) => {
         const { datos, status, error } = res
         if (status === 200) {
           setPacientesNombres(datos)
-          console.log(datos)
         } else {
           if (error) {
             setMensaje(error)

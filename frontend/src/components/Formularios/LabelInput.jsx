@@ -14,7 +14,7 @@ export const LabelInput = ({
   maxLength,
   minLength
 }) => {
-  const error = errors[name]
+  const error = errors && errors[name]
   if (type === 'checkbox') {
     return (
       <>

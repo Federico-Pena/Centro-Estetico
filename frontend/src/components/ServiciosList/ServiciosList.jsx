@@ -1,6 +1,4 @@
-import { useContext, useState } from 'react'
-import { ServiciosContext } from '../../context/Servicios/ServiciosContext.jsx'
-import { ACTIONS_SERVICIOS } from '../../context/Servicios/serviciosReducer.js'
+import { useState } from 'react'
 import { ConfirmationModal } from '../ConfirmationModal/ConfirmationModal.jsx'
 import { useServicio } from '../../Hooks/Api/Servicio/useServicio.jsx'
 import { ServicioListItem } from './ServicioListItem.jsx'
@@ -8,9 +6,11 @@ import { Button } from '../Botones/Button.jsx'
 import { Add } from '../Icons/Icons.jsx'
 import { useNavigate } from 'react-router-dom'
 import { RUTAS } from '../../constantes.js'
+import { useServiciosContext } from '../../Hooks/Context/useServiciosContext.jsx'
+import { ACTIONS_SERVICIOS } from '../../Context/Servicios/serviciosReducer.js'
 export const ServiciosList = () => {
   const [modal, setModal] = useState(false)
-  const { servicio, servicios, dispatch } = useContext(ServiciosContext)
+  const { servicio, servicios, dispatch } = useServiciosContext()
   const { eliminarServicio } = useServicio()
   const navigate = useNavigate()
   const handleBorrarServicio = (ser) => {
@@ -45,7 +45,7 @@ export const ServiciosList = () => {
       </article>
       {modal && (
         <ConfirmationModal
-          mensaje={`Desea borrar el servicio?. Se eliminaran las cuponeras asociadas y no se podrán hacer mas reservas.`}
+          mensaje={`Desea borrar el servicio?. Se eliminaran los tratamientos asociados al mismo.`}
           titulo={servicio.nombre}
           onCancel={() => setModal(false)}
           onConfirm={() => {

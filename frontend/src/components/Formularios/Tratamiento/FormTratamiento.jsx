@@ -1,7 +1,5 @@
-import { useContext, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { formDataTratamiento } from './formDataTratamiento.js'
-import { UserContext } from '../../../Context/User/userContext.jsx'
-import { ToastContext } from '../../../Context/Toast/mensajeContext.jsx'
 import useForm from '../../../Hooks/Formulario/useForm.jsx'
 import { Button } from '../../Botones/Button.jsx'
 import { useTratamientos } from '../../../Hooks/Api/Tratamiento/useTratamientos.jsx'
@@ -9,22 +7,24 @@ import { FormTratamientoInputs } from './FormTratamientoInputs.jsx'
 import { FormTratamientoImagen } from './FormTratamientoImagen.jsx'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { Dropdown } from '../../Dropdown/Dropdown.jsx'
-import { TratamientoContext } from '../../../context/Tratamiento/TratamientoContext.jsx'
 import { RUTAS } from '../../../constantes.js'
 import { ACTIONS_TRATAMIENTOS } from '../../../context/Tratamiento/tratamientoReducer.js'
-import { LoaderContext } from '../../../Context/Loader/LoaderContext.jsx'
 import { getServiciosNombresYTratamientos } from '../../../Hooks/Api/helpers/Servicios/getServiciosNombresYTratamientos.js'
 import { initialFormData, validationRules } from './initialValuesAndRules.js'
+import { useLoaderContext } from '../../../Hooks/Context/useLoaderContext.jsx'
+import { useToastContext } from '../../../Hooks/Context/useToastContext.jsx'
+import { useUserContext } from '../../../Hooks/Context/useUserContext.jsx'
+import { useTratamientoContext } from '../../../Hooks/Context/useTratamientoContext.jsx'
 
 export const FormTratamiento = () => {
   const location = useLocation()
   const stateTratamiento = location.state?.tratamiento
-  console.log(stateTratamiento)
   const edicion = location.pathname === RUTAS.admin.editarTratamiento
-  const { dispatch } = useContext(TratamientoContext)
-  const { accessToken } = useContext(UserContext)
-  const { setMensaje } = useContext(ToastContext)
-  const { loading } = useContext(LoaderContext)
+
+  const { dispatch } = useTratamientoContext()
+  const { accessToken } = useUserContext()
+  const { setMensaje } = useToastContext()
+  const { loading } = useLoaderContext()
   const { crearTratamiento, editarTratamiento } = useTratamientos()
   const [tratamiento] = useState(initialFormData(stateTratamiento))
   const [servicios, setServicios] = useState([])
@@ -58,15 +58,16 @@ export const FormTratamiento = () => {
   const handleSubmitTratamiento = async (e) => {
     e.preventDefault()
     const isValid = validateForm()
-    if (!isValid) {
-      return
-    }
-    const datos = formDataTratamiento(values)
-    const res = edicion
-      ? await editarTratamiento(datos, stateTratamiento._id)
-      : await crearTratamiento(datos)
-    if (res) {
-      cerrarForm()
+    if (isValid) {
+      const datos = formDataTratamiento(values)
+      const res = edicion
+        ? await editarTratamiento(datos, stateTratamiento._id)
+        : await crearTratamiento(datos)
+      if (res) {
+        cerrarForm()
+      }
+    } else {
+      setMensaje('Faltan campos requeridos')
     }
   }
   const handleNombreServicio = (e) => {

@@ -1,11 +1,10 @@
-import { useContext } from 'react'
-import { LoaderContext } from '../../../Context/Loader/LoaderContext.jsx'
 import { useEstadisticas } from '../../../Hooks/Api/Estadisticas/useEstadisticas.jsx'
 import useForm from '../../../Hooks/Formulario/useForm.jsx'
 import { MESES } from '../../../constantes.js'
 import { Button } from '../../Botones/Button.jsx'
 import { Dropdown } from '../../Dropdown/Dropdown.jsx'
 import { LabelInput } from '../../Formularios/LabelInput.jsx'
+import { useLoaderContext } from '../../../Hooks/Context/useLoaderContext.jsx'
 const initialValues = {
   year: '',
   mes: ''
@@ -20,7 +19,8 @@ const validations = {
 }
 
 export const FormMes = ({ setAno, setMes }) => {
-  const { loading } = useContext(LoaderContext)
+  const { loading } = useLoaderContext()
+
   const { obtenerReservasDelMes } = useEstadisticas()
 
   const { errors, values, handleChange, validateForm, resetForm } = useForm(
@@ -34,7 +34,6 @@ export const FormMes = ({ setAno, setMes }) => {
     const mes = values.mes
     setAno(ano)
     const isValid = validateForm()
-    console.log(isValid)
     if (isValid) {
       await obtenerReservasDelMes(ano, mes)
       resetForm()
@@ -77,13 +76,12 @@ export const FormMes = ({ setAno, setMes }) => {
       />
 
       <Button
+        bgColor={true}
         disabled={loading}
         tipo={'submit'}
         texto={'Buscar'}
         onClickFunction={getEstadisticasReservas}
-        className={
-          'font-bold mt-4 text-slate-50 border-color-violeta bg-color-violeta border-[1px] rounded-md grid place-content-center py-2 px-4 transition-colors hover:text-color-violeta hover:bg-slate-50 '
-        }
+        className={'mt-4 w-full'}
       />
     </form>
   )

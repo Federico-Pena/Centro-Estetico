@@ -2,20 +2,19 @@ import { useAuth0 } from '@auth0/auth0-react'
 import { Footer } from './Components/Footer/Footer.jsx'
 import Navbar from './Components/Navbar/Navbar.jsx'
 import { Toast } from './Components/Toast/Toast.jsx'
-import { MensajeProvider } from './Context/Toast/mensajeContext.jsx'
+import { MensajeProvider } from './Context/Toast/ToastContext.jsx'
 import { BrowserRouter } from 'react-router-dom'
 import { Loader } from './Components/Loader/Loader.jsx'
 import Rutas from './routes/Rutas.routes.jsx'
 import RutasAdmin from './routes/RutasAdmin.routes.jsx'
 import { useRef } from 'react'
-import { Button } from './Components/Botones/Button.jsx'
 import { ArrowDown } from './Components/Icons/Icons.jsx'
 import { LoaderProvider } from './Context/Loader/LoaderContext.jsx'
 import { LoaderApi } from './Components/Loader/LoaderApi.jsx'
 
 function App() {
   const { isLoading } = useAuth0()
-  // const { isAllowedAccess } = useContext(UserContext)
+  // const { isAllowedAccess } = useUserContext()
   const mainRef = useRef()
   const isAllowedAccess = true
 

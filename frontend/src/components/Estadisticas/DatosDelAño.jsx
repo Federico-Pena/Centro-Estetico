@@ -1,10 +1,10 @@
-import { useContext, useEffect, useRef } from 'react'
-import { EstadisticasContext } from '../../Context/Estadisticas/EstadisticasContext.jsx'
+import { useEffect, useRef } from 'react'
 import { Mes } from './ReservasAno/Mes.jsx'
 import GraficoBarras from './Graficos/GraficoBarras.jsx'
+import { useEstadisticasContext } from '../../Hooks/Context/useEstadisticasContext.jsx'
 
 export const DatosDelAño = () => {
-  const { reservas } = useContext(EstadisticasContext)
+  const { reservas } = useEstadisticasContext()
   const datosDelAñoRef = useRef()
   useEffect(() => {
     datosDelAñoRef.current &&

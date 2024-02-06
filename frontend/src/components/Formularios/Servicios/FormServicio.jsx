@@ -1,4 +1,4 @@
-import { useContext, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { formDataServicio } from './formDataServicio'
 import useForm from '../../../Hooks/Formulario/useForm.jsx'
 import { Button } from '../../Botones/Button.jsx'
@@ -10,16 +10,18 @@ import { SegundaParte } from './SegundaParte.jsx'
 import { HeaderFormServicio } from './HeaderFormServicio.jsx'
 import { initialFormData, validationRules } from './initialFormYRules.js'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { ServiciosContext } from '../../../context/Servicios/ServiciosContext.jsx'
 import { RUTAS } from '../../../constantes.js'
-import { ACTIONS_SERVICIOS } from '../../../context/Servicios/serviciosReducer.js'
+import { useServiciosContext } from '../../../Hooks/Context/useServiciosContext.jsx'
+import { ACTIONS_SERVICIOS } from '../../../Context/Servicios/serviciosReducer.js'
+import { useToastContext } from '../../../Hooks/Context/useToastContext.jsx'
 
 export const FormServicio = () => {
   const location = useLocation()
   const stateServicio = location.state?.servicio
   const navigate = useNavigate()
   const edicion = location.pathname === RUTAS.admin.editarServicio
-  const { dispatch } = useContext(ServiciosContext)
+  const { dispatch } = useServiciosContext()
+  const { setMensaje } = useToastContext()
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [masInfo, setMasInfo] = useState(false)
   const [previewServicio, setPreviewServicio] = useState(false)
@@ -51,13 +53,14 @@ export const FormServicio = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     const isValid = validateForm()
-    if (!isValid) {
-      return
-    }
-    const datos = formDataServicio(values)
-    const res = edicion ? await editarServicio(datos) : await agregarServicio(datos)
-    if (res) {
-      cerrarForm()
+    if (isValid) {
+      const datos = formDataServicio(values)
+      const res = edicion ? await editarServicio(datos) : await agregarServicio(datos)
+      if (res) {
+        cerrarForm()
+      }
+    } else {
+      setMensaje('Faltan campos requeridos')
     }
   }
   return (

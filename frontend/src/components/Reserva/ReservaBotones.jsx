@@ -1,8 +1,8 @@
 import { useLocation, useNavigate } from 'react-router-dom'
 import { Button } from '../Botones/Button.jsx'
 import { ACTIONS_RESERVAS } from '../../Context/Reservas/reducerReservas.js'
-import { RUTAS } from '../../constantes.js'
-import { useReservaContext } from '../../Hooks/Context/useReservaContext.jsx'
+import { ESTADOS_RESERVAS, RUTAS } from '../../constantes.js'
+import { useReservasContext } from '../../Hooks/Context/useReservasContext.jsx'
 
 export const ReservaBotones = ({
   reserva,
@@ -14,7 +14,7 @@ export const ReservaBotones = ({
   const navigate = useNavigate()
   const location = useLocation()
   const pageCalendario = location.pathname === RUTAS.admin.calendario
-  const { dispatch } = useReservaContext()
+  const { dispatch } = useReservasContext()
 
   const handleEditarReserva = () => {
     navigate(RUTAS.admin.editarReserva, { state: { reserva: reserva } })
@@ -28,30 +28,30 @@ export const ReservaBotones = ({
   return (
     <>
       <Button
+        className={'w-full'}
         texto={'Editar'}
         tipo={'button'}
-        className='border border-color-violeta bg-color-violeta  flex items-center justify-center max-w-fit justify-self-center rounded-lg px-4 py-2  hover:opacity-70 transition-opacity '
         onClickFunction={handleEditarReserva}
       />
       <Button
         disabled={loading}
         texto={'Estado'}
         tipo={'button'}
-        className={`border border-color-violeta bg-color-violeta flex items-center justify-center max-w-fit justify-self-center rounded-lg px-4 py-2  hover:opacity-70 transition-opacity  ${reserva.estado}`}
+        className={`${reserva.estado} w-full text-white`}
         onClickFunction={handleEditarEstadoReserva}
       />
       {pageCalendario && (
         <Button
+          className={'w-full'}
           texto={'Cerrar'}
-          className='border border-color-violeta bg-color-violeta  flex items-center justify-center max-w-fit justify-self-center rounded-lg px-4 py-2  hover:opacity-70 transition-opacity'
           onClickFunction={handleCerrarReservas}
           tipo={'button'}
         />
       )}
       <Button
+        className={`w-full ${ESTADOS_RESERVAS.cancelada} text-white`}
         texto={'Eliminar'}
         tipo={'button'}
-        className='border border-color-violeta flex items-center justify-center max-w-fit justify-self-center rounded-lg px-4 py-2  hover:opacity-70 transition-opacity bg-red-600 text-white'
         onClickFunction={handleEliminarReserva}
       />
     </>

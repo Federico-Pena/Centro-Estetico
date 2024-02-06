@@ -29,7 +29,6 @@ export const migraDatosReservas = async (req, res) => {
     }
     return crearRespuestaJSON(response)
   } catch (error) {
-    console.log(error.message)
     const response = {
       error: 'Ocurrió un error inesperado',
       status: 500,

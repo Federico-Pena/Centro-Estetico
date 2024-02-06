@@ -32,7 +32,6 @@ export const agregarPaciente = async (req, res) => {
       servicio,
       observaciones
     } = req.body
-    console.log(req.body)
     let servicioId
     let tratamientoId
     if (!nombre) {
@@ -153,7 +152,6 @@ export const agregarPaciente = async (req, res) => {
     }
     return crearRespuestaJSON(response)
   } catch (error) {
-    console.log(error.message)
     if (error.code === 11000) {
       const response = {
         error: 'El nombre del paciente ya está en uso',

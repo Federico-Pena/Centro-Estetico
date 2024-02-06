@@ -1,9 +1,8 @@
-import { useContext } from 'react'
 import { useEstadisticas } from '../../../Hooks/Api/Estadisticas/useEstadisticas.jsx'
 import useForm from '../../../Hooks/Formulario/useForm.jsx'
 import { Button } from '../../Botones/Button.jsx'
 import { LabelInput } from '../../Formularios/LabelInput.jsx'
-import { LoaderContext } from '../../../Context/Loader/LoaderContext.jsx'
+import { useLoaderContext } from '../../../Hooks/Context/useLoaderContext.jsx'
 const initialValues = {
   year: ''
 }
@@ -15,7 +14,7 @@ const validations = {
   }
 }
 export const FormAno = ({ setAno }) => {
-  const { loading } = useContext(LoaderContext)
+  const { loading } = useLoaderContext()
   const { obtenerReservasDelAno } = useEstadisticas()
   const { errors, values, handleChange, validateForm, resetForm } = useForm(
     initialValues,
@@ -46,13 +45,12 @@ export const FormAno = ({ setAno }) => {
         minLength={4}
       />
       <Button
+        bgColor={true}
+        className={'mt-4  w-full'}
         disabled={loading}
         tipo={'submit'}
         texto={'Buscar'}
         onClickFunction={getEstadisticasReservas}
-        className={
-          'font-bold mt-4 text-slate-50 border-color-violeta bg-color-violeta border-[1px] rounded-md grid place-content-center py-2 px-4 transition-colors hover:text-color-violeta hover:bg-slate-50 '
-        }
       />
     </form>
   )

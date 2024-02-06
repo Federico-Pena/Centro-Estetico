@@ -1,8 +1,7 @@
-import { useContext } from 'react'
-import { LoaderContext } from '../../Context/Loader/LoaderContext.jsx'
+import { useLoaderContext } from '../../Hooks/Context/useLoaderContext.jsx'
 
 export const LoaderApi = () => {
-  const { loading } = useContext(LoaderContext)
+  const { loading } = useLoaderContext()
 
   return (
     loading && (

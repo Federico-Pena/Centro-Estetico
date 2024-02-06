@@ -158,7 +158,6 @@ export const editarPaciente = async (req, res) => {
     }
     return crearRespuestaJSON(response)
   } catch (error) {
-    console.log(error.message)
     if (error) {
       const response = {
         error: 'Error al actualizar al paciente',
