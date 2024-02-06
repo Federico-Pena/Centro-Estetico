@@ -28,14 +28,6 @@ export const Reserva = ({ datos, contenedorRef }) => {
     const nuevaReserva = await cambiarEstadoReserva(reserva)
     setReserva(nuevaReserva)
   }
-
-  const estadoClases = {
-    Pago: 'bg-color-paga text-white',
-    Cancelada: 'bg-color-cancelada text-white',
-    Pendiente: 'bg-color-pendiente text-white'
-  }
-  const claseEstado = estadoClases[reserva.estado] || ''
-
   return (
     <>
       {modal && (
@@ -53,9 +45,11 @@ export const Reserva = ({ datos, contenedorRef }) => {
       <article
         className={`${
           isVisible ? 'animate-toastIn' : ''
-        } border border-slate-500 grid grid-rows-[40px_1fr_130px] rounded-lg max-w-96 w-full m-auto overflow-auto snap-center min-w-80 ${claseEstado}`}
+        } border border-slate-500 grid grid-rows-[50px_1fr_auto] rounded-lg max-w-96 w-full mx-auto overflow-auto snap-center min-w-80 ${
+          reserva.estado
+        }`}
         ref={reservaRef}>
-        <h3 className='font-betonga font-bold text-xl capitalize grid place-content-center tracking-wider'>
+        <h3 className='font-betonga font-bold text-xl text-white capitalize grid place-content-center tracking-wider'>
           {reserva.paciente.nombre}
         </h3>
         <section className={`grid border-t border-b border-slate-50`}>

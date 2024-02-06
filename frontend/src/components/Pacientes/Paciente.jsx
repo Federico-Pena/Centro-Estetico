@@ -19,7 +19,7 @@ export const Paciente = ({ cerrarPaciente }) => {
 
   return (
     <article
-      className='grid max-w-xl m-auto w-full border border-slate-500 rounded-lg'
+      className='grid max-w-xl m-auto w-full border border-black bg-color-logo rounded-lg'
       ref={pacienteRef}>
       <PacienteHeader cerrarPaciente={cerrarPaciente} imprimirRef={imprimirRef} />
       {paciente.foto && (

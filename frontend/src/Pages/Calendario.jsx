@@ -73,7 +73,7 @@ function Calendario() {
 
       <main className='grid py-8 px-2 w-full '>
         <ContadorReservas setSeleccionadas={setSeleccionadas} />
-        <article className='max-w-4xl grid  mx-auto border rounded-lg border-black'>
+        <article className='max-w-4xl grid justify-self-center border rounded-lg border-black w-full'>
           <HeaderCalendario handleSeleccionarDia={seleccionarDia} />
           <Botones
             loading={loading}

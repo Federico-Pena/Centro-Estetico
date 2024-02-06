@@ -20,7 +20,7 @@ export const ReservaBotones = ({
     navigate(RUTAS.admin.editarReserva, { state: { reserva: reserva } })
   }
   const handleCerrarReservas = () => {
-    contenedorRef.current.classList.replace('animate-growIn', 'animate-growOut')
+    contenedorRef.current.classList.replace('animate-fadeIn', 'animate-growOut')
     setTimeout(() => {
       dispatch({ type: ACTIONS_RESERVAS.SET_RESERVAS_SELECCIONADAS, payload: [] })
     }, 500)

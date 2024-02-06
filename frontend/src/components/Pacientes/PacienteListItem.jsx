@@ -11,7 +11,7 @@ export const PacienteListItem = ({ paciente, handleDelete, handleEdit, handleVer
     <article
       className={`${
         isVisible ? 'animate-toastIn' : ''
-      } grid p-4 gap-4 border border-black rounded max-w-md w-full mx-auto bg-color-logo`}
+      } grid p-4 gap-4 border border-black rounded-xl max-w-md w-full mx-auto bg-color-logo`}
       ref={pacienteRef}>
       <header className='grid justify-items-center gap-4 border-b border-black pb-4'>
         {paciente.foto && (
@@ -26,15 +26,17 @@ export const PacienteListItem = ({ paciente, handleDelete, handleEdit, handleVer
       <h2 className='grid gap-2 text-xl text-color-violeta text-center font-betonga font-bold'>
         Reservas <span>{paciente.totalReservas || 0}</span>{' '}
       </h2>
-      <ul className='grid gap-2 grid-cols-3 border-b border-black pb-4 '>
-        <li className={`${ESTADOS_RESERVAS.pago} text-white text-center p-2 rounded-xl`}>
-          Pagas: {paciente.reservasPagas || 0}
+      <ul className='grid gap-2 grid-cols-3 border-b border-black pb-4 font-bold'>
+        <li className={`${ESTADOS_RESERVAS.pago} grid gap-2 text-white text-center p-2 rounded-xl`}>
+          Pagas <span>{paciente.reservasPagas || 0}</span>
         </li>
-        <li className={`${ESTADOS_RESERVAS.pendiente} text-white text-center p-2 rounded-xl`}>
-          Pendientes: {paciente.reservasPendientes || 0}
+        <li
+          className={`${ESTADOS_RESERVAS.pendiente} grid gap-2 text-white text-center p-2 rounded-xl`}>
+          Pendientes <span>{paciente.reservasPendientes || 0}</span>
         </li>
-        <li className={`${ESTADOS_RESERVAS.cancelada} text-white text-center p-2 rounded-xl`}>
-          Canceladas: {paciente.reservasCanceladas || 0}
+        <li
+          className={`${ESTADOS_RESERVAS.cancelada} grid gap-2 text-white text-center p-2 rounded-xl`}>
+          Canceladas <span>{paciente.reservasCanceladas || 0}</span>
         </li>
       </ul>
       {(paciente.servicio?.nombre || paciente.tratamiento?.descripcion) && (
