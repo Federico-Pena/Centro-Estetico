@@ -3,8 +3,5 @@ import { EstadisticasContext } from '../../Context/Estadisticas/EstadisticasCont
 
 export const useEstadisticasContext = () => {
   const context = useContext(EstadisticasContext)
-  if (context === undefined) {
-    throw new Error('usePacientes must be used within a PacientesProvider')
-  }
   return context
 }

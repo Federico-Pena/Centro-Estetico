@@ -2,11 +2,13 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import './index.css'
 import App from './App'
+import AdminProvider from './Context/AdminProvider.jsx'
 import { Auth0Provider } from '@auth0/auth0-react'
 import { UserProvider } from './Context/User/userContext'
 const root = ReactDOM.createRoot(document.getElementById('root'))
 const clientIdAuth0 = import.meta.env.VITE_AUTH0_CLIENT_ID
 const domainAuth0 = import.meta.env.VITE_AUTH0_DOMAIN
+
 root.render(
   <React.StrictMode>
     <Auth0Provider
@@ -17,7 +19,9 @@ root.render(
         audience: import.meta.env.VITE_AUTH0_AUDIENCE_API
       }}>
       <UserProvider>
-        <App />
+        <AdminProvider>
+          <App />
+        </AdminProvider>
       </UserProvider>
     </Auth0Provider>
   </React.StrictMode>

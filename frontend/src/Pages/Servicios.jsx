@@ -34,7 +34,9 @@ export default function Servicios() {
         const { error, datos, status } = res
         if (status === 200) {
           setServicios(datos)
+          setLoading(false)
         } else {
+          setLoading(false)
           if (error) {
             setMensaje(error)
           } else {
@@ -44,9 +46,8 @@ export default function Servicios() {
       }
       getServicios()
     } catch (error) {
-      setMensaje('Error al obtener los servicios')
-    } finally {
       setLoading(false)
+      setMensaje('Error al obtener los servicios')
     }
   }, [setMensaje, accessToken, setLoading])
 
@@ -62,6 +63,7 @@ export default function Servicios() {
   }
   return (
     <main className='animate-fadeIn grid py-8 px-4 gap-8 ' ref={serviciosRef}>
+      <h1 className='font-betonga text-color-violeta font-bold text-3xl text-center'>Servicios</h1>
       <Carrusel />
       {openForm && (
         <FormularioReserva
@@ -77,7 +79,7 @@ export default function Servicios() {
           reservar={reservar}
         />
       )}
-      <section className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 max-w-5xl mx-auto gap-8'>
+      <section className='grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 max-w-5xl mx-auto'>
         {servicios instanceof Array &&
           !openForm &&
           !openInfo &&

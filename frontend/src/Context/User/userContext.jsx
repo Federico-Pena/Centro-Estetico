@@ -1,11 +1,12 @@
 import { useAuth0 } from '@auth0/auth0-react'
 import { createContext, useCallback, useEffect, useState } from 'react'
+import { Loader } from '../../Components/Loader/Loader.jsx'
 
 export const UserContext = createContext({})
 
 export const UserProvider = ({ children }) => {
   const [userAccess, setSetUserAccess] = useState({})
-  const { user, getAccessTokenSilently, isAuthenticated } = useAuth0()
+  const { user, getAccessTokenSilently, isAuthenticated, isLoading } = useAuth0()
 
   const getAccessToken = useCallback(async () => {
     try {
@@ -28,5 +29,9 @@ export const UserProvider = ({ children }) => {
     user && getAccessToken()
   }, [user, getAccessToken])
 
-  return <UserContext.Provider value={userAccess}>{children}</UserContext.Provider>
+  return (
+    <UserContext.Provider value={userAccess}>
+      {isLoading ? <Loader /> : children}
+    </UserContext.Provider>
+  )
 }
