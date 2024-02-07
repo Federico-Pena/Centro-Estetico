@@ -4,7 +4,7 @@ import { useObserver } from '../../Hooks/useObserver.jsx'
 import { useLocation } from 'react-router-dom'
 import { Button } from '../Botones/Button.jsx'
 
-export const CardServicioContent = ({ setOpenForm, setOpenInfo, servicio, imgSrc }) => {
+export const CardServicioContent = ({ reservar, abrirMasInfo, servicio, imgSrc }) => {
   const location = useLocation()
   const rutaServicios = location.pathname === RUTAS.user.servicios
   const imgRef = useRef()
@@ -13,12 +13,10 @@ export const CardServicioContent = ({ setOpenForm, setOpenInfo, servicio, imgSrc
     <article
       className={`${
         isVisible ? 'animate-fadeIn' : ''
-      }  mx-auto flex flex-col border border-black rounded-lg overflow-hidden gap-8 max-w-md`}
+      }  mx-auto gap-8 max-w-md flex flex-col w-full border border-black rounded-lg overflow-hidden `}
       key={servicio._id}
       ref={imgRef}>
-      {isVisible ? (
-        <img className='w-full h-80 object-cover' src={imgSrc} alt={servicio.nombre} />
-      ) : null}
+      {isVisible && <img className='w-full h-80 object-cover' src={imgSrc} alt={servicio.nombre} />}
       <h1 className='font-betonga font-bold text-color-violeta capitalize text-center underline underline-offset-4 text-2xl px-4'>
         {servicio.nombre}
       </h1>
@@ -40,14 +38,14 @@ export const CardServicioContent = ({ setOpenForm, setOpenInfo, servicio, imgSrc
           className={'w-full'}
           tipo={'button'}
           texto={'Ver mas'}
-          onClickFunction={() => setOpenInfo(true)}
+          onClickFunction={() => rutaServicios && abrirMasInfo()}
         />
         <Button
           bgColor={true}
           className={'w-full'}
           tipo={'button'}
           texto={'Reservar'}
-          onClickFunction={() => rutaServicios && setOpenForm(true)}
+          onClickFunction={() => rutaServicios && reservar()}
         />
       </footer>
     </article>

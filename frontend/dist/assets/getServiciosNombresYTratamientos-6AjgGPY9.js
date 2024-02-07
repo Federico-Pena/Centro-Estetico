@@ -1,1 +1,0 @@
-import{a as u,f as m}from"./useUserContext-o9xrNTqb.js";const h=async(t,r)=>{try{const e=u.servicios.getServiciosNombresYTratamientos,s={method:"GET",headers:{authorization:`Bearer ${t}`}},a=await m(e,s),{error:o,mensaje:i,datos:c,status:n}=a;if(n===200)return r(i),c;if(o)return r(o),!1}catch{return r("Ocurrió un error"),!1}};export{h as g};

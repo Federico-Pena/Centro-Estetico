@@ -84,13 +84,13 @@ const FormTratamiento = () => {
     return servicios.map((servicio) => servicio.nombre)
   }
   return (
-    <section className='grid gap-8 p-8'>
+    <section className='grid grid-rows-[auto_1fr]  gap-4 px-4 py-8'>
       <h1 className='text-2xl text-color-violeta font-betonga text-center font-bold'>
         {edicion ? 'Editar' : 'Crear'} Tratamiento
       </h1>
 
       <form
-        className='animate-toastIn bg-color-logo rounded-lg grid p-4 gap-4 max-w-md w-full m-auto border border-black'
+        className='animate-fadeIn bg-color-logo rounded-lg grid p-4 gap-4 max-w-md w-full self-start justify-self-center border border-black'
         onSubmit={handleSubmitTratamiento}>
         {servicios.length > 0 && (
           <Dropdown

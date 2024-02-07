@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { Button } from '../../Botones/Button.jsx'
 import { TextAreaLabel } from '../TextAreaLabel.jsx'
-import { Delete } from '../../Icons/Icons.jsx'
 
 export const DialogForm = ({ handleChange, values, closeDialog }) => {
   const [dialogInput, setDialogInput] = useState('')
@@ -42,10 +41,8 @@ export const DialogForm = ({ handleChange, values, closeDialog }) => {
               className='grid gap-4 border border-slate-500 rounded-lg p-4 items-center grid-cols-[auto_1fr_auto]'>
               <li>{i + 1}</li>
               <li>{value}</li>
-              <li
-                className='[&>svg]:text-xl [&>svg]:cursor-pointer hover:[&>svg]:scale-110 hover:[&>svg]:text-color-violeta [&>svg]:transition'
-                onClick={() => handleEliminarBeneficio(value)}>
-                <Delete />
+              <li>
+                <Button texto={'Borrar'} onClickFunction={() => handleEliminarBeneficio(value)} />
               </li>
             </ul>
           ))}

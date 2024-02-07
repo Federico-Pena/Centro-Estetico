@@ -36,10 +36,12 @@ export const HorasFormAdmin = ({
         {horasDisponibles.map((hor) => {
           return (
             <li
-              className={`p-2 rounded-xl w-full grid place-content-center shadow-md max-w-20 transition-[max-width] ${formarClases(
+              className={`${
+                hor.estado
+              } p-2 rounded-xl w-full grid place-content-center shadow-md max-w-20 transition-[max-width] ${formarClases(
                 hor,
                 values
-              )}`}
+              )} `}
               key={hor.id}
               onClick={handleSetHora}>
               {hor.id.split('T')[1]}
@@ -75,19 +77,21 @@ export const HorasFormAdmin = ({
 
 const formarClases = (hor, values) => {
   const esProximaHoraNoDisponible = hor.proximaHoraNoDisponible
-  const esHoraActual = hor.id.split('T')[1] === values.hora
   const horaEstado = hor.estado
+  const esHoraActual = hor.id.split('T')[1] === values.hora
+  const horaCancelada = horaEstado && horaEstado === ESTADOS_RESERVAS.cancelada
+
+  const horaNoCancelada =
+    horaEstado &&
+    (horaEstado === ESTADOS_RESERVAS.pago || horaEstado === ESTADOS_RESERVAS.pendiente)
+
   const clases = [
-    esProximaHoraNoDisponible && 'opacity-50 cursor-not-allowed',
-    (horaEstado === ESTADOS_RESERVAS.pago || horaEstado === ESTADOS_RESERVAS.pendiente) &&
-      `${horaEstado} cursor-not-allowed text-white`,
-    horaEstado === ESTADOS_RESERVAS.cancelada && `${horaEstado} text-white`,
+    !esProximaHoraNoDisponible && !esHoraActual && !horaNoCancelada && 'bg-slate-50 cursor-pointer',
+    horaNoCancelada && `cursor-not-allowed text-white`,
+    horaCancelada && 'text-white',
+    esProximaHoraNoDisponible && !horaNoCancelada && 'opacity-50 cursor-not-allowed',
     esHoraActual &&
-      'bg-color-violeta col-span-full row-start-2 text-white max-w-xl font-bold opacity-100 cursor-default',
-    !esProximaHoraNoDisponible &&
-      !esHoraActual &&
-      (horaEstado !== ESTADOS_RESERVAS.pago || horaEstado !== ESTADOS_RESERVAS.pendiente) &&
-      'bg-slate-50 cursor-pointer'
+      'bg-color-violeta col-span-full row-start-2 text-white max-w-xl font-bold opacity-100 cursor-default'
   ]
   return clases.filter(Boolean).join(' ')
 }

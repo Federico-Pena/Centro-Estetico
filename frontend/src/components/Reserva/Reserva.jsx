@@ -8,8 +8,12 @@ import { ReservaBotones } from './ReservaBotones.jsx'
 import { formatHoraUser } from '../../Helpers/formatHoraUser.js'
 import { useReserva } from '../../Hooks/Api/Reservas/useReserva.jsx'
 import { useLoaderContext } from '../../Hooks/Context/useLoaderContext.jsx'
+import { useLocation } from 'react-router-dom'
+import { RUTAS } from '../../constantes.js'
 
 export const Reserva = ({ datos, contenedorRef }) => {
+  const location = useLocation()
+  const pageCalendario = location.pathname === RUTAS.admin.calendario
   const { loading } = useLoaderContext()
   const { borrarReserva, cambiarEstadoReserva } = useReserva()
   const [reserva, setReserva] = useState(datos)
@@ -44,7 +48,11 @@ export const Reserva = ({ datos, contenedorRef }) => {
       )}
       <article
         className={`${
-          isVisible ? 'animate-toastIn' : ''
+          isVisible && !pageCalendario
+            ? 'animate-fadeIn'
+            : isVisible && pageCalendario
+            ? 'animate-growIn'
+            : ''
         } border border-slate-500 grid grid-rows-[50px_1fr_auto] rounded-lg max-w-96 w-full mx-auto overflow-auto snap-center min-w-80 ${
           reserva.estado
         }`}

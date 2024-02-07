@@ -5,7 +5,7 @@ const Contacto = () => {
     window.scrollTo(0, 0)
   }, [])
   return (
-    <main className='grid py-8 px-4 gap-8 grid-cols-1'>
+    <main className='animate-fadeIn grid py-8 px-4 gap-8 grid-cols-1'>
       <h1 className='text-color-violeta font-betonga font-bold text-3xl text-center '>Contacto</h1>
       <FormularioContacto />
       <iframe

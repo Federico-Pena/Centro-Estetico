@@ -4,7 +4,6 @@ import { ACTIONS_TRATAMIENTOS } from '../../context/Tratamiento/tratamientoReduc
 import { useTratamientos } from '../../Hooks/Api/Tratamiento/useTratamientos.jsx'
 import { TratamientoListItem } from './TratamientoListItem.jsx'
 import { Button } from '../Botones/Button.jsx'
-import { Add } from '../Icons/Icons.jsx'
 import { useNavigate } from 'react-router-dom'
 import { RUTAS } from '../../constantes.js'
 import { useTratamientoContext } from '../../Hooks/Context/useTratamientoContext.jsx'
@@ -39,7 +38,6 @@ export const TratamientosList = () => {
           onClickFunction={() => navigate(RUTAS.admin.agregarTratamiento)}
           tipo={'button'}
           texto={'Nuevo'}
-          icono={<Add />}
           className={'col-span-full grid grid-flow-col gap-2 place-content-center'}
         />
         {tratamientos.length > 0

@@ -79,7 +79,7 @@ export const ComponentBackup = () => {
     }
   }
   return (
-    <section className='grid p-2 gap-2 animate-toastIn max-w-xl mx-auto w-full'>
+    <section className='grid p-2 gap-2 animate-fadeIn max-w-xl mx-auto w-full'>
       <Button className='w-full' tipo='button' texto={'Todo'} onClickFunction={backupTodo} />
       <Button
         className='w-full'

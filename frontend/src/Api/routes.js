@@ -43,6 +43,7 @@ export const apiRoutes = {
     getPacientesPaginados: `${BASE_URL}admin/pacientes/`,
     getPacientesNombres: `${BASE_URL}admin/pacientes/nombres`,
     getPacienteId: `${BASE_URL}admin/paciente/`,
+    getPacienteNombre: `${BASE_URL}admin/pacienteNombre/`,
     getPacientesMigrarDatos: `${BASE_URL}admin/pacientes`,
     deletePaciente: `${BASE_URL}admin/pacientes/borrar/`,
     postPaciente: `${BASE_URL}admin/pacientes/nuevo`,

@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { usePaciente } from '../../Hooks/Api/Pacientes/usePaciente.jsx'
-import { Add } from '../Icons/Icons.jsx'
 import { ConfirmationModal } from '../ConfirmationModal/ConfirmationModal.jsx'
 import { ACTIONS_PACIENTES } from '../../Context/Pacientes/reducerPaciente.js'
 import Pagination from '../Pagination/Pagination.jsx'
@@ -11,6 +10,8 @@ import { useNavigate } from 'react-router-dom'
 import { RUTAS } from '../../constantes.js'
 import { usePacienteContext } from '../../Hooks/Context/usePacienteContext.jsx'
 import { useLoaderContext } from '../../Hooks/Context/useLoaderContext.jsx'
+import { Dropdown } from '../Dropdown/Dropdown.jsx'
+import { useFormReserva } from '../Formularios/Reserva/useFormReserva.jsx'
 function primerYUltimaLetra(array) {
   const primera = array[0].nombre.charAt(0)
   const ultima = array[array.length - 1].nombre.charAt(0)
@@ -20,7 +21,9 @@ export const PacientesList = () => {
   const navigate = useNavigate()
   const { pacientes, paciente, dispatch } = usePacienteContext()
   const { loading } = useLoaderContext()
-  const { totalPages, setPagina, borrarPaciente, obtenerPacientePorId } = usePaciente()
+  const { pacientesNombres } = useFormReserva()
+  const { totalPages, setPagina, borrarPaciente, obtenerPacientePorId, obtenerPacientePorNombre } =
+    usePaciente()
   const [modal, setModal] = useState(false)
   const [verPaciente, setVerPaciente] = useState(false)
 
@@ -28,13 +31,23 @@ export const PacientesList = () => {
     dispatch({ type: ACTIONS_PACIENTES.SET_PACIENTE, payload: paciente })
     setModal(true)
   }
-  const handleEdit = async (paciente) => {
-    const res = await obtenerPacientePorId(paciente._id)
+  const handleEdit = async (id) => {
+    const res = await obtenerPacientePorId(id)
     navigate(RUTAS.admin.editarPaciente, { state: { paciente: res } })
   }
-  const handleVerPaciente = async (paciente) => {
-    await obtenerPacientePorId(paciente._id)
+  const handleVerPaciente = async (id) => {
+    await obtenerPacientePorId(id)
     setVerPaciente(true)
+  }
+  const handleVerPacienteDropdown = async (e) => {
+    const nombre = e.target.textContent
+    if (nombre) {
+      await obtenerPacientePorNombre(nombre)
+      setVerPaciente(true)
+    }
+  }
+  const getNombresList = (listPaciente) => {
+    return listPaciente.map((paciente) => paciente.nombre)
   }
   return verPaciente ? (
     <Paciente
@@ -45,7 +58,7 @@ export const PacientesList = () => {
     />
   ) : (
     pacientes.length > 0 && (
-      <article className='grid grid-rows-[auto_auto_1fr] gap-4 pt-8 max-w-5xl mx-auto w-full border-t border-slate-500'>
+      <article className='grid grid-rows-[auto_1fr] gap-4 pt-8 max-w-5xl mx-auto w-full border-t border-slate-500'>
         {modal && (
           <ConfirmationModal
             mensaje={`Desea borrar el paciente ${paciente.nombre.toUpperCase()}?`}
@@ -69,8 +82,13 @@ export const PacientesList = () => {
             onClickFunction={() => navigate(RUTAS.admin.agregarPaciente)}
             tipo={'button'}
             texto={'Nuevo'}
-            icono={<Add />}
             className={'grid grid-flow-col gap-2 place-content-center col-span-full'}
+          />
+          <Dropdown
+            className={'col-span-full max-w-96 m-auto'}
+            name={'Pacientes existentes'}
+            onClickFunction={handleVerPacienteDropdown}
+            list={getNombresList(pacientesNombres)}
           />
           <h2 className='text-center font-betonga font-bold text-color-violeta text-xl col-span-full mb-4'>
             {primerYUltimaLetra(pacientes)}
@@ -78,9 +96,9 @@ export const PacientesList = () => {
           {pacientes.map((pac) => (
             <PacienteListItem
               key={pac._id}
-              handleDelete={handleDelete}
-              handleEdit={handleEdit}
-              handleVerPaciente={handleVerPaciente}
+              handleDelete={() => handleDelete(pac)}
+              handleEdit={() => handleEdit(pac._id)}
+              handleVerPaciente={() => handleVerPaciente(pac._id)}
               paciente={pac}
             />
           ))}

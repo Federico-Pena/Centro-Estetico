@@ -56,7 +56,7 @@ const FormularioReservaAdmin = () => {
       if (res) {
         cerrarForm()
       } else {
-        setMensaje(`Ocurrió un error al guardar el paciente.`)
+        setMensaje(`Ocurrió un guardar la reserva.`)
       }
     } else {
       setMensaje(`Faltan campos requeridos.`)
@@ -86,7 +86,7 @@ const FormularioReservaAdmin = () => {
         {edicion ? 'Editar' : 'Crear'} Reserva
       </h1>
       <form
-        className='animate-toastIn bg-color-logo rounded-lg p-4 max-w-xl m-auto w-full grid gap-4 border border-black'
+        className='animate-fadeIn bg-color-logo rounded-lg p-4 max-w-xl m-auto w-full grid gap-4 border border-black'
         onSubmit={handleSubmit}>
         {!edicion && (
           <Dropdown

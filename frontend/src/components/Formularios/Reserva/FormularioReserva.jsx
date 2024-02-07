@@ -41,7 +41,7 @@ export const FormularioReserva = ({ observaciones, cerrarFormulario }) => {
     }
   }
   const animationClose = () => {
-    sectionFormRef.current.classList.add('animate-toastOut')
+    sectionFormRef.current.classList.add('animate-fadeOut')
   }
   const handleSetHora = (value) => {
     const hora = { target: { name: 'hora', value: value } }
@@ -51,7 +51,7 @@ export const FormularioReserva = ({ observaciones, cerrarFormulario }) => {
     <section
       id='sectionForm'
       ref={sectionFormRef}
-      className='fixed  inset-0 z-50 grid grid-rows-[50px_1fr] p-4 py-8  overflow-auto bg-gradient-to-b from-slate-50 to-color-verde-blanco'
+      className='grid grid-rows-[50px_1fr] p-4 py-8'
       onAnimationEnd={(e) => {
         if (e.target.id === 'sectionForm' && e.animationName !== 'fadeIn') {
           cerrarFormulario()

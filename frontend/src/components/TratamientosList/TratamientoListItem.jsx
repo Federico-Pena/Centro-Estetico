@@ -1,6 +1,7 @@
 import { useRef } from 'react'
-import { Checkbox, CheckboxChecked, Delete, Edit } from '../Icons/Icons.jsx'
+import { Checkbox, CheckboxChecked } from '../Icons/Icons.jsx'
 import { useObserver } from '../../Hooks/useObserver.jsx'
+import { Button } from '../Botones/Button.jsx'
 
 export const TratamientoListItem = ({ tratamiento, handleEdit, handleDelete }) => {
   const tratamientoRef = useRef()
@@ -8,7 +9,7 @@ export const TratamientoListItem = ({ tratamiento, handleEdit, handleDelete }) =
   return (
     <ul
       className={`${
-        isVisible ? 'animate-toastIn' : ''
+        isVisible ? 'animate-fadeIn' : ''
       } grid border border-black rounded-lg bg-color-logo`}
       ref={tratamientoRef}>
       <li className='p-4 border-b border-black uppercase text-center font-betonga font-bold text-xl text-color-violeta'>
@@ -39,18 +40,9 @@ export const TratamientoListItem = ({ tratamiento, handleEdit, handleDelete }) =
           En Promoción <Checkbox />
         </li>
       )}
-      <li className='grid grid-flow-col justify-around p-4 [&>svg]:text-2xl [&>svg]:text-color-violeta hover:[&>svg]:scale-110 [&>svg]:cursor-pointer [&>svg]:transition-transform'>
-        <Edit
-          onClickFunction={() => {
-            handleEdit(tratamiento)
-          }}
-        />
-
-        <Delete
-          onClickFunction={() => {
-            handleDelete(tratamiento)
-          }}
-        />
+      <li className='grid grid-flow-col justify-around p-4'>
+        <Button onClickFunction={() => handleEdit(tratamiento)} texto={'Editar'} />
+        <Button onClickFunction={() => handleDelete(tratamiento)} texto={'Borrar'} />
       </li>
     </ul>
   )

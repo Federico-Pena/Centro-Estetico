@@ -10,6 +10,7 @@ import { usePacienteContext } from '../../Context/usePacienteContext.jsx'
 import { useLoaderContext } from '../../Context/useLoaderContext.jsx'
 import { useToastContext } from '../../Context/useToastContext.jsx'
 import { useUserContext } from '../../Context/useUserContext.jsx'
+import { getPacientePorNombre } from '../helpers/Pacientes/getPacientePorNombre.js'
 
 export const usePaciente = () => {
   const { setLoading } = useLoaderContext()
@@ -180,6 +181,27 @@ export const usePaciente = () => {
       setLoading(false)
     }
   }
+  const obtenerPacientePorNombre = async (nombre) => {
+    try {
+      setLoading(true)
+      const res = await getPacientePorNombre(accessToken, nombre)
+      const { status, error, datos } = res
+      if (status === 200) {
+        dispatch({ type: ACTIONS_PACIENTES.SET_PACIENTE, payload: datos })
+        return datos
+      } else {
+        if (error) {
+          setMensaje(error)
+        } else {
+          setMensaje('Ocurrió un error el obtener los datos del paciente')
+        }
+      }
+    } catch (error) {
+      setMensaje('Ocurrió un error el obtener los datos del paciente')
+    } finally {
+      setLoading(false)
+    }
+  }
   return {
     borrarPaciente,
     pagina,
@@ -187,6 +209,7 @@ export const usePaciente = () => {
     setPagina,
     agregarPaciente,
     editarPaciente,
-    obtenerPacientePorId
+    obtenerPacientePorId,
+    obtenerPacientePorNombre
   }
 }

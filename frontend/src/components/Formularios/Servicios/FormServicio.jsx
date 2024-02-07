@@ -14,6 +14,7 @@ import { RUTAS } from '../../../constantes.js'
 import { useServiciosContext } from '../../../Hooks/Context/useServiciosContext.jsx'
 import { ACTIONS_SERVICIOS } from '../../../Context/Servicios/serviciosReducer.js'
 import { useToastContext } from '../../../Hooks/Context/useToastContext.jsx'
+import { OpenInfo } from '../../CardServicio/OpenInfo.jsx'
 
 const FormServicio = () => {
   const location = useLocation()
@@ -26,6 +27,7 @@ const FormServicio = () => {
   const [masInfo, setMasInfo] = useState(false)
   const [previewServicio, setPreviewServicio] = useState(false)
   const [servicio] = useState(stateServicio || initialFormData)
+  const [openInfo, setOpenInfo] = useState(false)
   const formServicioContainerRef = useRef()
   const { editarServicio, agregarServicio } = useServicio()
   const { handleChange, values, validateForm, errors, resetForm } = useForm(
@@ -63,8 +65,9 @@ const FormServicio = () => {
       setMensaje('Faltan campos requeridos')
     }
   }
+
   return (
-    <section className={`grid gap-4 px-4 py-8`} ref={formServicioContainerRef}>
+    <section className={`grid grid-rows-[auto_1fr] gap-4 px-4 py-8`} ref={formServicioContainerRef}>
       {!previewServicio && (
         <h1 className='uppercase w-full text-center text-color-violeta font-bold font-betonga text-2xl tracking-widest'>
           {edicion ? 'Editar servicio' : 'Agregar servicio'}
@@ -78,10 +81,11 @@ const FormServicio = () => {
           tipo={'button'}
         />
       )}
+
       {!previewServicio && (
         <form
           onSubmit={handleSubmit}
-          className='animate-fadeIn bg-color-logo grid gap-4 px-4 py-8 rounded-lg max-w-lg m-auto w-full border border-black'
+          className='animate-fadeIn bg-color-logo grid gap-4 px-4 py-8 rounded-lg max-w-lg self-start justify-self-center w-full border border-black'
           title='Formulario agregar servicio'>
           <HeaderFormServicio masInfo={masInfo} setMasInfo={setMasInfo} />
           <PrimerParte
@@ -115,7 +119,18 @@ const FormServicio = () => {
       {isDialogOpen && (
         <DialogForm closeDialog={closeDialog} handleChange={handleChange} values={values} />
       )}
-      {previewServicio && <CardServicio servicio={values} className={'m-auto'} />}
+      {previewServicio && (
+        <section className='grid gap-8'>
+          <h2 className='underline underline-offset-4 w-full text-center text-color-violeta font-bold font-betonga text-2xl tracking-widest'>
+            Primera parte
+          </h2>
+          <CardServicio servicio={values} />
+          <h2 className='underline underline-offset-4 w-full text-center text-color-violeta font-bold font-betonga text-2xl tracking-widest'>
+            Ver mas
+          </h2>
+          <OpenInfo imgSrc={values.imagen?.secure_url || values.imgPreview} servicio={servicio} />
+        </section>
+      )}
     </section>
   )
 }

@@ -1,6 +1,6 @@
 import { useRef } from 'react'
 import { useObserver } from '../../Hooks/useObserver.jsx'
-import { Delete, Edit } from '../Icons/Icons.jsx'
+import { Button } from '../Botones/Button.jsx'
 
 export const ServicioListItem = ({ ser, handleBorrarServicio, handleEditarServicio }) => {
   const servicioRef = useRef()
@@ -9,8 +9,8 @@ export const ServicioListItem = ({ ser, handleBorrarServicio, handleEditarServic
     <ul
       ref={servicioRef}
       className={`${
-        isVisible ? 'animate-toastIn' : ''
-      } grid grid-cols-2 gap-2 border border-slate-300 rounded-md justify-between items-center px-4 py-4 capitalize`}>
+        isVisible ? 'animate-fadeIn' : ''
+      } grid grid-cols-2 gap-2 border border-black bg-color-logo rounded-md justify-between items-center px-4 py-4 capitalize`}>
       <li>
         {isVisible && (
           <img
@@ -20,11 +20,11 @@ export const ServicioListItem = ({ ser, handleBorrarServicio, handleEditarServic
           />
         )}
       </li>
-      <li className='text-center border-b pb-4'>{ser.nombre}</li>
+      <li className='text-center border-b border-black pb-4'>{ser.nombre}</li>
       <li>Tratamientos: {ser.tratamientos.length || 0}</li>
-      <li className='flex gap-4 items-center justify-end hover:[&>svg]:text-color-violeta [&>svg]:cursor-pointer [&>svg]:text-xl [&>svg]:text-slate-600'>
-        <Edit onClickFunction={() => handleEditarServicio(ser)} />
-        <Delete onClickFunction={() => handleBorrarServicio(ser)} />
+      <li className='flex gap-4 items-center justify-center hover:[&>svg]:text-color-violeta [&>svg]:cursor-pointer [&>svg]:text-xl [&>svg]:text-slate-600'>
+        <Button onClickFunction={() => handleEditarServicio(ser)} texto={'Editar'} />
+        <Button onClickFunction={() => handleBorrarServicio(ser)} texto={'Borrar'} />
       </li>
     </ul>
   )

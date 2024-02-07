@@ -14,6 +14,7 @@ import { useReservasContext } from '../../../Hooks/Context/useReservasContext.js
 export const useFormReserva = (dia) => {
   const location = useLocation()
   const rutaAgregarReserva = location.pathname === RUTAS.admin.agregarReserva
+  const rutaAdministracion = location.pathname === RUTAS.admin.administracion
   const { accessToken } = useUserContext()
   const { setMensaje } = useToastContext()
   const { setLoading } = useLoaderContext()
@@ -43,8 +44,8 @@ export const useFormReserva = (dia) => {
         setLoading(false)
       }
     }
-    rutaAgregarReserva && obtenerNombrePacientes()
-  }, [accessToken, setMensaje, setLoading, rutaAgregarReserva])
+    ;(rutaAdministracion || rutaAgregarReserva) && obtenerNombrePacientes()
+  }, [accessToken, setMensaje, setLoading, rutaAgregarReserva, rutaAdministracion])
 
   useEffect(() => {
     const horasLibres = async () => {

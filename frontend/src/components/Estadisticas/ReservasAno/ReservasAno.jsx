@@ -3,7 +3,6 @@ import { DatosDelAño } from '../DatosDelAño.jsx'
 import { FormAno } from './FormAno.jsx'
 import { Button } from '../../Botones/Button.jsx'
 import { ACTIONS_ESTADISTICAS } from '../../../Context/Estadisticas/reducerEstadisticas.js'
-import { Change } from '../../Icons/Icons.jsx'
 import { FormMes } from './FormMes.jsx'
 import { useEstadisticasContext } from '../../../Hooks/Context/useEstadisticasContext.jsx'
 
@@ -38,7 +37,6 @@ export const ReservasAno = () => {
         className={'grid grid-flow-col gap-2 col-start-2 col-end-4 w-full'}
         texto={`Buscar por ${datosMes ? 'año' : 'mes'}`}
         onClickFunction={mesOAno}
-        icono={<Change />}
       />
       {reservas && (
         <Button

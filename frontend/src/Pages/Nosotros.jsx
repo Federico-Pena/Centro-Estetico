@@ -5,7 +5,7 @@ const Nosotros = () => {
     window.scrollTo(0, 0)
   }, [])
   return (
-    <main className='animate-fadeIn grid place-content-center gap-8 py-8'>
+    <main className='animate-fadeIn grid place-content-center gap-8 py-8 px-4'>
       <h1 className='font-betonga text-color-violeta font-bold text-3xl text-center'>
         Algo sobre nosotros
       </h1>

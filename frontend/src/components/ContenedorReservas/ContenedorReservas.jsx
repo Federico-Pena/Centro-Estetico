@@ -4,9 +4,9 @@ import { RUTAS } from '../../constantes.js'
 import { useRef } from 'react'
 
 export const ContenedorReservas = ({ reservas }) => {
-  const location = useLocation()
   const contenedorReservasRef = useRef()
 
+  const location = useLocation()
   const pageCalendario = location.pathname === RUTAS.admin.calendario
   return (
     <section

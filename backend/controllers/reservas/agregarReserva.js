@@ -27,14 +27,11 @@ export const agregarReserva = async (req, res) => {
     const reservaExistente = await Reserva.findOne({
       'horario.horaInicio': horaInicio
     })
-
     if (reservaExistente) {
-      const noCancelada = reservaExistente.find((res) => res.estado !== ESTADOS_RESERVAS.cancelada)
-      if (noCancelada) {
+      if (reservaExistente.estado !== ESTADOS_RESERVAS.cancelada) {
         const response = {
           error: 'Horario ya reservado',
-          status: 400,
-          res
+          status: 400
         }
         return crearRespuestaJSON(response)
       }

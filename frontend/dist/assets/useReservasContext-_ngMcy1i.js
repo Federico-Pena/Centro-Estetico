@@ -1,0 +1,1 @@
+import{r as s,q as o}from"./index-Hh7_R6wJ.js";const c=e=>{const t=new Date(e),r={year:"numeric",month:"short",day:"numeric",weekday:"short"},a=t.toLocaleDateString("es-UY",r);return t instanceof Date&&a!=="Invalid Date"?a:""},i=()=>{const e=s.useContext(o);if(e===void 0)throw new Error("usePacientes must be used within a PacientesProvider");return e};export{c as f,i as u};

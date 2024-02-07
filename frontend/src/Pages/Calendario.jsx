@@ -14,6 +14,7 @@ import { useUserContext } from '../Hooks/Context/useUserContext.jsx'
 import { useReservasContext } from '../Hooks/Context/useReservasContext.jsx'
 
 function Calendario() {
+  const navigate = useNavigate()
   const { setMensaje } = useToastContext()
   const { loading: cargando } = useUserContext()
   const { loading } = useLoaderContext()
@@ -24,7 +25,6 @@ function Calendario() {
   const cerrarReserva = () => {
     setSeleccionadas([])
   }
-  const navigate = useNavigate()
   const handleReservar = (e) => {
     const nombreAdmin = 'admin'
     const hora = e.target.getAttribute('data-fecha')

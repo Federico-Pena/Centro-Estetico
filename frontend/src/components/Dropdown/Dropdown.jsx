@@ -35,7 +35,7 @@ export const Dropdown = ({ name, className, list, onClickFunction, defaultValue 
         ref={btnDropdownRef}
         onClick={() => setOpen(!open)}
         className={`${
-          open ? 'bg-transparent text-color-violeta' : ' text-white bg-color-violeta'
+          open ? 'bg-transparent text-color-violeta' : '  bg-white'
         } w-full capitalize m-auto border border-color-violeta font-medium rounded-lg text-sm px-5 py-2.5 flex items-center justify-between gap-2 hover:bg-transparent hover:text-color-violeta transition-colors`}
         type='button'>
         {nombre}

@@ -78,7 +78,7 @@ export const SelectServicio = ({ handleChange, values, errors }) => {
           onClickFunction={(e) => dropdownChangeServicio('servicio', e)}
         />
 
-        {values.servicio && tratamientos.length && (
+        {values.servicio && tratamientos.length > 0 && (
           <>
             {errors && errors.tratamiento && (
               <small className='text-red-600'>* {errors.tratamiento}</small>

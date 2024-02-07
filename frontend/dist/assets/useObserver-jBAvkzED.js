@@ -1,0 +1,1 @@
+import{r as n}from"./index-Hh7_R6wJ.js";const a=e=>{const[r,c]=n.useState(!1);return n.useEffect(()=>{const{current:s}=e,i=u=>{u.forEach(o=>{o&&o.isIntersecting&&c(!0)})},t=new IntersectionObserver(i);return e.current&&t.observe(s),()=>s&&t.unobserve(s)},[r,e]),{isVisible:r}};export{a as u};

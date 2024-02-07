@@ -72,7 +72,7 @@ const FormularioPaciente = () => {
         {edicion ? 'Editar ' : 'Agregar '}Paciente
       </h1>
       <form
-        className='animate-toastIn bg-color-logo rounded-lg p-4 max-w-2xl m-auto w-full grid gap-4 border border-black'
+        className='animate-fadeIn bg-color-logo rounded-lg p-4 max-w-2xl m-auto w-full grid gap-4 border border-black'
         onSubmit={submitAgregar}>
         <HeaderForm cambiarActivo={cambiarActivo} seccion={seccion} />
         {seccion.Personales && (

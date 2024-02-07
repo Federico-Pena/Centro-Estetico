@@ -18,7 +18,7 @@ export const obtenerPacientePorId = async (req, res) => {
     if (!paciente) {
       const response = {
         error: 'No se encontró el paciente',
-        status: 400,
+        status: 404,
         res
       }
       return crearRespuestaJSON(response)
@@ -32,7 +32,7 @@ export const obtenerPacientePorId = async (req, res) => {
     }
   } catch (error) {
     const response = {
-      error: 'Error al obtener los pacientes',
+      error: 'Error al obtener el paciente',
       status: 500,
       res
     }

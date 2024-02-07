@@ -3,39 +3,39 @@ import { Footer } from './Components/Footer/Footer.jsx'
 import Navbar from './Components/Navbar/Navbar.jsx'
 import { Toast } from './Components/Toast/Toast.jsx'
 import { MensajeProvider } from './Context/Toast/ToastContext.jsx'
-import { BrowserRouter } from 'react-router-dom'
+import { BrowserRouter, useLocation } from 'react-router-dom'
 import { Loader } from './Components/Loader/Loader.jsx'
 import Rutas from './routes/Rutas.routes.jsx'
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { ArrowDown } from './Components/Icons/Icons.jsx'
 import { LoaderProvider } from './Context/Loader/LoaderContext.jsx'
-import { LoaderApi } from './Components/Loader/LoaderApi.jsx'
 import AdminProvider from './Context/AdminProvider.jsx'
 
 function App() {
   const { isLoading } = useAuth0()
+
   // const { isAllowedAccess } = useUserContext()
   const mainRef = useRef()
   const isAllowedAccess = true
+  const volverArriba = () => {
+    mainRef.current.scrollTop = 0
+  }
 
   if (isLoading) {
     return <Loader />
   }
-  const volverArriba = () => {
-    mainRef.current.scrollTop = 0
-  }
+
   return (
     <LoaderProvider>
       <MensajeProvider>
         <AdminProvider>
           <BrowserRouter>
             <div
-              className='relative grid w-screen h-screen grid-rows-[min-content_1fr_min-content] overflow-scroll scroll-smooth'
+              className='relative grid w-screen h-screen grid-rows-[min-content_1fr_min-content] overflow-scroll scroll-smooth z-0'
               ref={mainRef}>
               <Toast />
-              <LoaderApi />
               <Navbar isAllowedAccess={isAllowedAccess} />
-              <Rutas isAllowedAccess={isAllowedAccess} />
+              <Rutas isAllowedAccess={isAllowedAccess} mainRef={mainRef} />
               <button
                 title='Volver Arriba'
                 onClick={volverArriba}

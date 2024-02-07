@@ -1,14 +1,11 @@
-import { Route, Routes } from 'react-router-dom'
-import { Suspense, lazy } from 'react'
-import { useAuth0 } from '@auth0/auth0-react'
-import { Loader } from '../Components/Loader/Loader.jsx'
+import { Route, Routes, useLocation } from 'react-router-dom'
+import { Suspense, lazy, useEffect } from 'react'
 import { RUTAS } from '../constantes.js'
-
+import { LoaderApi } from '../Components/Loader/LoaderApi.jsx'
 const Home = lazy(() => import('../Pages/Home.jsx'))
 const Servicios = lazy(() => import('../Pages/Servicios.jsx'))
 const Contacto = lazy(() => import('../Pages/Contacto.jsx'))
 const Nosotros = lazy(() => import('../Pages/Nosotros.jsx'))
-// Admin components
 const Administración = lazy(() => import('../Pages/Administración.jsx'))
 const FormularioPaciente = lazy(() =>
   import('../Components/Formularios/Paciente/FormularioPaciente.jsx')
@@ -24,18 +21,19 @@ const FormTratamiento = lazy(() =>
 )
 const FormServicio = lazy(() => import('../Components/Formularios/Servicios/FormServicio.jsx'))
 
-const Rutas = ({ isAllowedAccess }) => {
-  const { isLoading } = useAuth0()
-  if (isLoading) {
-    return <Loader />
-  }
+const Rutas = ({ isAllowedAccess, mainRef }) => {
+  const location = useLocation()
+  useEffect(() => {
+    mainRef.current.scrollTop = 0
+  }, [location, mainRef])
+
   return (
     <Routes>
       <Route
         path={RUTAS.user.inicio}
         exact
         element={
-          <Suspense fallback={<Loader />}>
+          <Suspense fallback={<LoaderApi />}>
             <Home />
           </Suspense>
         }
@@ -43,7 +41,7 @@ const Rutas = ({ isAllowedAccess }) => {
       <Route
         path={RUTAS.user.servicios}
         element={
-          <Suspense fallback={<Loader />}>
+          <Suspense fallback={<LoaderApi />}>
             <Servicios />
           </Suspense>
         }
@@ -52,7 +50,7 @@ const Rutas = ({ isAllowedAccess }) => {
         path={RUTAS.user.nosotros}
         exact
         element={
-          <Suspense fallback={<Loader />}>
+          <Suspense fallback={<LoaderApi />}>
             <Nosotros />
           </Suspense>
         }
@@ -60,7 +58,7 @@ const Rutas = ({ isAllowedAccess }) => {
       <Route
         path={RUTAS.user.contacto}
         element={
-          <Suspense fallback={<Loader />}>
+          <Suspense fallback={<LoaderApi />}>
             <Contacto />
           </Suspense>
         }
@@ -70,7 +68,7 @@ const Rutas = ({ isAllowedAccess }) => {
           <Route
             path={RUTAS.admin.administracion}
             element={
-              <Suspense fallback={<Loader />}>
+              <Suspense fallback={<LoaderApi />}>
                 <Administración />
               </Suspense>
             }
@@ -78,7 +76,7 @@ const Rutas = ({ isAllowedAccess }) => {
           <Route
             path={RUTAS.admin.agregarTratamiento}
             element={
-              <Suspense fallback={<Loader />}>
+              <Suspense fallback={<LoaderApi />}>
                 <FormTratamiento />
               </Suspense>
             }
@@ -86,7 +84,7 @@ const Rutas = ({ isAllowedAccess }) => {
           <Route
             path={RUTAS.admin.editarTratamiento}
             element={
-              <Suspense fallback={<Loader />}>
+              <Suspense fallback={<LoaderApi />}>
                 <FormTratamiento />
               </Suspense>
             }
@@ -94,7 +92,7 @@ const Rutas = ({ isAllowedAccess }) => {
           <Route
             path={RUTAS.admin.agregarServicio}
             element={
-              <Suspense fallback={<Loader />}>
+              <Suspense fallback={<LoaderApi />}>
                 <FormServicio />
               </Suspense>
             }
@@ -102,7 +100,7 @@ const Rutas = ({ isAllowedAccess }) => {
           <Route
             path={RUTAS.admin.editarServicio}
             element={
-              <Suspense fallback={<Loader />}>
+              <Suspense fallback={<LoaderApi />}>
                 <FormServicio />
               </Suspense>
             }
@@ -110,7 +108,7 @@ const Rutas = ({ isAllowedAccess }) => {
           <Route
             path={RUTAS.admin.agregarPaciente}
             element={
-              <Suspense fallback={<Loader />}>
+              <Suspense fallback={<LoaderApi />}>
                 <FormularioPaciente />
               </Suspense>
             }
@@ -118,7 +116,7 @@ const Rutas = ({ isAllowedAccess }) => {
           <Route
             path={RUTAS.admin.editarPaciente}
             element={
-              <Suspense fallback={<Loader />}>
+              <Suspense fallback={<LoaderApi />}>
                 <FormularioPaciente />
               </Suspense>
             }
@@ -126,7 +124,7 @@ const Rutas = ({ isAllowedAccess }) => {
           <Route
             path={RUTAS.admin.agregarReserva}
             element={
-              <Suspense fallback={<Loader />}>
+              <Suspense fallback={<LoaderApi />}>
                 <FormularioReservaAdmin />
               </Suspense>
             }
@@ -134,7 +132,7 @@ const Rutas = ({ isAllowedAccess }) => {
           <Route
             path={RUTAS.admin.editarReserva}
             element={
-              <Suspense fallback={<Loader />}>
+              <Suspense fallback={<LoaderApi />}>
                 <FormularioReservaAdmin />
               </Suspense>
             }
@@ -142,7 +140,7 @@ const Rutas = ({ isAllowedAccess }) => {
           <Route
             path={RUTAS.admin.reservasPaciente}
             element={
-              <Suspense fallback={<Loader />}>
+              <Suspense fallback={<LoaderApi />}>
                 <ReservasPaciente />
               </Suspense>
             }
@@ -150,7 +148,7 @@ const Rutas = ({ isAllowedAccess }) => {
           <Route
             path={RUTAS.admin.calendario}
             element={
-              <Suspense fallback={<Loader />}>
+              <Suspense fallback={<LoaderApi />}>
                 <Calendario />
               </Suspense>
             }
@@ -158,7 +156,7 @@ const Rutas = ({ isAllowedAccess }) => {
           <Route
             path={RUTAS.admin.estadisticas}
             element={
-              <Suspense fallback={<Loader />}>
+              <Suspense fallback={<LoaderApi />}>
                 <Estadisticas />
               </Suspense>
             }
@@ -169,7 +167,7 @@ const Rutas = ({ isAllowedAccess }) => {
       <Route
         path='*'
         element={
-          <Suspense fallback={<Loader />}>
+          <Suspense fallback={<LoaderApi />}>
             <Home />
           </Suspense>
         }></Route>
