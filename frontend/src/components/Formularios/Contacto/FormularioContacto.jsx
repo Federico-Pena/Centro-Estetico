@@ -25,7 +25,6 @@ export const FormularioContacto = () => {
   const emailService = import.meta.env.VITE_EMAIL_JS_SERVICE
   const emailTemplate = import.meta.env.VITE_EMAIL_JS_TEMPLATE
   const emailPublicID = import.meta.env.VITE_EMAIL_JS_PUBLIC_ID
-
   const submitContacto = async (e) => {
     e.preventDefault()
     const formulario = form.current
@@ -45,7 +44,7 @@ export const FormularioContacto = () => {
   }
   return (
     <form
-      className='py-8 px-4 border border-slate-600 rounded max-w-md grid gap-4 m-auto bg-color-logo'
+      className='py-8 px-4  rounded-xl max-w-lg w-full grid gap-4 m-auto  bg-color-verde-blanco border border-gray-300 shadow-lg'
       ref={form}
       onSubmit={submitContacto}>
       <h2 className='font-betonga text-color-violeta text-2xl font-bold'>Contáctenos</h2>

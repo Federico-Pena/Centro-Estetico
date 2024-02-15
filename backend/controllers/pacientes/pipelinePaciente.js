@@ -74,7 +74,8 @@ export const pipelinePaciente = (page, porPagina) => [
             $let: {
               vars: { firstTratamiento: { $arrayElemAt: ['$tratamiento', 0] } },
               in: {
-                descripcion: '$$firstTratamiento.descripcion'
+                descripcion: '$$firstTratamiento.descripcion',
+                sesiones: '$$firstTratamiento.sesiones'
               }
             }
           },

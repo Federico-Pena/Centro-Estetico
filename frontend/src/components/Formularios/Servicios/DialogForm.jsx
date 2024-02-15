@@ -19,11 +19,9 @@ export const DialogForm = ({ handleChange, values, closeDialog }) => {
     handleChange({ target: { name: 'beneficiosLista', value: filtrados } })
   }
   return (
-    <dialog
-      open
-      className='fixed inset-0 h-screen w-full z-50 bg-gradient-to-b from-white to-color-verde-blanco grid p-4 '>
+    <dialog open className='fixed inset-0 h-screen w-full z-50 bg-whit grid p-4 '>
       <form
-        className='animate-fadeIn grid gap-4 rounded-lg w-full max-w-lg m-auto p-4 bg-color-logo border border-black'
+        className='animate-fadeIn grid gap-4 rounded-lg w-full max-w-lg m-auto p-4 bg-color-verde-blanco border border-gray-300 shadow-lg'
         title='Formulario beneficio'>
         <TextAreaLabel
           name={'beneficiosLista'}
@@ -34,7 +32,7 @@ export const DialogForm = ({ handleChange, values, closeDialog }) => {
         <strong className='text-center text-color-violeta font-betonga text-xl tracking-wider'>
           Beneficios: {values.beneficiosLista.length || 0}
         </strong>
-        <div className='grid gap-4 max-h-72 overflow-auto p-4'>
+        <div className='grid gap-4 max-h-72 overflow-auto'>
           {values.beneficiosLista.map((value, i) => (
             <ul
               key={i}
@@ -47,14 +45,20 @@ export const DialogForm = ({ handleChange, values, closeDialog }) => {
             </ul>
           ))}
         </div>
-        <div className='grid grid-cols-2'>
+        <div className='grid grid-cols-2 py-4 gap-4'>
           <Button
+            className={'w-full'}
             bgColor={true}
             tipo={'submit'}
             texto={'Agregar'}
             onClickFunction={handleDialogSubmit}
           />
-          <Button tipo={'button'} texto={'Volver'} onClickFunction={closeDialog} />
+          <Button
+            className={'w-full'}
+            tipo={'button'}
+            texto={'Volver'}
+            onClickFunction={closeDialog}
+          />
         </div>
       </form>
     </dialog>

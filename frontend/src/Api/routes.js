@@ -23,7 +23,6 @@ export const apiRoutes = {
     deleteReserva: `${BASE_URL}admin/reservas/borrar/`,
     putEstadoReserva: `${BASE_URL}admin/reservas/estado/`,
     putReserva: `${BASE_URL}admin/reservas/editar/`
-    /* migrarDatos: `${BASE_URL}admin/reservas/migrarDatos` */
   },
   servicios: {
     getServicios: `${BASE_URL}admin/servicios`,
@@ -44,7 +43,6 @@ export const apiRoutes = {
     getPacientesNombres: `${BASE_URL}admin/pacientes/nombres`,
     getPacienteId: `${BASE_URL}admin/paciente/`,
     getPacienteNombre: `${BASE_URL}admin/pacienteNombre/`,
-    getPacientesMigrarDatos: `${BASE_URL}admin/pacientes`,
     deletePaciente: `${BASE_URL}admin/pacientes/borrar/`,
     postPaciente: `${BASE_URL}admin/pacientes/nuevo`,
     putPaciente: `${BASE_URL}admin/paciente/editar/`

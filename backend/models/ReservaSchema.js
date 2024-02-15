@@ -1,18 +1,13 @@
 import { Schema, model } from 'mongoose'
 const reservaSchema = Schema(
   {
-    paciente: {
-      type: Schema.Types.ObjectId,
-      ref: 'Paciente',
-      required: true
-    },
     horario: {
       horaInicio: { type: Date, required: true },
       horaDeFin: { type: Date, required: true }
     },
-    servicio: {
+    paciente: {
       type: Schema.Types.ObjectId,
-      ref: 'Servicio',
+      ref: 'Paciente',
       required: true
     },
     tratamiento: {
@@ -27,42 +22,12 @@ const reservaSchema = Schema(
       type: String,
       enum: ['Pendiente', 'Pago', 'Cancelada'],
       default: 'Pendiente'
-    }
-    /*  pacienteNombre: {
-      type: String,
-      required: true
     },
-    tratamiento: {
-      type: {
-        tratamientoId: {
-          type: Schema.Types.ObjectId,
-          ref: 'Tratamiento',
-          required: true
-        },
-        nombre: {
-          type: String,
-          required: true
-        },
-        sesiones: {
-          type: Number,
-          default: 1
-        },
-        descripcionSesion: {
-          type: String
-        }
-      },
-      required: true
-    },
-    ,
-    tratamientoId: {
+    servicio: {
       type: Schema.Types.ObjectId,
-      ref: 'Tratamiento',
+      ref: 'Servicio',
       required: true
-    },
-    precio: {
-      type: Number,
-      default: 0
-    } */
+    }
   },
   { timestamps: true }
 )

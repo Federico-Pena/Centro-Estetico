@@ -1,1 +1,0 @@
-import{r,q as s}from"./index-bGblmpTd.js";const c=e=>{const t=new Date(e),o={year:"numeric",month:"short",day:"numeric",weekday:"short"},a=t.toLocaleDateString("es-UY",o);return t instanceof Date&&a!=="Invalid Date"?a:""},u=()=>r.useContext(s);export{c as f,u};

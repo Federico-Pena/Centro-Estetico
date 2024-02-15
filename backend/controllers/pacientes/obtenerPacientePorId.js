@@ -14,7 +14,7 @@ export const obtenerPacientePorId = async (req, res) => {
     }
     const paciente = await Paciente.findById(id)
       .populate('servicio', 'nombre')
-      .populate('tratamiento', 'descripcion')
+      .populate('tratamiento', 'descripcion sesiones')
     if (!paciente) {
       const response = {
         error: 'No se encontró el paciente',

@@ -19,7 +19,6 @@ function Calendario() {
   const { loading: cargando } = useUserContext()
   const { loading } = useLoaderContext()
   const { reservas, seleccionadas } = useReservasContext()
-
   const { semanaAnterior, semanaSiguiente, diasSemana, setSeleccionadas, seleccionarDia } =
     useCalendario()
   const cerrarReserva = () => {

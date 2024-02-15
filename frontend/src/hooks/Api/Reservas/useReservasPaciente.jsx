@@ -13,31 +13,7 @@ export const useReservasPaciente = (id) => {
   const { setLoading } = useLoaderContext()
   const [pagina, setPagina] = useState(1)
   const [totalPaginas, setTotalPaginas] = useState(false)
-  /*  useEffect(() => {
-    const migrarDatos = async () => {
-      const options = {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${accessToken || ''}`
-        }
-      }
-      const url = apiRoutes.reservas.migrarDatos
-      const res = await fetcher(url, options)
-      const { status, error, datos, mensaje } = res
-      if (status === 200) {
-        setMensaje(mensaje)
-        console.log(datos)
-      } else {
-        if (error) {
-          setMensaje(error)
-        } else {
-          setMensaje('Ocurrió un error el obtener los pacientes')
-        }
-      }
-    }
-    migrarDatos()
-  }, [accessToken, setMensaje])
- */
+
   useEffect(() => {
     const getReservasPaciente = async () => {
       try {

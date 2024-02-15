@@ -1,3 +1,5 @@
+import { opcionesFormatPrecio } from '../../constantes.js'
+
 const GananciasComponent = ({ gananciasTotales, perdidasTotales, pendientesTotales }) => {
   return (
     gananciasTotales && (
@@ -5,19 +7,19 @@ const GananciasComponent = ({ gananciasTotales, perdidasTotales, pendientesTotal
         <ul className='text-center grid  items-center col-span-full'>
           <li className='font-betonga font-bold text-xl md:text-2xl '>Pagas</li>
           <li className='font-bold Pago m-auto p-2 rounded-xl text-white'>
-            $ {gananciasTotales.toFixed(2)}
+            $ {gananciasTotales.toLocaleString(opcionesFormatPrecio)}
           </li>
         </ul>
         <ul className='text-center grid  items-center'>
           <li className='font-betonga font-bold text-xl md:text-2xl'>Pendientes</li>
           <li className='font-bold Pendiente m-auto p-2 rounded-xl text-white'>
-            $ {pendientesTotales.toFixed(2)}
+            $ {pendientesTotales.toLocaleString(opcionesFormatPrecio)}
           </li>
         </ul>
         <ul className='text-center grid  items-center'>
           <li className='font-betonga font-bold text-xl md:text-2xl'>Canceladas</li>
           <li className='font-bold Cancelada m-auto p-2 rounded-xl text-white'>
-            $ {perdidasTotales.toFixed(2)}
+            $ {perdidasTotales.toLocaleString(opcionesFormatPrecio)}
           </li>
         </ul>
       </article>

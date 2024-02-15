@@ -68,8 +68,12 @@ export const editarPaciente = async (req, res) => {
       }
     }
     if (tratamiento) {
+      const descripcion = tratamiento.split('-')[0].trim().toLowerCase()
+      const sesiones = parseInt(tratamiento.split('-')[1].trim().match(/\d+/)[0], 10)
       const tratamientoExistente = await Tratamiento.findOne({
-        descripcion: tratamiento.toLowerCase()
+        servicio: servicioId,
+        descripcion,
+        sesiones
       })
       if (tratamientoExistente) {
         tratamientoId = tratamientoExistente._id
@@ -149,7 +153,7 @@ export const editarPaciente = async (req, res) => {
     }
     const nuevoPaciente = await Paciente.findOne(pacienteAnterior._id)
       .populate('servicio', 'nombre')
-      .populate('tratamiento', 'descripcion')
+      .populate('tratamiento', 'descripcion sesiones')
     const response = {
       mensaje: `Paciente nuevo ${nuevoPaciente.nombre}.`,
       status: 200,
@@ -158,6 +162,7 @@ export const editarPaciente = async (req, res) => {
     }
     return crearRespuestaJSON(response)
   } catch (error) {
+    console.log(error.message)
     if (error) {
       const response = {
         error: 'Error al actualizar al paciente',

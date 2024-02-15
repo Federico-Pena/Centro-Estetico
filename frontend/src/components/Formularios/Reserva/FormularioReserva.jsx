@@ -10,13 +10,16 @@ import { Button } from '../../Botones/Button.jsx'
 import { HOY_FECHA_STRING } from '../../../constantes.js'
 import { useLoaderContext } from '../../../Hooks/Context/useLoaderContext.jsx'
 import { useToastContext } from '../../../Hooks/Context/useToastContext.jsx'
+import { Dropdown } from '../../Dropdown/Dropdown.jsx'
 
 const formRules = {
   nombre: { required: true },
   fecha: { required: true },
-  hora: { required: true }
+  hora: { required: true },
+  servicio: { required: true },
+  tratamiento: { required: true }
 }
-export const FormularioReserva = ({ observaciones, cerrarFormulario }) => {
+export const FormularioReserva = ({ servicio, cerrarFormulario }) => {
   const { loading } = useLoaderContext()
   const { setMensaje } = useToastContext()
   const sectionFormRef = useRef()
@@ -24,7 +27,9 @@ export const FormularioReserva = ({ observaciones, cerrarFormulario }) => {
     nombre: '',
     fecha: '',
     hora: '',
-    observaciones: observaciones || ''
+    observaciones: '',
+    servicio: servicio.nombre || '',
+    tratamiento: ''
   }
   const { errors, handleChange, values, validateForm } = useForm(initialForm, formRules)
   const { horasDisponibles } = useFormReserva(values.fecha)
@@ -47,6 +52,24 @@ export const FormularioReserva = ({ observaciones, cerrarFormulario }) => {
     const hora = { target: { name: 'hora', value: value } }
     handleChange(hora)
   }
+  const handleTratamientoDropdown = (e) => {
+    const tratamiento = e.target.textContent
+    const tratamientoValue = {
+      target: {
+        name: 'tratamiento',
+        value: tratamiento
+      }
+    }
+    handleChange(tratamientoValue)
+  }
+  const tratamientosDescripcion = (tratamientos) => {
+    return tratamientos.map(
+      (tratamiento) =>
+        `${tratamiento.descripcion} - ${tratamiento.sesiones} ${
+          tratamiento.sesiones > 1 ? 'Sesiones' : 'Sesión'
+        }`
+    )
+  }
   return (
     <section
       id='sectionForm'
@@ -62,7 +85,7 @@ export const FormularioReserva = ({ observaciones, cerrarFormulario }) => {
       </h1>
       <form
         onSubmit={handleSubmit}
-        className='animate-fadeIn grid w-full max-w-md py-8 px-4 rounded-lg bg-color-logo gap-4 m-auto border border-black'>
+        className='animate-fadeIn grid w-full max-w-md py-8 px-4 rounded-lg gap-4 m-auto bg-color-verde-blanco border border-gray-300 shadow-lg'>
         <LabelInput
           errors={errors}
           labelText={'Nombre'}
@@ -100,8 +123,26 @@ export const FormularioReserva = ({ observaciones, cerrarFormulario }) => {
             {errors.hora && <small className='text-red-600'>* Este campo es requerido</small>}
           </>
         )}
-        <TextAreaLabel
+        <LabelInput
+          className={'w-full capitalize'}
+          errors={errors}
+          labelText={'Servicio'}
+          name={'servicio'}
           disabled={true}
+          type={'text'}
+          value={values.servicio}
+        />
+        <label>Tratamientos</label>
+        {errors && errors.tratamiento && (
+          <small className='text-red-600'>* {errors.tratamiento}</small>
+        )}
+        <Dropdown
+          defaultValue={values.tratamiento}
+          name={'tratamiento'}
+          list={tratamientosDescripcion(servicio.tratamientos)}
+          onClickFunction={handleTratamientoDropdown}
+        />
+        <TextAreaLabel
           value={values.observaciones}
           placeholder={'Observación'}
           onChange={handleChange}

@@ -1,6 +1,7 @@
 import { useRef } from 'react'
 import { Checkbox } from '../../Icons/Icons.jsx'
 import { useObserver } from '../../../Hooks/useObserver.jsx'
+import { opcionesFormatPrecio } from '../../../constantes.js'
 
 export const Mes = ({
   mes,
@@ -24,7 +25,7 @@ export const Mes = ({
           Reservas: <span>{cantidadReservas || 0}</span>
         </li>
         <li className='grid grid-flow-col justify-between'>
-          Ganancias: <span>$ {ganancias.toFixed(2) || 0}</span>
+          Ganancias: <span>$ {ganancias.toLocaleString(opcionesFormatPrecio) || 0}</span>
         </li>
       </ul>
       <ul className='border-b border-black grid gap-4 p-4 '>
@@ -44,6 +45,10 @@ export const Mes = ({
         <li className='grid grid-flow-col justify-between'>
           Tratamiento mas solicitado:
           <span> {servicioMasSolicitado?.tratamiento || <Checkbox />}</span>
+        </li>
+        <li className='grid grid-flow-col justify-between'>
+          Cantidad:
+          <span> {servicioMasSolicitado?.cantidad || <Checkbox />}</span>
         </li>
       </ul>
       <ul className='grid gap-4 p-4 '>

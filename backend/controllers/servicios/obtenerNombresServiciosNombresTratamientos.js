@@ -6,7 +6,7 @@ export const obtenerNombresServiciosNombresTratamientos = async (req, res) => {
     const servicios = await Servicio.find()
       .select('nombre')
       .sort('nombre')
-      .populate('tratamientos', 'descripcion')
+      .populate('tratamientos', 'descripcion sesiones')
     if (!servicios || servicios.length === 0) {
       const response = {
         error: 'No se encontraron servicios',

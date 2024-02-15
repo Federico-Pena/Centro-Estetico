@@ -8,7 +8,7 @@ export const fetcher = async (url, options) => {
     return data
   } catch (error) {
     return {
-      error: 'Ocurrió un error inesperado'
+      error: 'Ups... ocurrió un error intente nuevamente en unos minutos'
     }
   }
 }

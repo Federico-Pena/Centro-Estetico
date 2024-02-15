@@ -3,7 +3,11 @@ export const validationRules = {
   costoTotal: { required: true },
   sesiones: { required: true, minValue: 1 },
   tiempo: { required: true },
-  descripcion: { required: true }
+  descripcion: {
+    required: true,
+    pattern: /^[^-]*$/,
+    message: 'La descripción no debe contener guiones.'
+  }
 }
 export const initialFormData = (tratamiento) => {
   const initialForm = {

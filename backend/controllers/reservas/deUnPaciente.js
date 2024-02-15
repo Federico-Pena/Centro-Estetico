@@ -11,7 +11,7 @@ export const deUnPaciente = async (req, res) => {
       .populate('servicio', 'nombre')
       .populate({
         path: 'tratamiento',
-        select: 'descripcion costoPorSesion'
+        select: 'descripcion costoPorSesion sesiones'
       })
       .skip((page - 1) * porPagina)
       .limit(porPagina)

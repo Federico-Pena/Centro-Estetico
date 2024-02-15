@@ -1,8 +1,8 @@
 import { useRef } from 'react'
 import { useObserver } from '../../Hooks/useObserver.jsx'
 import { ESTADOS_RESERVAS } from '../../constantes.js'
-import { Button } from '../Botones/Button.jsx'
 import { Checkbox } from '../Icons/Icons.jsx'
+import { Button } from '../Botones/Button.jsx'
 
 export const PacienteListItem = ({ paciente, handleDelete, handleEdit, handleVerPaciente }) => {
   const pacienteRef = useRef()
@@ -48,16 +48,20 @@ export const PacienteListItem = ({ paciente, handleDelete, handleEdit, handleVer
           Servicio y tratamiento
         </h2>
         <ul className='grid gap-4 border-b border-black pb-4'>
-          <li className='grid capitalize'>
+          <li className='grid grid-flow-col items-center justify-between capitalize gap-4'>
             Servicio:
-            <span className='grid justify-end [&>svg]:text-red-600'>
+            <span className='grid text-nowrap overflow-auto [&>svg]:text-red-600'>
               {paciente.servicio?.nombre || <Checkbox />}
             </span>
           </li>
-          <li className='grid capitalize'>
+          <li className='grid grid-flow-col items-center justify-between capitalize gap-4'>
             Tratamiento:
-            <span className='grid justify-end [&>svg]:text-red-600'>
-              {paciente.tratamiento?.descripcion || <Checkbox />}
+            <span className='grid text-nowrap overflow-auto [&>svg]:text-red-600 '>
+              {(paciente.tratamiento?.descripcion &&
+                paciente.tratamiento?.sesiones &&
+                `${paciente.tratamiento.descripcion} - ${paciente.tratamiento.sesiones} ${
+                  paciente.tratamiento.sesiones > 1 ? 'Sesiones' : 'Sesión'
+                }`) || <Checkbox />}
             </span>
           </li>
         </ul>

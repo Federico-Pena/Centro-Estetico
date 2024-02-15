@@ -1,4 +1,10 @@
 import { formatFechaActualIso } from './Helpers/formatFechaActualIso.js'
+export const opcionesFormatPrecio = {
+  style: 'decimal',
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2
+}
+export const ZONA_HORARIA_URUGUAY = 3
 
 export const ESTADOS_RESERVAS = {
   pago: 'Pago',

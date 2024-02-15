@@ -51,7 +51,7 @@ export const FormMes = ({ setAno, setMes }) => {
     handleChange(valor)
   }
   return (
-    <form className='grid gap-2 border border-black p-4 rounded-lg md:col-start-2 md:col-end-4 bg-color-logo'>
+    <form className='grid gap-2 p-4 rounded-lg md:col-start-2 md:col-end-4 bg-color-verde-blanco border border-gray-300 shadow-lg'>
       <LabelInput
         className={'mb-4'}
         errors={errors}

@@ -1,5 +1,6 @@
 import { formatFechaParaUser } from '../../../frontend/src/Helpers/formatFechaParaUser.js'
 import { formatHoraUser } from '../../../frontend/src/Helpers/formatHoraUser.js'
+import { ZONA_HORARIA_URUGUAY } from '../../../frontend/src/constantes.js'
 import { crearRespuestaJSON } from '../../helpers/crearRespuestaJSON.js'
 import { Paciente } from '../../models/PacienteSchema.js'
 import { Reserva } from '../../models/ReservaSchema.js'
@@ -9,8 +10,8 @@ export const editarReserva = async (req, res) => {
   try {
     const { pacienteNombre, fecha, observaciones, tratamiento, servicio, estado } = req.body
     const id = req.params.id
-    const horaInicio = new Date(`${fecha}`)
-    const horaValida = horaInicio.getHours()
+    const horaInicio = new Date(fecha)
+    const horaValida = horaInicio.getUTCHours() - ZONA_HORARIA_URUGUAY
     if (horaValida < 8 || horaValida > 20) {
       const response = {
         error: 'Hora no valida para hacer reserva',
@@ -19,7 +20,6 @@ export const editarReserva = async (req, res) => {
       }
       return crearRespuestaJSON(response)
     }
-
     const horaDeFin = new Date(horaInicio)
     horaDeFin.setMinutes(horaDeFin.getMinutes() + 30)
     const reservaGuardada = await Reserva.findById(id)
@@ -53,9 +53,11 @@ export const editarReserva = async (req, res) => {
       return crearRespuestaJSON(response)
     }
 
-    const tratamientoExistente = tratamientosExistentes.find(
-      (trata) => trata.descripcion === tratamiento.toLowerCase()
-    )
+    const tratamientoExistente = tratamientosExistentes.find((trata) => {
+      const descripcion = tratamiento.split('-')[0].trim().toLowerCase()
+      const sesiones = parseInt(tratamiento.split('-')[1].trim().match(/\d+/)[0], 10)
+      return trata.descripcion === descripcion && trata.sesiones === sesiones
+    })
 
     const reservaACrear = {
       paciente: pacienteExistente._id,
@@ -83,7 +85,7 @@ export const editarReserva = async (req, res) => {
       .populate('servicio', 'nombre')
       .populate({
         path: 'tratamiento',
-        select: 'descripcion costoPorSesion'
+        select: 'descripcion costoPorSesion sesiones'
       })
     const mensaje = `Reserva nueva de ${pacienteExistente.nombre}  el dia ${formatFechaParaUser(
       reserva.horario.horaInicio
@@ -96,6 +98,7 @@ export const editarReserva = async (req, res) => {
     }
     return crearRespuestaJSON(response)
   } catch (error) {
+    console.log(error.message)
     const response = {
       error: 'Error al editar la reserva',
       status: 500,

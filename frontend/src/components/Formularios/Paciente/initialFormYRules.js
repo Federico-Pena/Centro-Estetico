@@ -1,4 +1,10 @@
 export const initialForm = (paciente) => {
+  const tratamientoDesc = paciente?.tratamiento?.descripcion || ''
+  const sesiones = paciente?.tratamiento?.sesiones
+  let tratamientoStr = ''
+  if (tratamientoDesc && sesiones !== undefined) {
+    tratamientoStr = `${tratamientoDesc} - ${sesiones} ${sesiones > 1 ? 'Sesiones' : 'Sesión'}`
+  }
   const initialFormData = {
     nombre: paciente?.nombre || '',
     fechaDeNac: paciente?.fechaDeNac || '',
@@ -22,7 +28,7 @@ export const initialForm = (paciente) => {
     enfermedades: paciente?.enfermedades || '',
     medicamentos: paciente?.medicamentos || '',
     implantes: paciente?.implantes || '',
-    tratamiento: paciente?.tratamiento?.descripcion || '',
+    tratamiento: tratamientoStr || '',
     servicio: paciente?.servicio?.nombre || '',
     foto: paciente?.foto || null
   }

@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react'
+import { useState } from 'react'
 import { formDataPaciente } from './formDataPaciente'
 import { Button } from '../../Botones/Button.jsx'
 import useForm from '../../../Hooks/Formulario/useForm.jsx'
@@ -72,7 +72,7 @@ const FormularioPaciente = () => {
         {edicion ? 'Editar ' : 'Agregar '}Paciente
       </h1>
       <form
-        className='animate-fadeIn bg-color-logo rounded-lg p-4 max-w-2xl m-auto w-full grid gap-4 border border-black'
+        className='animate-fadeIn rounded-lg p-4 max-w-2xl m-auto w-full grid gap-4 bg-color-verde-blanco border border-gray-300 shadow-lg'
         onSubmit={submitAgregar}>
         <HeaderForm cambiarActivo={cambiarActivo} seccion={seccion} />
         {seccion.Personales && (

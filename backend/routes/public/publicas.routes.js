@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import { obtenerServicios } from '../../controllers/servicios/obtenerServicios.js'
 import { reservasDeUnDia } from '../../controllers/reservas/reservasDeUnDia.js'
-import { obtenerPromociones } from '../../controllers/servicios/obtenerPromociones.js'
+import { obtenerPromociones } from '../../controllers/tratamientos/obtenerPromociones.js'
 
 export const publicasRoutes = Router()
 publicasRoutes.get('/api/servicios', obtenerServicios)

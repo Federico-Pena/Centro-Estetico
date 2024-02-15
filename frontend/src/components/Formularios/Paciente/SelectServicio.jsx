@@ -65,7 +65,12 @@ export const SelectServicio = ({ handleChange, values, errors }) => {
     return servicios.map((servicio) => servicio.nombre)
   }
   const tratamientosDescripcion = (tratamientos) => {
-    return tratamientos.map((tratamiento) => tratamiento.descripcion)
+    return tratamientos.map(
+      (tratamiento) =>
+        `${tratamiento.descripcion} - ${tratamiento.sesiones} ${
+          tratamiento.sesiones > 1 ? 'Sesiones' : 'Sesión'
+        }`
+    )
   }
   return (
     servicios.length > 0 && (

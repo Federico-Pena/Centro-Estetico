@@ -14,8 +14,11 @@ export const formatDatosReservasMesYAno = (data) => {
   }
   data.forEach((reserva) => {
     const mesReserva = reserva.horario.horaInicio.getMonth() + 1
+    estadisticasPorMes[mesReserva].cantidadReservas++
+
     estadisticasPorMes[mesReserva].estados[reserva.estado] =
       (estadisticasPorMes[mesReserva].estados[reserva.estado] || 0) + 1
+
     if (
       reserva.tratamiento &&
       reserva.tratamiento.costoPorSesion &&
@@ -23,11 +26,7 @@ export const formatDatosReservasMesYAno = (data) => {
     ) {
       estadisticasPorMes[mesReserva].ganancias += reserva.tratamiento.costoPorSesion
     }
-    estadisticasPorMes[mesReserva].cantidadReservas++
-    if (reserva.paciente && reserva.paciente.nombre) {
-      estadisticasPorMes[mesReserva].pacientes[reserva.paciente.nombre] =
-        (estadisticasPorMes[mesReserva].pacientes[reserva.paciente.nombre] || 0) + 1
-    }
+
     if (
       reserva.servicio &&
       reserva.servicio.nombre &&
@@ -39,22 +38,37 @@ export const formatDatosReservasMesYAno = (data) => {
         servicio: reserva.servicio.nombre
       })
     }
+    if (reserva.paciente && reserva.paciente.nombre) {
+      const nombrePaciente = reserva.paciente.nombre
+      estadisticasPorMes[mesReserva].pacientes[nombrePaciente] =
+        (estadisticasPorMes[mesReserva].pacientes[nombrePaciente] || 0) + 1
+    }
   })
 
-  const estadisticasArray = Object.keys(estadisticasPorMes).map((mes) => ({
-    mes: MESES[parseInt(mes) - 1],
-    estados: estadisticasPorMes[mes].estados,
-    ganancias: estadisticasPorMes[mes].ganancias,
-    pacienteMasReservas: {
-      nombre: Object.keys(estadisticasPorMes[mes].pacientes).sort((a, b) => a - b)[0] || '',
-      cantidad:
-        estadisticasPorMes[mes].pacientes[
-          Object.keys(estadisticasPorMes[mes].pacientes).sort((a, b) => a - b)[0] || ''
-        ]
-    },
-    servicioMasSolicitado: contarCombinaciones(estadisticasPorMes[mes].servicios),
-    cantidadReservas: estadisticasPorMes[mes].cantidadReservas
-  }))
+  const estadisticasArray = Object.keys(estadisticasPorMes).map((mes) => {
+    const pacientesPorMes = estadisticasPorMes[mes].pacientes
+    let pacienteMasReservas = ''
+    let maxReservas = 0
+    for (const paciente in pacientesPorMes) {
+      if (Object.hasOwnProperty.call(pacientesPorMes, paciente)) {
+        if (pacientesPorMes[paciente] > maxReservas) {
+          maxReservas = pacientesPorMes[paciente]
+          pacienteMasReservas = paciente
+        }
+      }
+    }
+    return {
+      mes: MESES[parseInt(mes) - 1],
+      estados: estadisticasPorMes[mes].estados,
+      ganancias: estadisticasPorMes[mes].ganancias,
+      pacienteMasReservas: {
+        nombre: pacienteMasReservas,
+        cantidad: pacientesPorMes[pacienteMasReservas] || 0
+      },
+      servicioMasSolicitado: contarCombinaciones(estadisticasPorMes[mes].servicios),
+      cantidadReservas: estadisticasPorMes[mes].cantidadReservas
+    }
+  })
   return estadisticasArray
 }
 const contarCombinaciones = (elementos) => {
@@ -67,7 +81,6 @@ const contarCombinaciones = (elementos) => {
     }
     combinaciones[combinacion].cantidad++
   })
-
   return (
     Object.values(combinaciones)
       .sort((a, b) => b.cantidad - a.cantidad)

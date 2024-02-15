@@ -9,13 +9,19 @@ export const validationRules = {
 }
 
 export const initialForm = (reserva, edicion, desdeCalendario) => {
+  const tratamientoDesc = reserva?.tratamiento?.descripcion || ''
+  const sesiones = reserva?.tratamiento?.sesiones
+  let tratamientoStr = ''
+  if (tratamientoDesc && sesiones !== undefined) {
+    tratamientoStr = `${tratamientoDesc} - ${sesiones} ${sesiones > 1 ? 'Sesiones' : 'Sesión'}`
+  }
   const initialFormData = {
     nombre: reserva?.paciente?.nombre || '',
     horaInicio: reserva?.horario?.horaInicio.split('T')[0] || '',
     hora: ((edicion || desdeCalendario) && formatHoraUser(reserva?.horario?.horaInicio)) || '',
     observaciones: reserva?.observaciones || '',
     servicio: reserva?.servicio?.nombre || '',
-    tratamiento: reserva?.tratamiento?.descripcion || '',
+    tratamiento: tratamientoStr || '',
     estado: reserva?.estado || ''
   }
   return initialFormData

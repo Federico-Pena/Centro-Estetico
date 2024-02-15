@@ -27,13 +27,13 @@ const Home = () => {
           </Link>
         </div>
       </section>
-      <section className='grid max-w-5xl p-4 '>
-        <h2 className='font-betonga my-8 mx-0 tracking-tight text-center text-2xl font-bold text-color-violeta'>
+      <section className='grid max-w-5xl p-4 pb-8'>
+        <h2 className='font-betonga my-8 mx-0 tracking-tight text-center text-3xl font-bold text-color-violeta'>
           Testimonios
         </h2>
         <div className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8'>
-          {testimonios.map((test) => (
-            <Testimonio key={test.titulo} testimonio={test} />
+          {testimonios.map((test, i) => (
+            <Testimonio key={i} testimonio={test} />
           ))}
         </div>
       </section>

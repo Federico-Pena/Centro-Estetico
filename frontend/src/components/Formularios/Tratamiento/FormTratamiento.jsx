@@ -90,7 +90,7 @@ const FormTratamiento = () => {
       </h1>
 
       <form
-        className='animate-fadeIn bg-color-logo rounded-lg grid p-4 gap-4 max-w-md w-full self-start justify-self-center border border-black'
+        className='animate-fadeIn rounded-lg grid p-4 gap-4 max-w-md w-full self-start justify-self-center bg-color-verde-blanco border border-gray-300 shadow-lg'
         onSubmit={handleSubmitTratamiento}>
         {servicios.length > 0 && (
           <Dropdown

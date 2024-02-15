@@ -6,7 +6,7 @@ export const reservasEstadisticasTodas = async (req, res) => {
   try {
     const reservas = await Reserva.find()
       .populate('servicio', 'nombre imagen -_id ')
-      .populate('tratamiento', 'descripcion costoPorSesion -_id')
+      .populate('tratamiento', 'descripcion costoPorSesion sesiones -_id')
       .select('estado')
       .select('horario.horaInicio')
     const datos = funcionEstadisticasReservasTodas(reservas)

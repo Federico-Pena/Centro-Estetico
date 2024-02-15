@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { opcionesFormatPrecio } from '../../../constantes.js'
 
 const GraficoBarras = ({ datos }) => {
   const [anchoVentana, setAnchoVentana] = useState(window.innerWidth)
@@ -22,7 +23,11 @@ const GraficoBarras = ({ datos }) => {
         <h2 className='text-lg font-semibold text-color-violeta font-betonga text-center col-span-full md:text-2xl'>
           Ingresos
         </h2>
-        {gananciaMaxima && <small className='absolute'>* Máximo ${gananciaMaxima}</small>}
+        {gananciaMaxima && (
+          <small className='absolute'>
+            * Máximo ${gananciaMaxima.toLocaleString(opcionesFormatPrecio)}
+          </small>
+        )}
         {datos.map((mes, index) => {
           return (
             <div

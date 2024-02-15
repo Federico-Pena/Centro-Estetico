@@ -54,6 +54,7 @@ export default function Servicios() {
   const reservar = (ser) => {
     setServicio(ser)
     setOpenForm(true)
+    serviciosRef.current.scrollIntoView()
   }
   const abrirMasInfo = (ser, src) => {
     serviciosRef.current.scrollIntoView()
@@ -63,23 +64,30 @@ export default function Servicios() {
   }
   return (
     <main className='animate-fadeIn grid py-8 px-4 gap-8 ' ref={serviciosRef}>
-      <h1 className='font-betonga text-color-violeta font-bold text-3xl text-center'>Servicios</h1>
-      <Carrusel />
+      {!openForm && (
+        <h1 className='font-betonga text-color-violeta font-bold text-3xl text-center'>
+          Servicios
+        </h1>
+      )}
+      {!openForm && !openInfo && <Carrusel />}
       {openForm && (
-        <FormularioReserva
-          observaciones={servicio.nombre}
-          cerrarFormulario={() => setOpenForm(false)}
-        />
+        <FormularioReserva servicio={servicio} cerrarFormulario={() => setOpenForm(false)} />
       )}
-      {openInfo && !openForm && (
-        <OpenInfo
-          setOpenInfo={setOpenInfo}
-          imgSrc={imgSrc}
-          servicio={servicio}
-          reservar={reservar}
-        />
-      )}
-      <section className='grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 max-w-5xl mx-auto'>
+
+      <section
+        className={`grid gap-8 grid-cols-1 ${
+          openInfo
+            ? 'md:grid-cols-1 lg:grid-cols-1 justify-center'
+            : 'md:grid-cols-2 lg:grid-cols-3'
+        }  max-w-5xl mx-auto`}>
+        {openInfo && !openForm && (
+          <OpenInfo
+            setOpenInfo={setOpenInfo}
+            imgSrc={imgSrc}
+            servicio={servicio}
+            reservar={reservar}
+          />
+        )}
         {servicios instanceof Array &&
           !openForm &&
           !openInfo &&

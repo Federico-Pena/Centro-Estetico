@@ -86,7 +86,7 @@ const FormularioReservaAdmin = () => {
         {edicion ? 'Editar' : 'Crear'} Reserva
       </h1>
       <form
-        className='animate-fadeIn bg-color-logo rounded-lg p-4 max-w-xl m-auto w-full grid gap-4 border border-black'
+        className='animate-fadeIn rounded-lg p-4 max-w-xl m-auto w-full grid gap-4 bg-color-verde-blanco border border-gray-300 shadow-lg'
         onSubmit={handleSubmit}>
         {!edicion && (
           <Dropdown

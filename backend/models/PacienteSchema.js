@@ -79,23 +79,6 @@ const pacienteSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'Tratamiento'
     },
-    /*  tratamiento: {
-      type: String,
-      enum: [
-        'Drenaje Linfático',
-        'Masaje Estético',
-        'Exfoliación Corporal',
-        'Masaje Cérvico-Craneal',
-        'Masaje Con Piedras Calientes',
-        'Masaje Descontracturante',
-        'Masaje Relajante',
-        'Masaje Prenatal',
-        'Barras De Access',
-        'Barras De access',
-        ''
-      ],
-      default: 'Masaje Estético'
-    }, */
     foto: {
       public_id: {
         type: String

@@ -48,18 +48,14 @@ export const Reserva = ({ datos, contenedorRef }) => {
       )}
       <article
         className={`${
-          isVisible && !pageCalendario
-            ? 'animate-fadeIn'
-            : isVisible && pageCalendario
-            ? 'animate-growIn'
-            : ''
+          isVisible && !pageCalendario ? 'animate-fadeIn' : isVisible && pageCalendario ? '' : ''
         } border border-slate-500 grid grid-rows-[50px_1fr_auto] rounded-lg max-w-96 w-full mx-auto overflow-auto snap-center min-w-80 ${
           reserva.estado
         }`}
         ref={reservaRef}>
         {reserva.paciente && (
           <h3 className='font-betonga font-bold text-xl text-white capitalize grid place-content-center tracking-wider'>
-            {reserva.paciente.nombre || 'Paciente eliminado'}
+            {reserva.paciente?.nombre || 'Paciente eliminado'}
           </h3>
         )}
         <section className={`grid border-t border-b border-slate-50`}>

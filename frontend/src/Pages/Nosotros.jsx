@@ -5,16 +5,17 @@ const Nosotros = () => {
     window.scrollTo(0, 0)
   }, [])
   return (
-    <main className='animate-fadeIn grid place-content-center gap-8 py-8 px-4'>
-      <h1 className='font-betonga text-color-violeta font-bold text-3xl text-center'>
+    <main className='animate-fadeIn grid place-content-center gap-8 py-8 px-4 bg-white'>
+      <h1 className='text-3xl font-betonga font-bold text-center text-color-violeta'>
         Algo sobre nosotros
       </h1>
-      <div className='max-w-96 rounded-xl overflow-hidden border border-gray-800 m-auto'>
+      <div className='max-w-lg m-auto overflow-hidden rounded-xl border border-gray-300 shadow-lg'>
         <img
+          className='w-full object-cover object-left-top max-h-[500px]'
           src='https://res.cloudinary.com/fotoscloudinary/image/upload/v1695238636/Portfolio/Centro%20Est%C3%A9tico/Centro-Estetico_oqlsuw.webp'
           alt='Centro Estético'
         />
-        <div className='grid p-8 gap-4 text-[18px]'>
+        <div className='p-8 gap-4 grid text-gray-700 text-[18px] text-pretty'>
           <p>
             Bienvenidos al Centro Estético, con un consultorio en la zona de Cordón, Montevideo.
           </p>

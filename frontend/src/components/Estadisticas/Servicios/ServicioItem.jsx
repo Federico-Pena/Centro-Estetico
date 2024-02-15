@@ -20,17 +20,21 @@ export const ServicioItem = ({ servicio, index }) => {
       <li className='bg-color-violeta text-white rounded-full m-auto w-8 h-8 grid place-content-center'>
         {index + 1}
       </li>
-      <li className='py-4 capitalize grid border-b border-black text-end '>
-        <span className='text-start'>Servicio</span>
-        {servicio.servicio}
+      <li className='py-4 capitalize grid grid-flow-col gap-4 border-b border-black'>
+        Servicio
+        <span className='text-end text-nowrap overflow-auto'>{servicio.servicio}</span>
       </li>
-      <li className='py-4 capitalize text-end grid border-b border-black '>
-        <span className='text-start'>Tratamiento</span>
-        {servicio.tratamiento}
+      <li className='py-4 capitalize grid grid-flow-col gap-4 border-b border-black '>
+        Tratamiento
+        <span className='text-end text-nowrap overflow-auto'>{servicio.tratamiento}</span>
       </li>
-      <li className='py-4 capitalize grid grid-flow-col justify-between'>
-        <span>Cantidad</span>
-        {servicio.cantidad}
+      <li className='py-4 capitalize grid grid-flow-col gap-4 border-b border-black '>
+        Sesiones
+        <span className='text-end text-nowrap overflow-auto'>{servicio.sesiones}</span>
+      </li>
+      <li className='py-4 capitalize grid grid-flow-col gap-4 justify-between'>
+        Cantidad
+        <span className='text-end text-nowrap overflow-auto'> {servicio.cantidad}</span>
       </li>
     </ul>
   )

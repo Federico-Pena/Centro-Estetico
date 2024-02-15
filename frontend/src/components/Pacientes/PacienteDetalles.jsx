@@ -43,7 +43,13 @@ export const PacienteDetalles = ({ paciente }) => {
         </li>
         <li>
           Tratamiento:
-          <span> {paciente.tratamiento?.descripcion || <Checkbox />}</span>
+          <span>
+            {(paciente.tratamiento?.descripcion &&
+              paciente.tratamiento?.sesiones &&
+              `${paciente.tratamiento.descripcion} - ${paciente.tratamiento.sesiones} ${
+                paciente.tratamiento.sesiones > 1 ? 'Sesiones' : 'Sesión'
+              }`) || <Checkbox />}
+          </span>
         </li>
       </ul>
     </>

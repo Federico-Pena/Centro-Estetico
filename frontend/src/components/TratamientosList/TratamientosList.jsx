@@ -33,7 +33,7 @@ export const TratamientosList = () => {
           }}
         />
       )}
-      <article className='grid gap-4 md:grid-cols-2 xl:grid-cols-3 max-w-5xl m-auto'>
+      <article className='grid gap-4 md:grid-cols-2 xl:grid-cols-3 max-w-5xl m-auto w-full'>
         <Button
           onClickFunction={() => navigate(RUTAS.admin.agregarTratamiento)}
           tipo={'button'}

@@ -34,7 +34,7 @@ export const editarEstadoReserva = async (req, res) => {
     const reservaActualizada = await Reserva.findById(guardada._id)
       .populate('paciente', 'nombre')
       .populate('servicio', 'nombre')
-      .populate('tratamiento', 'descripcion costoPorSesion')
+      .populate('tratamiento', 'descripcion costoPorSesion sesiones')
     const mensaje = `Reserva de ${reservaActualizada.paciente.nombre} del dia ${formatFechaParaUser(
       reservaActualizada.horario.horaInicio
     )} a las ${formatHoraUser(new Date(reservaActualizada.horario.horaInicio))} cambió a ${

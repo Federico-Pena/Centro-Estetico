@@ -27,7 +27,7 @@ export const deLaSemana = async (req, res) => {
       'horario.horaInicio': { $gte: lunes, $lt: domingo }
     })
       .populate('servicio', 'nombre')
-      .populate('tratamiento', 'descripcion costoPorSesion')
+      .populate('tratamiento', 'descripcion costoPorSesion sesiones')
       .populate('paciente', 'nombre')
     if (!reservas || reservas.length === 0) {
       const response = {

@@ -27,7 +27,6 @@ const FormServicio = () => {
   const [masInfo, setMasInfo] = useState(false)
   const [previewServicio, setPreviewServicio] = useState(false)
   const [servicio] = useState(stateServicio || initialFormData)
-  const [openInfo, setOpenInfo] = useState(false)
   const formServicioContainerRef = useRef()
   const { editarServicio, agregarServicio } = useServicio()
   const { handleChange, values, validateForm, errors, resetForm } = useForm(
@@ -85,7 +84,7 @@ const FormServicio = () => {
       {!previewServicio && (
         <form
           onSubmit={handleSubmit}
-          className='animate-fadeIn bg-color-logo grid gap-4 px-4 py-8 rounded-lg max-w-lg self-start justify-self-center w-full border border-black'
+          className='animate-fadeIn grid gap-4 px-4 py-8 rounded-lg max-w-lg self-start justify-self-center w-full bg-color-verde-blanco border border-gray-300 shadow-lg'
           title='Formulario agregar servicio'>
           <HeaderFormServicio masInfo={masInfo} setMasInfo={setMasInfo} />
           <PrimerParte
@@ -128,7 +127,7 @@ const FormServicio = () => {
           <h2 className='underline underline-offset-4 w-full text-center text-color-violeta font-bold font-betonga text-2xl tracking-widest'>
             Ver mas
           </h2>
-          <OpenInfo imgSrc={values.imagen?.secure_url || values.imgPreview} servicio={servicio} />
+          <OpenInfo imgSrc={values.imagen?.secure_url || values.imgPreview} servicio={values} />
         </section>
       )}
     </section>

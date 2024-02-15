@@ -31,7 +31,7 @@ export const FormAno = ({ setAno }) => {
     }
   }
   return (
-    <form className='grid gap-2 border border-black p-4 rounded-lg md:col-start-2 md:col-end-4 bg-color-logo'>
+    <form className='grid gap-2 bg-color-verde-blanco border border-gray-300 shadow-lg p-4 rounded-lg md:col-start-2 md:col-end-4 '>
       <LabelInput
         errors={errors}
         labelText={'Ingresa un Año'}

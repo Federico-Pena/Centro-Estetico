@@ -46,6 +46,7 @@ export const funcionEstadisticasReservasTodas = (reservas) => {
     ) {
       serviciosMasSolicitados.push({
         tratamiento: reserva.tratamiento.descripcion,
+        sesiones: reserva.tratamiento.sesiones,
         servicio: reserva.servicio.nombre,
         imagen: reserva.servicio.imagen
       })
@@ -77,11 +78,11 @@ const contarCombinaciones = (elementos) => {
   return Object.values(combinaciones)
     .sort((a, b) => b.cantidad - a.cantidad)
     .slice(0, 10)
-    .map(({ dia, hora, servicio, tratamiento, cantidad, imagen }) => {
+    .map(({ dia, hora, servicio, tratamiento, cantidad, imagen, sesiones }) => {
       if (dia && hora) {
         return { dia, hora, cantidad }
       } else {
-        return { servicio, tratamiento, cantidad, imagen }
+        return { servicio, tratamiento, cantidad, imagen, sesiones }
       }
     })
 }
