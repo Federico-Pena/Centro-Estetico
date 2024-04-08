@@ -5,20 +5,21 @@
 // Ambas funciones se utilizan en conjunto para proporcionar autenticación y autorización en las rutas protegidas de la API.
 
 import { auth } from 'express-oauth2-jwt-bearer'
-import jwt_decode from 'jwt-decode'
+import jwtDecode from 'jwt-decode'
 
 export const jwtCheck = auth({
   audience: process.env.AUTH0_AUDIENCE,
   issuerBaseURL: process.env.AUTH0_DOMAIN,
   tokenSigningAlg: 'RS256'
 })
+
 export const decodificarToken = (req, res, next) => {
   const authHeader = req.headers.authorization
   const token = authHeader && authHeader.split(' ')[1]
   if (!token) {
     return res.status(401).json({ error: 'Forbidden', mensaje: 'No autorizado' })
   }
-  const decoded = jwt_decode(token)
+  const decoded = jwtDecode(token)
   const autorizado = process.env.ADMIN.includes(decoded.sub && decoded.rolesDeUsuario[0])
   if (autorizado) {
     next()

@@ -2,7 +2,7 @@ import { Types } from 'mongoose'
 import { eliminarDeCloudinary } from '../cloudinaryImagenes.js'
 import Tratamiento from '../../models/TratamientoSchema.js'
 import Servicio from '../../models/ServicioSchema.js'
-import { crearRespuestaJSON } from '../../helpers/crearRespuestaJSON.js'
+import { crearRespuestaJSON } from '../../Helpers/crearRespuestaJSON.js'
 
 export const eliminarServicio = async (req, res) => {
   try {

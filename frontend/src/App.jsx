@@ -10,15 +10,14 @@ import { useUserContext } from './Hooks/Context/useUserContext.jsx'
 function App() {
   // const { isAllowedAccess } = useUserContext()
   const mainRef = useRef()
-  const isAllowedAccess = true
   const volverArriba = () => {
     mainRef.current.scrollTop = 0
   }
-
+  const isAllowedAccess = true
   return (
     <BrowserRouter>
       <div
-        className='relative grid w-screen h-screen grid-rows-[min-content_1fr_min-content] overflow-scroll scroll-smooth z-0'
+        className='grid w-full h-screen scroll-smooth overflow-auto  grid-rows-[min-content_1fr_min-content]'
         ref={mainRef}>
         <Toast />
         <Navbar isAllowedAccess={isAllowedAccess} />

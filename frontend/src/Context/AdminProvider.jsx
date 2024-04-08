@@ -1,3 +1,4 @@
+import { CalendarioProvider } from './Calendario/CalendarioContext.jsx'
 import { EstadisticasProvider } from './Estadisticas/EstadisticasContext.jsx'
 import { LoaderProvider } from './Loader/LoaderContext.jsx'
 import { PacientesProvider } from './Pacientes/PacientesContext.jsx'
@@ -13,7 +14,9 @@ const AdminProvider = ({ children }) => (
         <TratamientosProvider>
           <ServiciosProvider>
             <ReservasProvider>
-              <PacientesProvider>{children}</PacientesProvider>
+              <PacientesProvider>
+                <CalendarioProvider>{children}</CalendarioProvider>
+              </PacientesProvider>
             </ReservasProvider>
           </ServiciosProvider>
         </TratamientosProvider>

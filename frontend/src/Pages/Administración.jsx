@@ -1,10 +1,9 @@
 import { useState } from 'react'
-import { Loader } from '../Components/Loader/Loader.jsx'
 import { ComponentBackup } from '../Components/Botones/ComponentBackup.jsx'
 import { ServiciosList } from '../Components/ServiciosList/ServiciosList.jsx'
 import { TratamientosList } from '../Components/TratamientosList/TratamientosList.jsx'
-import { PacientesList } from '../Components/Pacientes/PacientesList.jsx'
 import { HeaderPageAdministracion } from '../Components/HeaderPageAdministracion/HeaderPageAdministracion.jsx'
+import { PacientesList } from '../Components/Pacientes/PacientesList.jsx'
 
 const Administración = () => {
   const [activo, setActivo] = useState({

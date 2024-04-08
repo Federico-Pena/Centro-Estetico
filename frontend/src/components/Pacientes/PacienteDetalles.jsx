@@ -9,7 +9,7 @@ export const PacienteDetalles = ({ paciente }) => {
       <h4 className=' tracking-wider pt-4 underline underline-offset-4 font-betonga font-bold text-xl text-color-violeta text-center'>
         Detalles del paciente
       </h4>
-      <ul className='grid [&>li]:p-4 [&>li]:grid [&>li]:grid-flow-col [&>li]:grid-cols-[1fr_2fr] [&>li]:justify-between [&>li>span]:grid [&>li>span]:justify-end  [&>li>span]:items-center  [&>li>span>svg]:text-red-600'>
+      <ul className='grid [&>li]:p-4 [&>li]:grid [&>li]:grid-flow-col [&>li]:grid-cols-[1fr_2fr] [&>li]:justify-between  [&>li>span]:grid [&>li>span]:items-center [&>li>span]:justify-end [&>li>span]:text-end [&>li>span]:text-pretty  [&>li>span>svg]:text-red-600'>
         <li className='capitalize'>
           Nombre: <span>{paciente.nombre || <Checkbox />}</span>
         </li>

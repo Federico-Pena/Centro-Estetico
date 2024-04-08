@@ -2,15 +2,17 @@ import { useEffect, useState } from 'react'
 import { apiRoutes } from '../../../Api/routes.js'
 import { fetcher } from '../../../Api/Helpers/fetcher.js'
 import { ACTIONS_PACIENTES } from '../../../Context/Pacientes/reducerPaciente.js'
-import { deletePaciente } from '../helpers/Pacientes/deletePaciente.js'
-import { postPaciente } from '../helpers/Pacientes/postPaciente.js'
-import { putPaciente } from '../helpers/Pacientes/putPaciente.js'
-import { getPacienteId } from '../helpers/Pacientes/getPacienteId.js'
+import { deletePaciente } from '../Helpers/Pacientes/deletePaciente.js'
+import { postPaciente } from '../Helpers/Pacientes/postPaciente.js'
+import { putPaciente } from '../Helpers/Pacientes/putPaciente.js'
+import { getPacienteId } from '../Helpers/Pacientes/getPacienteId.js'
 import { usePacienteContext } from '../../Context/usePacienteContext.jsx'
 import { useLoaderContext } from '../../Context/useLoaderContext.jsx'
 import { useToastContext } from '../../Context/useToastContext.jsx'
 import { useUserContext } from '../../Context/useUserContext.jsx'
-import { getPacientePorNombre } from '../helpers/Pacientes/getPacientePorNombre.js'
+import { getPacientePorNombre } from '../Helpers/Pacientes/getPacientePorNombre.js'
+import { postUploadPdf } from '../Helpers/Pacientes/postUploadPdf.js'
+import { getPacientesNombres } from '../Helpers/Pacientes/getPacientesNombres.js'
 
 export const usePaciente = () => {
   const { setLoading } = useLoaderContext()
@@ -55,7 +57,32 @@ export const usePaciente = () => {
     }
     getPacientesPaginados()
   }, [dispatch, setMensaje, accessToken, pagina, setLoading])
-
+  useEffect(() => {
+    const obtenerNombrePacientes = async () => {
+      setLoading(true)
+      try {
+        const res = await getPacientesNombres(accessToken)
+        const { datos, status, error } = res
+        if (status === 200) {
+          dispatch({
+            type: ACTIONS_PACIENTES.SET_PACIENTES_NOMBRES,
+            payload: datos
+          })
+        } else {
+          if (error) {
+            setMensaje(error)
+          } else {
+            setMensaje('Error al obtener los nombres de los pacientes')
+          }
+        }
+      } catch (error) {
+        setMensaje('Error al obtener los nombres de los pacientes')
+      } finally {
+        setLoading(false)
+      }
+    }
+    obtenerNombrePacientes()
+  }, [dispatch, accessToken, setMensaje, setLoading])
   const borrarPaciente = async (paciente) => {
     try {
       setLoading(true)
@@ -177,6 +204,20 @@ export const usePaciente = () => {
       setLoading(false)
     }
   }
+  const uploadPdf = async (data) => {
+    let dataToSend = new FormData()
+    dataToSend.append('file', data)
+    const { status, error, datos } = await postUploadPdf(accessToken, dataToSend)
+    if (status === 200) {
+      return datos
+    }
+    if (error) {
+      setMensaje(error)
+    } else {
+      setMensaje('Ocurrió un error al subir el archivo')
+    }
+    return false
+  }
   return {
     borrarPaciente,
     pagina,
@@ -185,6 +226,7 @@ export const usePaciente = () => {
     agregarPaciente,
     editarPaciente,
     obtenerPacientePorId,
-    obtenerPacientePorNombre
+    obtenerPacientePorNombre,
+    uploadPdf
   }
 }

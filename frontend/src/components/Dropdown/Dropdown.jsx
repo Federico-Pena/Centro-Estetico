@@ -4,7 +4,9 @@ import { ArrowDown } from '../Icons/Icons.jsx'
 export const Dropdown = ({ name, className, list, onClickFunction, defaultValue }) => {
   const [open, setOpen] = useState(false)
   const [buttonName, setButtonName] = useState('')
+  const [filterText, setFilterText] = useState('')
   const btnDropdownRef = useRef(null)
+
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (btnDropdownRef.current && !btnDropdownRef.current.contains(e.target)) {
@@ -20,19 +22,28 @@ export const Dropdown = ({ name, className, list, onClickFunction, defaultValue 
   const setName = (e) => {
     setButtonName(e.target.textContent)
     onClickFunction(e)
+    setOpen(false)
   }
+
+  const handleInputChange = (e) => {
+    setFilterText(e.target.value)
+  }
+
+  const filteredList = list.filter((item) => item.toLowerCase().includes(filterText.toLowerCase()))
+
   const nombre = defaultValue
     ? defaultValue
     : buttonName && list.includes(buttonName)
     ? buttonName
     : name
+
   return (
     <article
+      ref={btnDropdownRef}
       className={`grid  w-full gap-4 ${className ? className : ''} ${
         open ? 'grid-rows-[45px,1fr]' : 'grid-rows-1'
       }'`}>
       <button
-        ref={btnDropdownRef}
         onClick={() => setOpen(!open)}
         className={`${
           open ? 'bg-transparent text-color-violeta' : '  bg-white'
@@ -45,10 +56,14 @@ export const Dropdown = ({ name, className, list, onClickFunction, defaultValue 
         className={`${
           open ? 'opacity-100 scale-y-100 h-auto' : 'opacity-0 scale-y-0 h-0'
         } z-10 my-0 mx-auto bg-white rounded-lg w-full transition overflow-hidden`}>
-        <p
-          onClick={setName}
-          className='min-h-10 text-center p-2 border-b hover:bg-slate-300 transition-colors cursor-pointer'></p>
-        {list.map((item, i) => (
+        <input
+          type='text'
+          placeholder='Buscar...'
+          value={filterText}
+          onChange={handleInputChange}
+          className='w-full px-4 py-2 border-b border-gray-300 focus:outline-none'
+        />
+        {filteredList.map((item, i) => (
           <p
             key={i}
             onClick={setName}

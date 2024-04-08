@@ -7,6 +7,13 @@ export const reducerReservas = (state, action) => {
           (a, b) => new Date(b.horario.horaInicio) - new Date(a.horario.horaInicio)
         )
       }
+    case ACTIONS_RESERVAS.SET_RESERVAS_MES:
+      return {
+        ...state,
+        reservasMes: action.payload.sort(
+          (a, b) => new Date(b.horario.horaInicio) - new Date(a.horario.horaInicio)
+        )
+      }
     case ACTIONS_RESERVAS.SET_RESERVA:
       return {
         ...state,
@@ -47,6 +54,7 @@ export const reducerReservas = (state, action) => {
 }
 export const ACTIONS_RESERVAS = {
   SET_RESERVAS: 'SET_RESERVAS',
+  SET_RESERVAS_MES: 'SET_RESERVAS_MES',
   SET_RESERVA: 'SET_RESERVA',
   SET_RESERVA_NUEVA: 'SET_RESERVA_NUEVA',
   SET_RESERVAS_SELECCIONADAS: 'SET_RESERVAS_SELECCIONADAS',

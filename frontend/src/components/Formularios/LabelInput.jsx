@@ -50,7 +50,7 @@ export const LabelInput = ({
       {error && <small className='text-red-600'>* {error}</small>}
       <input
         disabled={disabled ? disabled : false}
-        className={`relative  w-full border p-2 rounded-md outline-none shadow-md  transition-colors focus:border-color-violeta focus:shadow-none ${
+        className={`relative w-full border p-2 rounded-md outline-none shadow-md  focus:border-color-violeta focus:shadow-sm hover:shadow-sm transition ${
           className ? className : ''
         }`}
         id={name}

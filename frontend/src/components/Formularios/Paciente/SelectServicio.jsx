@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Dropdown } from '../../Dropdown/Dropdown.jsx'
-import { getServiciosNombresYTratamientos } from '../../../Hooks/Api/helpers/Servicios/getServiciosNombresYTratamientos.js'
+import { getServiciosNombresYTratamientos } from '../../../Hooks/Api/Helpers/Servicios/getServiciosNombresYTratamientos.js'
 import { useUserContext } from '../../../Hooks/Context/useUserContext.jsx'
 import { useToastContext } from '../../../Hooks/Context/useToastContext.jsx'
 

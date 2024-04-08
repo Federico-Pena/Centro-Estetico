@@ -7,7 +7,6 @@ export const UserContext = createContext({})
 export const UserProvider = ({ children }) => {
   const [userAccess, setSetUserAccess] = useState({})
   const { user, getAccessTokenSilently, isAuthenticated, isLoading } = useAuth0()
-
   const getAccessToken = useCallback(async () => {
     try {
       const accessToken = await getAccessTokenSilently({

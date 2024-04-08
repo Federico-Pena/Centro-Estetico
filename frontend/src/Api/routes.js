@@ -18,6 +18,7 @@ export const apiRoutes = {
   reservas: {
     reservasDia: `${BASE_URL}admin/reservasDia/`,
     deLaSemana: `${BASE_URL}admin/reservasSemana/`,
+    delMes: `${BASE_URL}admin/reservasDelMes/`,
     deUnPacientes: `${BASE_URL}admin/reservasPaciente/`,
     postReserva: `${BASE_URL}admin/reservas/nueva`,
     deleteReserva: `${BASE_URL}admin/reservas/borrar/`,
@@ -45,7 +46,8 @@ export const apiRoutes = {
     getPacienteNombre: `${BASE_URL}admin/pacienteNombre/`,
     deletePaciente: `${BASE_URL}admin/pacientes/borrar/`,
     postPaciente: `${BASE_URL}admin/pacientes/nuevo`,
-    putPaciente: `${BASE_URL}admin/paciente/editar/`
+    putPaciente: `${BASE_URL}admin/paciente/editar/`,
+    postPdf: `${BASE_URL}admin/pacientes/pdf`
   },
   estadisticas: {
     reservas: `${BASE_URL}admin/estadisticas/reservas`,

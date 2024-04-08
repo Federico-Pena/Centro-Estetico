@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { deUnPaciente } from '../helpers/Reservas/deUnPaciente.js'
+import { deUnPaciente } from '../Helpers/Reservas/deUnPaciente.js'
 import { ACTIONS_RESERVAS } from '../../../Context/Reservas/reducerReservas.js'
 import { useLoaderContext } from '../../Context/useLoaderContext.jsx'
 import { useToastContext } from '../../Context/useToastContext.jsx'
@@ -12,7 +12,7 @@ export const useReservasPaciente = (id) => {
   const { dispatch } = useReservasContext()
   const { setLoading } = useLoaderContext()
   const [pagina, setPagina] = useState(1)
-  const [totalPaginas, setTotalPaginas] = useState(false)
+  const [totalPaginas, setTotalPaginas] = useState(1)
 
   useEffect(() => {
     const getReservasPaciente = async () => {

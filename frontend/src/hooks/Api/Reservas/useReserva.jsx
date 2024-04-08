@@ -1,6 +1,6 @@
-import { deleteReserva } from '../helpers/Reservas/deleteReserva.js'
+import { deleteReserva } from '../Helpers/Reservas/deleteReserva.js'
 import { ACTIONS_RESERVAS } from '../../../Context/Reservas/reducerReservas.js'
-import { putEstadoReserva } from '../helpers/Reservas/putEstadoReserva.js'
+import { putEstadoReserva } from '../Helpers/Reservas/putEstadoReserva.js'
 import { useLoaderContext } from '../../Context/useLoaderContext.jsx'
 import { useToastContext } from '../../Context/useToastContext.jsx'
 import { useUserContext } from '../../Context/useUserContext.jsx'

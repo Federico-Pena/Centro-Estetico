@@ -13,8 +13,8 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { RUTAS } from '../../../constantes.js'
 import { useServiciosContext } from '../../../Hooks/Context/useServiciosContext.jsx'
 import { ACTIONS_SERVICIOS } from '../../../Context/Servicios/serviciosReducer.js'
-import { useToastContext } from '../../../Hooks/Context/useToastContext.jsx'
 import { OpenInfo } from '../../CardServicio/OpenInfo.jsx'
+import TextErrorForm from '../TextErrorForm.jsx'
 
 const FormServicio = () => {
   const location = useLocation()
@@ -22,14 +22,13 @@ const FormServicio = () => {
   const navigate = useNavigate()
   const edicion = location.pathname === RUTAS.admin.editarServicio
   const { dispatch } = useServiciosContext()
-  const { setMensaje } = useToastContext()
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [masInfo, setMasInfo] = useState(false)
   const [previewServicio, setPreviewServicio] = useState(false)
   const [servicio] = useState(stateServicio || initialFormData)
   const formServicioContainerRef = useRef()
   const { editarServicio, agregarServicio } = useServicio()
-  const { handleChange, values, validateForm, errors, resetForm } = useForm(
+  const { handleChange, values, onSubmitForm, errors, resetForm } = useForm(
     servicio,
     validationRules
   )
@@ -51,17 +50,11 @@ const FormServicio = () => {
     dispatch({ type: ACTIONS_SERVICIOS.SET_SERVICIO, payload: null })
     navigate(-1)
   }
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    const isValid = validateForm()
-    if (isValid) {
-      const datos = formDataServicio(values)
-      const res = edicion ? await editarServicio(datos) : await agregarServicio(datos)
-      if (res) {
-        cerrarForm()
-      }
-    } else {
-      setMensaje('Faltan campos requeridos')
+  const handleSubmit = async (values) => {
+    const datos = formDataServicio(values)
+    const res = edicion ? await editarServicio(datos) : await agregarServicio(datos)
+    if (res) {
+      cerrarForm()
     }
   }
 
@@ -83,7 +76,7 @@ const FormServicio = () => {
 
       {!previewServicio && (
         <form
-          onSubmit={handleSubmit}
+          onSubmit={(e) => onSubmitForm(e, handleSubmit)}
           className='animate-fadeIn grid gap-4 px-4 py-8 rounded-lg max-w-lg self-start justify-self-center w-full bg-color-verde-blanco border border-gray-300 shadow-lg'
           title='Formulario agregar servicio'>
           <HeaderFormServicio masInfo={masInfo} setMasInfo={setMasInfo} />
@@ -103,6 +96,8 @@ const FormServicio = () => {
             openDialog={openDialog}
             values={values}
           />
+          <TextErrorForm errors={errors} />
+
           <footer className='grid grid-flow-col gap-2'>
             <Button className={'w-full'} bgColor={true} tipo={'submit'} texto={'Guardar'} />
             <Button

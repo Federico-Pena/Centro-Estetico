@@ -3,6 +3,7 @@ import { ESTADOS_RESERVAS } from '../../constantes.js'
 import { Button } from '../Botones/Button.jsx'
 import { TransitionNumber } from '../TransitionNumber/TransitionNumber.jsx'
 import { useReservasContext } from '../../Hooks/Context/useReservasContext.jsx'
+import { useCalendarioContext } from '../../Hooks/Context/useCalendarioContext.jsx'
 function contador(arrayReservas) {
   const counts = arrayReservas.reduce(
     (acc, reserva) => {
@@ -27,10 +28,12 @@ function contador(arrayReservas) {
 
 function ContadorReservas({ setSeleccionadas }) {
   const [isVisible, setIsVisible] = useState(false)
-  const { reservas } = useReservasContext()
+  const { reservas, reservasMes } = useReservasContext()
+  const { vistaSemana } = useCalendarioContext()
 
-  const { reservasCanceladas, reservasPendientes, reservasTerminadas, reservasTodas } =
-    contador(reservas)
+  const { reservasCanceladas, reservasPendientes, reservasTerminadas, reservasTodas } = contador(
+    vistaSemana ? reservas : reservasMes
+  )
   const mostrarReservadas = (estado) => {
     if (estado === 'Todas') {
       setSeleccionadas(reservas)

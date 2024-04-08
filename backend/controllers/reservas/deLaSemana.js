@@ -1,4 +1,4 @@
-import { crearRespuestaJSON } from '../../helpers/crearRespuestaJSON.js'
+import { crearRespuestaJSON } from '../../Helpers/crearRespuestaJSON.js'
 import { Reserva } from '../../models/ReservaSchema.js'
 const comienzoYFinSemana = (fecha) => {
   const fechaParaFiltrar = new Date(fecha)
@@ -8,6 +8,7 @@ const comienzoYFinSemana = (fecha) => {
   const lunes = new Date(fechaParaFiltrar)
   lunes.setUTCDate(fechaParaFiltrar.getUTCDate() - diasHastaLunes)
   const domingo = new Date(fechaParaFiltrar)
+  domingo.setUTCHours(23, 59, 59, 999)
   domingo.setUTCDate(fechaParaFiltrar.getUTCDate() + diasHastaDomingo)
   return { lunes, domingo }
 }

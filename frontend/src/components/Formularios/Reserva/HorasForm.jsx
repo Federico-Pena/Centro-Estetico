@@ -2,7 +2,7 @@ import { ESTADOS_RESERVAS } from '../../../constantes.js'
 
 export const HorasForm = ({ values, handleSetHora, horasDisponibles }) => {
   return (
-    <ul className='grid gap-4 grid-cols-5'>
+    <ul className='grid gap-2 grid-cols-4'>
       <li className='col-span-full'>Horas disponibles</li>
       {horasDisponibles.map((hor, i) => {
         return (

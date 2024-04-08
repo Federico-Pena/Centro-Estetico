@@ -1,32 +1,51 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { validateField } from './validateField'
 import { handleChangeForm } from './handleChangeForm.js'
 
 const useForm = (initialValues, validationRules) => {
   const [values, setValues] = useState(initialValues)
   const [errors, setErrors] = useState({})
-  useEffect(() => {
-    values &&
-      Object.keys(validationRules).forEach((name) => {
-        validateField(name, values[name], setErrors, validationRules)
-      })
-  }, [validationRules, values])
-  const handleChange = (e) => {
-    handleChangeForm(e, setErrors, setValues, validationRules, validateField)
+
+  const handleChange = async (e) => {
+    const value = await handleChangeForm(e)
+    const { name } = e.target
+    setValues((prevValues) => ({
+      ...prevValues,
+      ...value
+    }))
+
+    const error = validateField(name, value[name], validationRules)
+    setErrors((prev) => ({
+      ...prev,
+      ...error
+    }))
   }
+
   const validateForm = () => {
+    let newErrors = {}
     Object.keys(validationRules).forEach((name) => {
-      validateField(name, values[name], setErrors, validationRules)
+      const error = validateField(name, values[name], validationRules)
+      newErrors = { ...newErrors, ...error }
     })
-    return Object.keys(errors).every((key) => !errors[key])
+    setErrors(newErrors)
+    return Object.values(newErrors).every((value) => !value)
   }
 
   const resetForm = () => {
     setValues(initialValues)
     setErrors({})
   }
-
-  return { values, errors, handleChange, resetForm, validateForm }
+  const onSubmitForm = (e, callback) => {
+    e.preventDefault()
+    const isValid = validateForm()
+    if (isValid) {
+      callback(values)
+    }
+  }
+  const changeInitialValues = (values) => {
+    setValues(values)
+  }
+  return { values, errors, handleChange, resetForm, changeInitialValues, onSubmitForm }
 }
 
 export default useForm

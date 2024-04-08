@@ -11,6 +11,7 @@ import { HOY_FECHA_STRING } from '../../../constantes.js'
 import { useLoaderContext } from '../../../Hooks/Context/useLoaderContext.jsx'
 import { useToastContext } from '../../../Hooks/Context/useToastContext.jsx'
 import { Dropdown } from '../../Dropdown/Dropdown.jsx'
+import TextErrorForm from '../TextErrorForm.jsx'
 
 const formRules = {
   nombre: { required: true },
@@ -31,15 +32,14 @@ export const FormularioReserva = ({ servicio, cerrarFormulario }) => {
     servicio: servicio.nombre || '',
     tratamiento: ''
   }
-  const { errors, handleChange, values, validateForm } = useForm(initialForm, formRules)
+  const { errors, handleChange, values, onSubmitForm } = useForm(initialForm, formRules)
   const { horasDisponibles } = useFormReserva(values.fecha)
   const esDomingo = new Date(values.fecha).getDay() === 6
+  const esSabado = new Date(values.fecha).getDay() === 5
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    const isValid = validateForm() && !esDomingo && values.nombre
-    if (isValid) {
-      formularioReservaSubmit(values)
+  const handleSubmit = (datos) => {
+    if (!esDomingo) {
+      formularioReservaSubmit(datos)
       animationClose()
     } else {
       setMensaje(`Faltan campos requeridos.`)
@@ -84,7 +84,7 @@ export const FormularioReserva = ({ servicio, cerrarFormulario }) => {
         Reserva
       </h1>
       <form
-        onSubmit={handleSubmit}
+        onSubmit={(e) => onSubmitForm(e, handleSubmit)}
         className='animate-fadeIn grid w-full max-w-md py-8 px-4 rounded-lg gap-4 m-auto bg-color-verde-blanco border border-gray-300 shadow-lg'>
         <LabelInput
           errors={errors}
@@ -108,12 +108,12 @@ export const FormularioReserva = ({ servicio, cerrarFormulario }) => {
           value={values.fecha}
           min={HOY_FECHA_STRING.split('T')[0]}
         />
-        {esDomingo ? (
+        {esDomingo || esSabado ? (
           <span className='p-2 rounded-xl w-full text-center shadow-md bg-color-violeta text-slate-50'>
-            * Los días domingos no se realizan reservas
+            * Los fines de semana no se realizan reservas
           </span>
         ) : null}
-        {horasDisponibles.length > 0 && (
+        {horasDisponibles.length > 0 && !esDomingo && !esSabado && (
           <>
             <HorasForm
               horasDisponibles={horasDisponibles}
@@ -151,6 +151,7 @@ export const FormularioReserva = ({ servicio, cerrarFormulario }) => {
           error={errors.observaciones}
         />
         <ResumerReserva horasDisponibles={horasDisponibles} values={values} />
+        <TextErrorForm errors={errors} />
         <footer className='grid grid-flow-col pt-8 px-4 gap-4'>
           <Button
             className={'w-full'}

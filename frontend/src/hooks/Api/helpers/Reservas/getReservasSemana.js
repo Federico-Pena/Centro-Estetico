@@ -10,5 +10,6 @@ export const getReservasSemana = async (accessToken, diaDeLaSemana) => {
   }
   const url = `${apiRoutes.reservas.deLaSemana}${diaDeLaSemana}`
   const response = await fetcher(url, options)
+
   return response
 }

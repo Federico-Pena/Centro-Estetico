@@ -1,6 +1,6 @@
 import { Types } from 'mongoose'
 import Servicio from '../../models/ServicioSchema.js'
-import { crearRespuestaJSON } from '../../helpers/crearRespuestaJSON.js'
+import { crearRespuestaJSON } from '../../Helpers/crearRespuestaJSON.js'
 import Tratamiento from '../../models/TratamientoSchema.js'
 import { eliminarDeCloudinary } from '../cloudinaryImagenes.js'
 

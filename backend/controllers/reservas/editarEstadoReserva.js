@@ -1,7 +1,7 @@
 import { formatFechaParaUser } from '../../../frontend/src/Helpers/formatFechaParaUser.js'
 import { formatHoraUser } from '../../../frontend/src/Helpers/formatHoraUser.js'
 import { ESTADOS_RESERVAS } from '../../../frontend/src/constantes.js'
-import { crearRespuestaJSON } from '../../helpers/crearRespuestaJSON.js'
+import { crearRespuestaJSON } from '../../Helpers/crearRespuestaJSON.js'
 import { Reserva } from '../../models/ReservaSchema.js'
 
 export const editarEstadoReserva = async (req, res) => {

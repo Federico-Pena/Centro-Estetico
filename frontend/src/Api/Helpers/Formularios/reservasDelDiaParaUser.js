@@ -1,12 +1,24 @@
 import { compararFechas } from '../../../Helpers/compararFechas.js'
-import { fechasDeLaSemanaConHoras } from '../../../Helpers/fechasDeLaSemanaConHoras.js'
+import { fechasDelCalendarioSemanal } from '../../../Helpers/fechasDelCalendarioSemanal.js'
+import {
+  DIAS_DE_LA_SEMANA,
+  HORA_DE_COMIENZO,
+  HORA_DE_FIN,
+  INTERVALO_MINUTOS
+} from '../../../constantes.js'
 import { apiRoutes } from '../../routes.js'
 import { fetcher } from '../fetcher.js'
 
 export const reservasDelDiaParaUser = async (dia, authToken) => {
   const numeroDia = new Date(dia).getDay()
-  const díasSemana = fechasDeLaSemanaConHoras(dia)
-  const diaSeleccionado = díasSemana[numeroDia]
+  const diasSemana = fechasDelCalendarioSemanal(
+    dia,
+    DIAS_DE_LA_SEMANA,
+    HORA_DE_COMIENZO,
+    HORA_DE_FIN,
+    INTERVALO_MINUTOS
+  )
+  const diaSeleccionado = diasSemana[numeroDia]
   try {
     const url = `${apiRoutes.publicas.reservasDia}${dia}`
     const options = {

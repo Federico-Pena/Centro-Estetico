@@ -13,6 +13,7 @@ import { RUTAS } from '../../../constantes.js'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { ACTIONS_PACIENTES } from '../../../Context/Pacientes/reducerPaciente.js'
 import { usePacienteContext } from '../../../Hooks/Context/usePacienteContext.jsx'
+import TextErrorForm from '../TextErrorForm.jsx'
 
 const FormularioPaciente = () => {
   const location = useLocation()
@@ -22,11 +23,11 @@ const FormularioPaciente = () => {
 
   const { paciente: pac, dispatch } = usePacienteContext()
   const [paciente] = useState(initialForm(pac || pacienteState))
-  const { handleChange, values, validateForm, errors, resetForm } = useForm(
+  const { handleChange, values, errors, resetForm, onSubmitForm, changeInitialValues } = useForm(
     paciente,
     validationRules
   )
-  const { agregarPaciente, editarPaciente } = usePaciente()
+  const { agregarPaciente, editarPaciente, uploadPdf } = usePaciente()
   const [seccion, setSeccion] = useState({
     Personales: true,
     Costumbres: false,
@@ -52,28 +53,42 @@ const FormularioPaciente = () => {
     navigate(-1)
   }
 
-  const submitAgregar = async (e) => {
-    e.preventDefault()
-    const isValid = validateForm()
-    if (isValid) {
-      const nuevoUsuario = formDataPaciente(values)
-      const res = edicion
-        ? await editarPaciente(nuevoUsuario, pac._id)
-        : await agregarPaciente(nuevoUsuario)
-      if (res) {
-        cerrarForm()
-      }
+  const submitAgregar = async (data) => {
+    const nuevoUsuario = formDataPaciente(data)
+    const res = edicion
+      ? await editarPaciente(nuevoUsuario, pac._id)
+      : await agregarPaciente(nuevoUsuario)
+    if (res) {
+      cerrarForm()
     }
   }
-
+  const handleChangePdf = async (e) => {
+    const file = e.target.files[0]
+    const res = await uploadPdf(file)
+    if (res) {
+      const data = initialForm(res)
+      changeInitialValues(data)
+    }
+  }
   return (
-    <section className='grid p-4'>
-      <h1 className='font-betonga font-bold text-color-violeta text-2xl tracking-wider text-center mb-4'>
+    <section className='grid grid-rows-[auto_auto_1fr] p-4 gap-y-4'>
+      <h1 className='font-betonga font-bold text-color-violeta text-2xl tracking-wider text-center'>
         {edicion ? 'Editar ' : 'Agregar '}Paciente
       </h1>
+      <div className='grid grid-flow-col items-center gap-4 m-auto w-full max-w-2xl '>
+        <label htmlFor='PDF'>Importar PDF</label>
+        <input
+          id='PDF'
+          name='pdf'
+          className='cursor-pointer border border-b border-slate-500 rounded-lg p-2 text-xs'
+          type='file'
+          accept='application/pdf'
+          onChange={handleChangePdf}
+        />
+      </div>
       <form
-        className='animate-fadeIn rounded-lg p-4 max-w-2xl m-auto w-full grid gap-4 bg-color-verde-blanco border border-gray-300 shadow-lg'
-        onSubmit={submitAgregar}>
+        className='animate-fadeIn rounded-lg p-4 max-w-2xl w-full m-auto grid grid-rows-[auto_1fr_auto] gap-4 self-start bg-color-verde-blanco border border-gray-300 shadow-lg'
+        onSubmit={(e) => onSubmitForm(e, submitAgregar)}>
         <HeaderForm cambiarActivo={cambiarActivo} seccion={seccion} />
         {seccion.Personales && (
           <>
@@ -113,6 +128,8 @@ const FormularioPaciente = () => {
             <SelectServicio values={values} handleChange={handleChange} />
           </>
         )}
+        <TextErrorForm errors={errors} />
+
         <footer className='grid grid-flow-col gap-2 pt-4 '>
           <Button className={'w-full'} bgColor={true} tipo={'submit'} texto={'Guardar'} />
           <Button

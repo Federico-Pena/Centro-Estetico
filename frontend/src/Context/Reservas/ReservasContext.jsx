@@ -4,6 +4,7 @@ import { reducerReservas } from './reducerReservas.js'
 const initialStateReservas = {
   dispatch: () => {},
   reservas: [],
+  reservasMes: [],
   reserva: null,
   seleccionadas: []
 }

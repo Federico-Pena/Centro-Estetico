@@ -16,22 +16,20 @@ const validations = {
 export const FormAno = ({ setAno }) => {
   const { loading } = useLoaderContext()
   const { obtenerReservasDelAno } = useEstadisticas()
-  const { errors, values, handleChange, validateForm, resetForm } = useForm(
+  const { errors, values, handleChange, resetForm, onSubmitForm } = useForm(
     initialValues,
     validations
   )
-  const getEstadisticasReservas = async (e) => {
-    e.preventDefault()
-    const ano = values.year
-    const isValid = validateForm()
-    if (isValid) {
-      setAno(ano)
-      await obtenerReservasDelAno(ano)
-      resetForm()
-    }
+  const getEstadisticasReservas = async (datos) => {
+    const ano = datos.year
+    setAno(ano)
+    await obtenerReservasDelAno(ano)
+    resetForm()
   }
   return (
-    <form className='grid gap-2 bg-color-verde-blanco border border-gray-300 shadow-lg p-4 rounded-lg md:col-start-2 md:col-end-4 '>
+    <form
+      className='grid gap-2 bg-color-verde-blanco border border-gray-300 shadow-lg p-4 rounded-lg md:col-start-2 md:col-end-4 '
+      onSubmit={(e) => onSubmitForm(e, getEstadisticasReservas)}>
       <LabelInput
         errors={errors}
         labelText={'Ingresa un Año'}
@@ -50,7 +48,6 @@ export const FormAno = ({ setAno }) => {
         disabled={loading}
         tipo={'submit'}
         texto={'Buscar'}
-        onClickFunction={getEstadisticasReservas}
       />
     </form>
   )

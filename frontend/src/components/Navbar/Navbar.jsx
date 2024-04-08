@@ -15,25 +15,22 @@ const Navbar = ({ isAllowedAccess }) => {
   }
 
   return (
-    <header className='sticky top-0 h-28 p-2 grid grid-flow-col gap-8 bg-color-violeta text-slate-50 z-30'>
+    <header className='sticky top-0 h-28 p-4 grid grid-cols-[100px_1fr] bg-color-violeta text-slate-50 z-30 '>
       <Link
         title='Volver a inicio'
         to='/'
         onClick={() => (openMenu ? setMenuState() : setOpenMenu(false))}
-        className='w-16 h-full bg-contain bg-no-repeat bg-center bg-[url("/assets/icons/icon-192.png")]'></Link>
+        className='w-16 justify-self-center h-full bg-contain bg-no-repeat bg-center bg-[url("/assets/icons/icon-192.png")]'></Link>
       <i
         onClick={setMenuState}
         className={`flex z-30 items-center justify-end cursor-pointer md:hidden`}>
         {openMenu ? <MenuCross /> : <Menu />}
       </i>
       <nav
-        className={`text-2xl w-full h-screen px-8 fixed left-0 transition-transform ${
-          openMenu ? 'translate-x-0' : 'translate-x-full'
-        }  grid grid-flow-row bg-color-violeta md:relative md:text-lg md:translate-x-0 md:visible md:flex md:justify-end md:max-5xl md:h-auto`}>
-        <ul
-          className='w-full h-full grid justify-center items-center py-24 gap-4 text-center md:grid-flow-col md:py-0 md:place-content-center md:justify-between hover:[&>li>a]:opacity-50
-        [&>li]:px-2  [&>li]:transition-colors
-         [&>li>a]:transition-opacity'>
+        className={`text-2xl w-full h-screen grid items-center fixed left-0 transition ${
+          openMenu ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'
+        } bg-color-violeta md:relative md:text-lg md:h-auto md:translate-x-0 md:opacity-100`}>
+        <ul className='w-full  grid items-center gap-8 text-center  hover:[&>li>a]:opacity-50 [&>li]:grid [&>li]:items-center [&>li]:px-2  [&>li]:m-auto [&>li>a]:transition-opacity [&>li>a>svg]:self-center md:gap-0 md:grid-flow-col'>
           {navLinks.map((link) => (
             <NavbarLink key={link.name} {...link} onClick={() => setMenuState()} />
           ))}

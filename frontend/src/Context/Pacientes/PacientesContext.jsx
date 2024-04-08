@@ -3,6 +3,7 @@ import { reducerPacientes } from './reducerPaciente'
 
 const initialStatePacientes = {
   pacientes: [],
+  pacientesNombres: [],
   paciente: null,
   dispatch: () => {}
 }

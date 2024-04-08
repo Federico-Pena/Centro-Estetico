@@ -1,7 +1,7 @@
 import { formatFechaParaUser } from '../../../frontend/src/Helpers/formatFechaParaUser.js'
 import { formatHoraUser } from '../../../frontend/src/Helpers/formatHoraUser.js'
 import { ZONA_HORARIA_URUGUAY } from '../../../frontend/src/constantes.js'
-import { crearRespuestaJSON } from '../../helpers/crearRespuestaJSON.js'
+import { crearRespuestaJSON } from '../../Helpers/crearRespuestaJSON.js'
 import { Paciente } from '../../models/PacienteSchema.js'
 import { Reserva } from '../../models/ReservaSchema.js'
 import Servicio from '../../models/ServicioSchema.js'
@@ -98,7 +98,6 @@ export const editarReserva = async (req, res) => {
     }
     return crearRespuestaJSON(response)
   } catch (error) {
-    console.log(error.message)
     const response = {
       error: 'Error al editar la reserva',
       status: 500,

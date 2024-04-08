@@ -1,4 +1,4 @@
-import { crearRespuestaJSON } from '../../helpers/crearRespuestaJSON.js'
+import { crearRespuestaJSON } from '../../Helpers/crearRespuestaJSON.js'
 import { Reserva } from '../../models/ReservaSchema.js'
 
 export const reservasDeUnDiaFormAdmin = async (req, res) => {
@@ -25,7 +25,7 @@ export const reservasDeUnDiaFormAdmin = async (req, res) => {
     })
       .select('horario')
       .select('estado')
-      .pupulate('paciente', 'nombre')
+      .populate('paciente', 'nombre')
     if (!fechasHoras || !fechasHoras.length) {
       const response = {
         datos: [],

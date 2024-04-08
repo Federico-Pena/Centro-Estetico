@@ -11,6 +11,12 @@ export const HorasFormAdmin = ({
 }) => {
   const handleSetHora = (e) => {
     const hora = e.target.textContent
+    const horaValue = {
+      target: {
+        name: 'hora',
+        value: hora
+      }
+    }
     const comprobación = compararFechas(new Date(`${values.horaInicio} ${hora}`), reservasDelDia)
     if (
       (comprobación.estado && comprobación.estado !== ESTADOS_RESERVAS.cancelada) ||
@@ -19,76 +25,49 @@ export const HorasFormAdmin = ({
       setMensaje('Hora no disponible para hacer una reserva')
       return
     } else {
-      const horaValue = {
-        target: {
-          name: 'hora',
-          value: hora
-        }
-      }
       handleChange(horaValue)
     }
   }
 
   return (
     <>
-      <ul className='grid gap-4 grid-cols-5'>
+      <ul className='grid gap-4 grid-cols-4'>
         <li className='col-span-full'>Hora</li>
-        {horasDisponibles.map((hor) => {
+        {horasDisponibles.map((hora) => {
+          const { reservaAdmin, id, estado, proximaHoraNoDisponible } = hora
+          const esHoraActual = id.split('T')[1] === values.hora
+
           return (
             <li
-              className={`${
-                hor.estado
+              className={`${estado} ${
+                reservaAdmin ? 'outline outline-2 outline-color-violeta' : ''
               } p-2 rounded-xl w-full grid place-content-center shadow-md max-w-20 transition-[max-width] ${formarClases(
-                hor,
-                values
+                estado,
+                proximaHoraNoDisponible,
+                esHoraActual
               )} `}
-              key={hor.id}
+              key={id}
               onClick={handleSetHora}>
-              {hor.id.split('T')[1]}
+              {id.split('T')[1]}
             </li>
           )
         })}
       </ul>
-      {errors.hora && <small className='text-red-600'>* {errors.hora}</small>}
-      <ul className='grid grid-flow-col grid-rows-3 gap-4 border border-slate-500 p-4 rounded-lg'>
-        <li className='col-span-full opacity-50 p-2 rounded-xl w-full grid place-content-center shadow-md m-auto'>
-          No disponible
-        </li>
-        <li
-          className={`p-2 rounded-xl w-full grid place-content-center shadow-md m-auto  bg-slate-50`}>
-          Disponible
-        </li>
-        <li
-          className={`${ESTADOS_RESERVAS.pago} text-white p-2 rounded-xl w-full grid place-content-center shadow-md m-auto  bg-slate-50`}>
-          Paga
-        </li>
-        <li
-          className={`${ESTADOS_RESERVAS.pendiente} text-white p-2 rounded-xl w-full grid place-content-center shadow-md m-auto  bg-slate-50`}>
-          Pendiente
-        </li>
-        <li
-          className={`${ESTADOS_RESERVAS.cancelada} text-white p-2 rounded-xl w-full grid place-content-center shadow-md m-auto  bg-slate-50`}>
-          Cancelada
-        </li>
-      </ul>
+      {errors.hora && <small className='text-red-600'>* {errors.hocra}</small>}
     </>
   )
 }
-
-const formarClases = (hor, values) => {
-  const esProximaHoraNoDisponible = hor.proximaHoraNoDisponible
-  const horaEstado = hor.estado
-  const esHoraActual = hor.id.split('T')[1] === values.hora
-  const horaCancelada = horaEstado && horaEstado === ESTADOS_RESERVAS.cancelada
-
+const formarClases = (estado, proximaHoraNoDisponible, esHoraActual) => {
+  const esProximaHoraNoDisponible = proximaHoraNoDisponible
+  const horaEstado = estado
   const horaNoCancelada =
     horaEstado &&
     (horaEstado === ESTADOS_RESERVAS.pago || horaEstado === ESTADOS_RESERVAS.pendiente)
 
   const clases = [
-    !esProximaHoraNoDisponible && !esHoraActual && !horaNoCancelada && 'bg-slate-50 cursor-pointer',
-    horaNoCancelada && `cursor-not-allowed text-white`,
-    horaCancelada && 'text-white',
+    estado && `${estado} text-white`,
+    !esProximaHoraNoDisponible && !horaNoCancelada && !esHoraActual && 'cursor-pointer  bg-white',
+    horaNoCancelada && `cursor-not-allowed`,
     esProximaHoraNoDisponible && !horaNoCancelada && 'opacity-50 cursor-not-allowed',
     esHoraActual &&
       'bg-color-violeta col-span-full row-start-2 text-white max-w-xl font-bold opacity-100 cursor-default'

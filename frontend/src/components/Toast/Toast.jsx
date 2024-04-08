@@ -37,7 +37,7 @@ export const Toast = () => {
   return (
     mensaje && (
       <div
-        className={`grid bg-white min-h-14 border border-black rounded-md max-w-xs fixed z-[999] bottom-1 left-1 ${
+        className={`grid bg-white min-h-14 border border-black rounded-md max-w-xs overflow-hidden fixed z-[999] bottom-1 left-1 ${
           isVisible && mensaje ? 'animate-toastIn' : 'animate-toastOut'
         }`}>
         <div className='relative grid place-content-center'>

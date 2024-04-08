@@ -8,13 +8,14 @@ import { FormTratamientoImagen } from './FormTratamientoImagen.jsx'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { Dropdown } from '../../Dropdown/Dropdown.jsx'
 import { RUTAS } from '../../../constantes.js'
-import { ACTIONS_TRATAMIENTOS } from '../../../context/Tratamiento/tratamientoReducer.js'
-import { getServiciosNombresYTratamientos } from '../../../Hooks/Api/helpers/Servicios/getServiciosNombresYTratamientos.js'
+import { ACTIONS_TRATAMIENTOS } from '../../../Context/Tratamiento/tratamientoReducer.js'
+import { getServiciosNombresYTratamientos } from '../../../Hooks/Api/Helpers/Servicios/getServiciosNombresYTratamientos.js'
 import { initialFormData, validationRules } from './initialValuesAndRules.js'
 import { useLoaderContext } from '../../../Hooks/Context/useLoaderContext.jsx'
 import { useToastContext } from '../../../Hooks/Context/useToastContext.jsx'
 import { useUserContext } from '../../../Hooks/Context/useUserContext.jsx'
 import { useTratamientoContext } from '../../../Hooks/Context/useTratamientoContext.jsx'
+import TextErrorForm from '../TextErrorForm.jsx'
 
 const FormTratamiento = () => {
   const location = useLocation()
@@ -28,7 +29,7 @@ const FormTratamiento = () => {
   const { crearTratamiento, editarTratamiento } = useTratamientos()
   const [tratamiento] = useState(initialFormData(stateTratamiento))
   const [servicios, setServicios] = useState([])
-  const { handleChange, values, validateForm, errors, resetForm } = useForm(
+  const { handleChange, values, onSubmitForm, errors, resetForm } = useForm(
     tratamiento,
     validationRules
   )
@@ -55,19 +56,13 @@ const FormTratamiento = () => {
     resetForm()
     navigate(-1)
   }
-  const handleSubmitTratamiento = async (e) => {
-    e.preventDefault()
-    const isValid = validateForm()
-    if (isValid) {
-      const datos = formDataTratamiento(values)
-      const res = edicion
-        ? await editarTratamiento(datos, stateTratamiento._id)
-        : await crearTratamiento(datos)
-      if (res) {
-        cerrarForm()
-      }
-    } else {
-      setMensaje('Faltan campos requeridos')
+  const handleSubmitTratamiento = async (values) => {
+    const datos = formDataTratamiento(values)
+    const res = edicion
+      ? await editarTratamiento(datos, stateTratamiento._id)
+      : await crearTratamiento(datos)
+    if (res) {
+      cerrarForm()
     }
   }
   const handleNombreServicio = (e) => {
@@ -91,7 +86,7 @@ const FormTratamiento = () => {
 
       <form
         className='animate-fadeIn rounded-lg grid p-4 gap-4 max-w-md w-full self-start justify-self-center bg-color-verde-blanco border border-gray-300 shadow-lg'
-        onSubmit={handleSubmitTratamiento}>
+        onSubmit={(e) => onSubmitForm(e, handleSubmitTratamiento)}>
         {servicios.length > 0 && (
           <Dropdown
             name={'Servicios Disponibles'}
@@ -106,6 +101,8 @@ const FormTratamiento = () => {
           handleChange={handleChange}
           values={values}
         />
+        <TextErrorForm errors={errors} />
+
         <footer className='grid grid-flow-col gap-2'>
           <Button
             className={'w-full'}

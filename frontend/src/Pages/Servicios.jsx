@@ -33,10 +33,11 @@ export default function Servicios() {
         const res = await fetcher(url, opciones)
         const { error, datos, status } = res
         if (status === 200) {
-          setServicios(datos)
-          setLoading(false)
+          const noFree = datos.filter((dato) =>
+            dato.tratamientos.some((trata) => trata.costoTotal !== 0)
+          )
+          setServicios(noFree)
         } else {
-          setLoading(false)
           if (error) {
             setMensaje(error)
           } else {
@@ -48,6 +49,8 @@ export default function Servicios() {
     } catch (error) {
       setLoading(false)
       setMensaje('Error al obtener los servicios')
+    } finally {
+      setLoading(false)
     }
   }, [setMensaje, accessToken, setLoading])
 
@@ -76,10 +79,8 @@ export default function Servicios() {
 
       <section
         className={`grid gap-8 grid-cols-1 ${
-          openInfo
-            ? 'md:grid-cols-1 lg:grid-cols-1 justify-center'
-            : 'md:grid-cols-2 lg:grid-cols-3'
-        }  max-w-5xl mx-auto`}>
+          openInfo ? 'md:grid-cols-1 lg:grid-cols-1' : 'md:grid-cols-2 lg:grid-cols-3'
+        } max-w-5xl mx-auto`}>
         {openInfo && !openForm && (
           <OpenInfo
             setOpenInfo={setOpenInfo}
@@ -91,18 +92,15 @@ export default function Servicios() {
         {servicios instanceof Array &&
           !openForm &&
           !openInfo &&
-          servicios.map(
-            (servicio) =>
-              servicio.nombre !== 'admin' && (
-                <CardServicio
-                  servicio={servicio}
-                  key={servicio._id}
-                  abrirMasInfo={abrirMasInfo}
-                  reservar={reservar}
-                  setServicio={setServicio}
-                />
-              )
-          )}
+          servicios.map((servicio) => (
+            <CardServicio
+              servicio={servicio}
+              key={servicio._id}
+              abrirMasInfo={abrirMasInfo}
+              reservar={reservar}
+              setServicio={setServicio}
+            />
+          ))}
       </section>
     </main>
   )

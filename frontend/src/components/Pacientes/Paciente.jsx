@@ -6,7 +6,7 @@ import { PacienteAfecciones } from './PacienteAfecciones.jsx'
 import { PacienteHeader } from './PacienteHeader.jsx'
 import { usePacienteContext } from '../../Hooks/Context/usePacienteContext.jsx'
 
-export const Paciente = ({ cerrarPaciente }) => {
+export const Paciente = ({ cerrarPaciente, handleEdit, handleDelete }) => {
   const { paciente } = usePacienteContext()
   const imprimirRef = useRef()
   const pacienteRef = useRef()
@@ -21,7 +21,12 @@ export const Paciente = ({ cerrarPaciente }) => {
     <article
       className='grid max-w-xl m-auto w-full border border-black bg-color-logo rounded-lg'
       ref={pacienteRef}>
-      <PacienteHeader cerrarPaciente={cerrarPaciente} imprimirRef={imprimirRef} />
+      <PacienteHeader
+        handleEdit={handleEdit}
+        handleDelete={handleDelete}
+        cerrarPaciente={cerrarPaciente}
+        imprimirRef={imprimirRef}
+      />
       {paciente.foto && (
         <img
           src={paciente.foto.secure_url}

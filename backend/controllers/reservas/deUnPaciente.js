@@ -1,4 +1,4 @@
-import { crearRespuestaJSON } from '../../helpers/crearRespuestaJSON.js'
+import { crearRespuestaJSON } from '../../Helpers/crearRespuestaJSON.js'
 import { Reserva } from '../../models/ReservaSchema.js'
 
 export const deUnPaciente = async (req, res) => {

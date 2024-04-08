@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { ConfirmationModal } from '../ConfirmationModal/ConfirmationModal'
-import { ACTIONS_TRATAMIENTOS } from '../../context/Tratamiento/tratamientoReducer.js'
+import { ACTIONS_TRATAMIENTOS } from '../../Context/Tratamiento/tratamientoReducer.js'
 import { useTratamientos } from '../../Hooks/Api/Tratamiento/useTratamientos.jsx'
 import { TratamientoListItem } from './TratamientoListItem.jsx'
 import { Button } from '../Botones/Button.jsx'
