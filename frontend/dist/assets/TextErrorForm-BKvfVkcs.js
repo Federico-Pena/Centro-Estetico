@@ -1,0 +1,1 @@
+import{j as s}from"./index-BN4e8_cD.js";function a({errors:e}){return Object.values(e).some(r=>r!==void 0)&&s.jsx("small",{className:"text-red-600 text-center",children:"Hay campos incorrectos"})}export{a as T};
