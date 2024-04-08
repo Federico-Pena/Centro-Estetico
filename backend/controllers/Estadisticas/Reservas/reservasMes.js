@@ -1,5 +1,5 @@
 import { MESES } from '../../../../frontend/src/constantes.js'
-import { crearRespuestaJSON } from '../../../Helpers/crearRespuestaJSON.js'
+import { crearRespuestaJSON } from '../../../helpers/crearRespuestaJSON.js'
 import { Reserva } from '../../../models/ReservaSchema.js'
 import { formatDatosReservasMesYAno } from './formatDatosReservasMesYAno.js'
 const obtenerIndiceDelMes = (nombreDelMes) => {

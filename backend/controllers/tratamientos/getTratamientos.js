@@ -1,4 +1,4 @@
-import { crearRespuestaJSON } from '../../Helpers/crearRespuestaJSON.js'
+import { crearRespuestaJSON } from '../../helpers/crearRespuestaJSON.js'
 import Tratamientos from '../../models/TratamientoSchema.js'
 
 export const obtenerTratamientos = async (req, res) => {

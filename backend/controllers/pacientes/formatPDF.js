@@ -1,4 +1,4 @@
-import { crearRespuestaJSON } from '../../Helpers/crearRespuestaJSON.js'
+import { crearRespuestaJSON } from '../../helpers/crearRespuestaJSON.js'
 import pdf from 'pdf-parse/lib/pdf-parse.js'
 
 export const formatPDF = async (req, res) => {

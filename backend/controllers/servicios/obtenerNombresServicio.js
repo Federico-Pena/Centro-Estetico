@@ -1,6 +1,6 @@
 // Para formulario de tratamientos
 
-import { crearRespuestaJSON } from '../../Helpers/crearRespuestaJSON.js'
+import { crearRespuestaJSON } from '../../helpers/crearRespuestaJSON.js'
 import Servicio from '../../models/ServicioSchema.js'
 export const obtenerNombresServicio = async (req, res) => {
   try {

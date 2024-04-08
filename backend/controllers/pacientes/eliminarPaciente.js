@@ -1,4 +1,4 @@
-import { crearRespuestaJSON } from '../../Helpers/crearRespuestaJSON.js'
+import { crearRespuestaJSON } from '../../helpers/crearRespuestaJSON.js'
 import { Paciente } from '../../models/PacienteSchema.js'
 import { Reserva } from '../../models/ReservaSchema.js'
 import { eliminarDeCloudinary } from '../cloudinaryImagenes.js'

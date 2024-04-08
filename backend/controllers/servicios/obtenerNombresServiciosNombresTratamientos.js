@@ -1,5 +1,5 @@
 // Controlador para formulario de paciente
-import { crearRespuestaJSON } from '../../Helpers/crearRespuestaJSON.js'
+import { crearRespuestaJSON } from '../../helpers/crearRespuestaJSON.js'
 import Servicio from '../../models/ServicioSchema.js'
 export const obtenerNombresServiciosNombresTratamientos = async (req, res) => {
   try {

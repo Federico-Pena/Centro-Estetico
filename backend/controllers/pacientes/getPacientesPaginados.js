@@ -1,4 +1,4 @@
-import { crearRespuestaJSON } from '../../Helpers/crearRespuestaJSON.js'
+import { crearRespuestaJSON } from '../../helpers/crearRespuestaJSON.js'
 import { Paciente } from '../../models/PacienteSchema.js'
 import { pipelinePaciente } from './pipelinePaciente.js'
 export const getPacientesPaginados = async (req, res, next) => {

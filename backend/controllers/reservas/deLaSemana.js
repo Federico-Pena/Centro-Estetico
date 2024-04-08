@@ -1,4 +1,4 @@
-import { crearRespuestaJSON } from '../../Helpers/crearRespuestaJSON.js'
+import { crearRespuestaJSON } from '../../helpers/crearRespuestaJSON.js'
 import { Reserva } from '../../models/ReservaSchema.js'
 const comienzoYFinSemana = (fecha) => {
   const fechaParaFiltrar = new Date(fecha)

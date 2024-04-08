@@ -1,5 +1,5 @@
 // Controlador para el carrusel de promociones
-import { crearRespuestaJSON } from '../../Helpers/crearRespuestaJSON.js'
+import { crearRespuestaJSON } from '../../helpers/crearRespuestaJSON.js'
 import Tratamientos from '../../models/TratamientoSchema.js'
 export const obtenerPromociones = async (req, res) => {
   try {

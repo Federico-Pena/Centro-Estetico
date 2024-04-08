@@ -1,7 +1,7 @@
 import { formatFechaParaUser } from '../../../frontend/src/Helpers/formatFechaParaUser.js'
 import { formatHoraUser } from '../../../frontend/src/Helpers/formatHoraUser.js'
 import { ESTADOS_RESERVAS, ZONA_HORARIA_URUGUAY } from '../../../frontend/src/constantes.js'
-import { crearRespuestaJSON } from '../../Helpers/crearRespuestaJSON.js'
+import { crearRespuestaJSON } from '../../helpers/crearRespuestaJSON.js'
 import { Paciente } from '../../models/PacienteSchema.js'
 import { Reserva } from '../../models/ReservaSchema.js'
 import Servicio from '../../models/ServicioSchema.js'
